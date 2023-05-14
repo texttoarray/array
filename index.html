@@ -77,8 +77,13 @@ function convert() {
   let list = document.getElementById("list").value;
   let array = list.split(/[\n,]+/);
   let outputType = document.getElementById("outputType").value;
+  let isNumberOptionSelected = outputType === "number";
+  let isAllValuesNumeric = array.every(val => !isNaN(val));
+  let isAllValuesAlphabetic = array.every(val => isNaN(val));
   
-  if (outputType === "number") {
+  if (isNumberOptionSelected && isAllValuesAlphabetic) {
+    document.getElementById("result").value = "String values given but number option selected. Use the string option.";
+  } else if (isNumberOptionSelected) {
     array = array.map(Number);
     if (document.getElementById("sortOutput").checked) {
       array.sort((a, b) => a - b);
@@ -98,6 +103,7 @@ function convert() {
     document.getElementById("result").value = "Array: [" + array + "]";
   }
 }
+
 
 function reset() {
   document.getElementById("list").value = "";
