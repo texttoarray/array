@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+textarea {
+  width: 100%;
+  height: 100px;
+  box-sizing: border-box;
+}
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+button {
+  margin-right: 10px;
+}
+.dark-mode {
+  background-color: black;
+  color: white;
+}
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2 style="text-align: center;">List to Array Converter</h2>
+
+<label for="list">Enter your list:</label><br>
+<textarea id="list"></textarea><br><br>
+
+<label for="outputType">Output type:</label>
+<select id="outputType">
+  <option value="string">String</option>
+  <option value="number">Number</option>
+</select><br><br>
+
+<label for="sortOutput"><input type="checkbox" id="sortOutput">Sort output</label><br><br>
+
+<label for="removeDuplicates"><input type="checkbox" id="removeDuplicates">Remove duplicates</label><br><br>
+
+<label for="result">Result:</label><br>
+<textarea id="result" readonly></textarea><br><br>
+
+<button onclick="convert()">Convert</button>
+<button onclick="reset()">Reset</button>
+
+<footer>
+  <p><label for="darkModeToggle"><input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">Dark mode</label></p>
+  <p id="copyright">
+  Copyright &copy; <span id="year"></span> The Anviya Group
+  </p>
+
+<script>
+  var year = new Date().getFullYear();
+  document.getElementById("year").textContent = year;
+</script>
+
+</footer>
+</div>
+
+<script>
+function convert() {
+  let list = document.getElementById("list").value;
+  let array = list.split(/[\n,]+/);
+  let outputType = document.getElementById("outputType").value;
+  
+  if (outputType === "number") {
+    array = array.map(Number);
+    if (document.getElementById("sortOutput").checked) {
+      array.sort((a, b) => a - b);
+    }
+    if (document.getElementById("removeDuplicates").checked) {
+      array = [...new Set(array)];
+    }
+    document.getElementById("result").value = "Array: [" + array + "]";
+  } else {
+    array = array.map(item => `"${item}"`);
+    if (document.getElementById("sortOutput").checked) {
+      array.sort();
+    }
+    if (document.getElementById("removeDuplicates").checked) {
+      array = [...new Set(array)];
+    }
+    document.getElementById("result").value = "Array: [" + array + "]";
+  }
+}
+
+function reset() {
+  document.getElementById("list").value = "";
+  document.getElementById("outputType").value = "number";
+  document.getElementById("sortOutput").checked = false;
+  document.getElementById("removeDuplicates").checked = false;
+  document.getElementById("result").value = "";
+}
+
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+}
+  var year = new Date().getFullYear();
+  document.getElementById("year").textContent = year;
+</script>
+
+</body>
+</html>
