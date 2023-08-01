@@ -8,27 +8,39 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  color: black;
 }
+
 .container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
 }
+
 textarea {
   width: 100%;
   height: 100px;
   box-sizing: border-box;
 }
+
 input[type="checkbox"] {
   margin-right: 5px;
 }
+
 button {
   margin-right: 10px;
 }
+
 .dark-mode {
   background-color: black;
   color: white;
 }
+
+.dark-mode textarea {
+  background-color: black;
+  color: white;
+}
+
 @media (max-width: 600px) {
   .container {
     padding: 10px;
@@ -52,10 +64,18 @@ button {
 <label for="list">Enter your list with each value in new line OR separated by commas.</label><br>
 <textarea id="list"></textarea><br><br>
 
-<label for="outputType">Output type:</label>
-<select id="outputType">
-  <option value="string">String</option>
-  <option value="number">Number</option>
+<label for="bracketsType">Select brackets:</label>
+<select id="bracketsType">
+  <option value="square">Square brackets</option>
+  <option value="curly">Curly brackets</option>
+  <option value="round">Round brackets</option>
+</select><br><br>
+
+<label for="quoteType">Quote Type:</label>
+<select id="quoteType">
+  <option value="single">Single quotes</option>
+  <option value="double">Double quotes</option>
+  <option value="none">No quotes</option>
 </select><br><br>
 
 <label for="sortOutput"><input type="checkbox" id="sortOutput">Sort output</label><br><br>
@@ -86,38 +106,57 @@ button {
 function convert() {
   let list = document.getElementById("list").value;
   let array = list.split(/[\n,]+/);
-  let outputType = document.getElementById("outputType").value;
-  let isNumberOptionSelected = outputType === "number";
-  let isAllValuesNumeric = array.every(val => !isNaN(val));
-  let isAllValuesAlphabetic = array.every(val => isNaN(val));
-  
-  if (isNumberOptionSelected && isAllValuesAlphabetic) {
-    document.getElementById("result").value = "String values given but number option selected. Use the string option.";
-  } else if (isNumberOptionSelected) {
-    array = array.map(Number);
-    if (document.getElementById("sortOutput").checked) {
-      array.sort((a, b) => a - b);
-    }
-    if (document.getElementById("removeDuplicates").checked) {
-      array = [...new Set(array)];
-    }
-    document.getElementById("result").value = "Array: [" + array + "]";
-  } else {
-    array = array.map(item => `"${item}"`);
-    if (document.getElementById("sortOutput").checked) {
-      array.sort();
-    }
-    if (document.getElementById("removeDuplicates").checked) {
-      array = [...new Set(array)];
-    }
-    document.getElementById("result").value = "Array: [" + array + "]";
+  let bracketsType = document.getElementById("bracketsType").value;
+  let quoteType = document.getElementById("quoteType").value;
+
+  array = array.map(item => formatOutput(item, quoteType));
+  if (document.getElementById("sortOutput").checked) {
+    array.sort();
+  }
+  if (document.getElementById("removeDuplicates").checked) {
+    array = [...new Set(array)];
+  }
+  document.getElementById("result").value = formatArrayOutput(array, bracketsType);
+}
+
+function bracketsTypeForOutput(bracketsType) {
+  switch (bracketsType) {
+    case "square":
+      return "[ ]";
+    case "curly":
+      return "{ }";
+    case "round":
+      return "( )";
+    default:
+      return "";
   }
 }
 
+function formatOutput(value, quoteType) {
+  if (quoteType === "single") {
+    return `'${value}'`;
+  } else if (quoteType === "double") {
+    return `"${value}"`;
+  }
+  return value;
+}
+
+function formatArrayOutput(array, bracketsType) {
+  let formattedArray = array.join(", ");
+  if (bracketsType === "square") {
+    return "[" + formattedArray + "]";
+  } else if (bracketsType === "curly") {
+    return "{" + formattedArray + "}";
+  } else if (bracketsType === "round") {
+    return "(" + formattedArray + ")";
+  }
+  return formattedArray;
+}
 
 function reset() {
   document.getElementById("list").value = "";
-  document.getElementById("outputType").value = "number";
+  document.getElementById("bracketsType").value = "square";
+  document.getElementById("quoteType").value = "single";
   document.getElementById("sortOutput").checked = false;
   document.getElementById("removeDuplicates").checked = false;
   document.getElementById("result").value = "";
