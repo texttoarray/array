@@ -41,6 +41,13 @@ button {
   color: white;
 }
 
+.disclaimer {
+  font-size: 0.9em;
+  color: #888;
+  text-align: center;
+  margin-top: 20px;
+}
+
 @media (max-width: 600px) {
   .container {
     padding: 10px;
@@ -90,7 +97,9 @@ button {
 
 <footer>
   <p><label for="darkModeToggle"><input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">Dark mode</label></p>
-<p> Any data you enter stays completely private. We never read or store or anything you enter. Ever!</p>
+<p class="disclaimer">
+  Your data stays private — we don’t store or read anything you enter.
+</p>
   <p id="copyright">
   Copyright &copy; <span id="year"></span> The Anviya Group.
 </p>
