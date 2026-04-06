@@ -1,0 +1,2345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐬 The Complete MySQL Mastery Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0a0e13;
+    --bg2:       #111720;
+    --bg3:       #1a2230;
+    --surface:   #1e2a3a;
+    --border:    #2a3a4f;
+    --mysql-blue:#00aeff;
+    --mysql-org: #ff8c00;
+    --cyan:      #00d4ff;
+    --green:     #00e878;
+    --purple:    #c084fc;
+    --red:       #ff5f5f;
+    --yellow:    #ffd055;
+    --text:      #dde8f0;
+    --text2:     #7a9ab5;
+    --text3:     #b8cdd8;
+    --code-bg:   #0d1520;
+    --out-bg:    #071008;
+    --ex-bg:     #0d1a2e;
+    --tip-bg:    #1a1500;
+    --sidebar-w: 280px;
+    --header-h:  60px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 20px); }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 15px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: var(--header-h);
+    background: rgba(10,14,19,0.95);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; gap: 16px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem; font-weight: 800; color: var(--text);
+    white-space: nowrap; letter-spacing: -0.01em;
+  }
+  .brand .dolphin { font-size: 1.35rem; }
+  .brand em { color: var(--mysql-blue); font-style: normal; }
+  .hdr-right { display: flex; align-items: center; gap: 14px; }
+  .prog-wrap { width: 130px; height: 5px; background: var(--surface); border-radius: 99px; overflow: hidden; }
+  #prog { height: 100%; width: 0; background: linear-gradient(90deg, var(--mysql-blue), var(--mysql-org)); border-radius: 99px; transition: width .25s; }
+  #prog-lbl { font-size: .72rem; color: var(--text2); font-family: 'Syne', sans-serif; font-weight: 700; }
+  #menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.3rem; cursor: pointer; }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    position: fixed; top: var(--header-h); left: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto; z-index: 90;
+    padding: 20px 0 48px;
+    transition: transform .3s ease;
+  }
+  #sidebar::-webkit-scrollbar { width: 3px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  #sb-search {
+    width: calc(100% - 24px); margin: 0 12px 14px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 7px 12px;
+    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: .8rem;
+  }
+  #sb-search:focus { outline: none; border-color: var(--mysql-blue); }
+
+  .sb-label {
+    font-size: .62rem; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--text2);
+    padding: 14px 18px 5px;
+    font-family: 'Syne', sans-serif;
+  }
+  .nav-a {
+    display: flex; align-items: center; gap: 9px;
+    padding: 7px 18px; font-size: .8rem;
+    color: var(--text2); text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all .15s;
+  }
+  .nav-a:hover { color: var(--text); background: var(--surface); }
+  .nav-a.active { color: var(--mysql-blue); border-color: var(--mysql-blue); background: rgba(0,174,255,.06); font-weight: 600; }
+  .nav-a .nn { font-size: .68rem; font-weight: 700; color: var(--mysql-org); min-width: 18px; font-family: 'Syne', sans-serif; }
+
+  /* ── CONTENT ── */
+  #content {
+    margin-left: var(--sidebar-w);
+    margin-top: var(--header-h);
+    padding: 44px 56px 100px;
+    max-width: 1020px;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    text-align: center; padding: 70px 16px 50px;
+    position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 30% 0%, rgba(0,174,255,.1) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(255,140,0,.07) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .cover-icon { font-size: 5rem; display: block; margin-bottom: 18px; animation: bob 4s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{transform:translateY(0) rotate(-3deg)} 50%{transform:translateY(-14px) rotate(3deg)} }
+  .cover h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 800; line-height: 1.1; letter-spacing: -.02em;
+    background: linear-gradient(135deg, #fff 0%, var(--mysql-blue) 45%, var(--mysql-org) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 14px;
+  }
+  .cover-sub { font-family: 'Syne', sans-serif; font-size: 1.1rem; color: var(--mysql-blue); font-weight: 600; margin-bottom: 10px; letter-spacing: .04em; }
+  .cover-tag { font-size: .95rem; color: var(--text2); font-style: italic; margin-bottom: 28px; }
+  .badges { display: flex; gap: 9px; justify-content: center; flex-wrap: wrap; }
+  .badge {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 99px; padding: 5px 14px;
+    font-size: .78rem; font-weight: 600; color: var(--text3);
+    font-family: 'Syne', sans-serif;
+  }
+  .badge.b { border-color: var(--mysql-blue); color: var(--mysql-blue); }
+  .badge.o { border-color: var(--mysql-org);  color: var(--mysql-org); }
+  .badge.g { border-color: var(--green);      color: var(--green); }
+
+  /* ── TOC GRID ── */
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 10px; margin: 28px 0 50px; }
+  .toc-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px;
+    text-decoration: none; color: var(--text3);
+    display: flex; align-items: center; gap: 12px;
+    transition: all .2s;
+  }
+  .toc-card:hover { border-color: var(--mysql-blue); color: var(--text); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .toc-n { background: var(--surface); border: 1px solid var(--border); min-width: 34px; height: 34px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: .72rem; font-weight: 800; color: var(--mysql-org); font-family: 'Syne', sans-serif; }
+  .toc-t { font-size: .85rem; font-weight: 600; line-height: 1.3; }
+  .toc-d { font-size: .72rem; color: var(--text2); margin-top: 2px; }
+
+  /* ── MODULE ── */
+  .module { margin-bottom: 64px; }
+  .module-hdr { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; padding-bottom: 14px; border-bottom: 2px solid var(--border); position: relative; }
+  .module-hdr::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 72px; height: 2px; background: linear-gradient(90deg, var(--mysql-blue), var(--mysql-org)); }
+  .mod-num { background: linear-gradient(135deg, var(--mysql-org), #c06000); color: #000; font-weight: 800; font-size: .8rem; border-radius: 7px; padding: 5px 11px; white-space: nowrap; font-family: 'Syne', sans-serif; }
+  .mod-title { font-family: 'Syne', sans-serif; font-size: clamp(1.35rem,3vw,1.8rem); font-weight: 700; color: var(--text); }
+
+  h2.st {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem; font-weight: 700; color: var(--mysql-blue);
+    margin: 32px 0 12px;
+    display: flex; align-items: center; gap: 9px;
+  }
+  h2.st::before { content: ''; display: block; width: 4px; height: 18px; border-radius: 2px; background: linear-gradient(to bottom, var(--mysql-blue), var(--mysql-org)); flex-shrink: 0; }
+
+  p { color: var(--text3); margin-bottom: 12px; }
+
+  /* ── CODE + OUTPUT BLOCK ── */
+  .sql-block { margin: 16px 0; }
+
+  .code-wrap {
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,.4);
+  }
+  .code-wrap.standalone { border-radius: 10px; border-bottom: 1px solid var(--border); }
+
+  .code-hdr {
+    background: var(--surface);
+    padding: 7px 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .dots { display: flex; gap: 5px; }
+  .dots span { width: 10px; height: 10px; border-radius: 50%; }
+  .dots span:nth-child(1) { background: #ff5f56; }
+  .dots span:nth-child(2) { background: #ffbd2e; }
+  .dots span:nth-child(3) { background: #27c93f; }
+  .code-label { font-size: .68rem; color: var(--text2); font-family: 'JetBrains Mono', monospace; letter-spacing: .05em; }
+  .copy-btn {
+    background: none; border: 1px solid var(--border); color: var(--text2);
+    cursor: pointer; font-size: .68rem; padding: 2px 9px; border-radius: 4px;
+    font-family: 'DM Sans', sans-serif; transition: all .15s;
+  }
+  .copy-btn:hover { background: var(--bg3); color: var(--text); }
+  .copy-btn.ok { color: var(--green); border-color: var(--green); }
+
+  pre {
+    background: var(--code-bg);
+    padding: 18px 20px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82rem; line-height: 1.75; tab-size: 2;
+  }
+  pre::-webkit-scrollbar { height: 4px; }
+  pre::-webkit-scrollbar-thumb { background: var(--border); }
+
+  /* SQL syntax colours */
+  .kw  { color: #569cd6; }   /* SELECT FROM WHERE etc */
+  .fn  { color: #dcdcaa; }   /* COUNT() SUM() etc */
+  .st  { color: #ce9178; }   /* strings */
+  .cm  { color: #6a9955; font-style: italic; } /* comments */
+  .nm  { color: #b5cea8; }   /* numbers */
+  .op  { color: #d4d4d4; }   /* operators */
+  .tb  { color: #4ec9b0; }   /* table names */
+  .cl  { color: #9cdcfe; }   /* column names */
+  .tp  { color: #c586c0; }   /* data types */
+
+  /* ── OUTPUT TABLE ── */
+  .output-wrap {
+    border: 1px solid rgba(0,232,120,.25);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+  }
+  .output-hdr {
+    background: rgba(0,232,120,.08);
+    padding: 6px 14px;
+    display: flex; align-items: center; gap: 7px;
+    border-bottom: 1px solid rgba(0,232,120,.2);
+  }
+  .output-hdr .out-label { font-size: .68rem; color: var(--green); font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: .06em; }
+  .output-hdr .row-count { font-size: .65rem; color: var(--text2); font-family: 'JetBrains Mono', monospace; margin-left: auto; }
+
+  .out-table-wrap { overflow-x: auto; background: var(--out-bg); }
+  .out-table {
+    width: 100%; border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .78rem;
+  }
+  .out-table thead tr { border-bottom: 1px solid rgba(0,232,120,.25); }
+  .out-table th {
+    padding: 8px 14px; text-align: left;
+    color: var(--green); font-weight: 700; font-size: .7rem;
+    text-transform: uppercase; letter-spacing: .06em;
+    white-space: nowrap;
+  }
+  .out-table td {
+    padding: 7px 14px; color: var(--text3);
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    white-space: nowrap;
+  }
+  .out-table tr:last-child td { border-bottom: none; }
+  .out-table tr:hover td { background: rgba(255,255,255,.03); }
+  .out-table .null-val { color: var(--text2); font-style: italic; }
+  .out-table .num-val  { color: var(--nm, #b5cea8); }
+  .out-table .str-val  { color: #ce9178; }
+
+  /* text output (not a table) */
+  .out-text {
+    background: var(--out-bg);
+    padding: 12px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .8rem; color: var(--green);
+    line-height: 1.7;
+  }
+
+  /* ── CALLOUT BOXES ── */
+  .callout { border-radius: 10px; padding: 16px 20px; margin: 16px 0; border: 1px solid; }
+  .callout-hdr { font-weight: 700; font-size: .82rem; margin-bottom: 10px; display: flex; align-items: center; gap: 7px; font-family: 'Syne', sans-serif; }
+  .callout p, .callout li { font-size: .85rem; margin-bottom: 4px; }
+  .callout ul, .callout ol { padding-left: 18px; }
+  .callout li { color: var(--text3); margin-bottom: 5px; line-height: 1.6; }
+  .callout code { font-family: 'JetBrains Mono', monospace; font-size: .78rem; background: rgba(255,255,255,.07); padding: 1px 5px; border-radius: 3px; }
+
+  .tip     { background: rgba(255,208,85,.05); border-color: rgba(255,208,85,.3); }
+  .tip .callout-hdr { color: var(--yellow); }
+  .exercise { background: var(--ex-bg); border-color: rgba(0,174,255,.35); }
+  .exercise .callout-hdr { color: var(--mysql-blue); }
+  .concept  { background: rgba(192,132,252,.05); border-color: rgba(192,132,252,.3); }
+  .concept .callout-hdr { color: var(--purple); }
+  .warning  { background: rgba(255,95,95,.05); border-color: rgba(255,95,95,.3); }
+  .warning .callout-hdr { color: var(--red); }
+
+  /* ── ANSWER BOX (visible by default) ── */
+  .answer-block {
+    border: 1px solid rgba(0,232,120,.3);
+    border-radius: 10px; overflow: hidden;
+    margin: 14px 0;
+  }
+  .answer-hdr {
+    background: rgba(0,232,120,.08);
+    padding: 9px 16px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid rgba(0,232,120,.2);
+  }
+  .answer-hdr span { font-size: .78rem; font-weight: 700; color: var(--green); font-family: 'Syne', sans-serif; }
+  .answer-body { background: var(--out-bg); }
+  .answer-body pre { background: var(--out-bg); border-radius: 0; }
+
+  /* ── TABLE (reference) ── */
+  .table-wrap { overflow-x: auto; margin: 14px 0; border-radius: 10px; border: 1px solid var(--border); }
+  table.ref { width: 100%; border-collapse: collapse; }
+  table.ref th { background: var(--surface); color: var(--mysql-org); font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); font-family: 'Syne', sans-serif; }
+  table.ref td { padding: 9px 14px; font-size: .82rem; color: var(--text3); border-bottom: 1px solid rgba(42,58,79,.5); font-family: 'JetBrains Mono', monospace; }
+  table.ref tr:last-child td { border-bottom: none; }
+  table.ref td:first-child { color: var(--mysql-blue); }
+  table.ref tr:nth-child(even) td { background: rgba(255,255,255,.015); }
+
+  /* ── INLINE CODE ── */
+  code { font-family: 'JetBrains Mono', monospace; font-size: .8em; background: var(--surface); color: var(--cyan); padding: 1px 5px; border-radius: 3px; border: 1px solid var(--border); }
+
+  /* ── DIVIDER ── */
+  hr.div { border: none; height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 56px 0; }
+
+  /* ── SCROLL TO TOP ── */
+  #top-btn { position: fixed; bottom: 28px; right: 28px; width: 42px; height: 42px; border-radius: 50%; background: var(--mysql-blue); color: #000; border: none; cursor: pointer; font-size: 1rem; display: none; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,174,255,.4); transition: transform .2s; z-index: 99; font-weight: 700; }
+  #top-btn.show { display: flex; }
+  #top-btn:hover { transform: scale(1.1); }
+
+  /* ── RESPONSIVE ── */
+  #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 85; }
+  #overlay.show { display: block; }
+  @media(max-width:860px) {
+    #sidebar { transform: translateX(-100%); }
+    #sidebar.open { transform: translateX(0); }
+    #content { margin-left: 0; padding: 28px 18px 80px; }
+    #menu-btn { display: block; }
+  }
+  @media(max-width:480px) { #content { padding: 16px 12px 80px; } .cover h1 { font-size: 1.7rem; } }
+</style>
+</head>
+<body>
+
+<div id="overlay" onclick="closeSidebar()"></div>
+
+<!-- Header -->
+<header>
+  <div class="brand"><span class="dolphin">🐬</span> MySQL <em>Mastery</em></div>
+  <div class="hdr-right">
+    <div class="prog-wrap"><div id="prog"></div></div>
+    <span id="prog-lbl">0%</span>
+    <button id="menu-btn" onclick="toggleSidebar()">☰</button>
+  </div>
+</header>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+  <input id="sb-search" type="search" placeholder="🔍  Search topics…" oninput="filterNav(this.value)">
+  <div class="sb-label">Modules</div>
+  <a class="nav-a active" href="#cover"><span class="nn">🏠</span>Home</a>
+  <a class="nav-a" href="#mod1"><span class="nn">01</span>Intro & Setup</a>
+  <a class="nav-a" href="#mod2"><span class="nn">02</span>Databases & Tables</a>
+  <a class="nav-a" href="#mod3"><span class="nn">03</span>Inserting Data</a>
+  <a class="nav-a" href="#mod4"><span class="nn">04</span>SELECT Queries</a>
+  <a class="nav-a" href="#mod5"><span class="nn">05</span>Filtering & Operators</a>
+  <a class="nav-a" href="#mod6"><span class="nn">06</span>Aggregate Functions</a>
+  <a class="nav-a" href="#mod7"><span class="nn">07</span>JOINs</a>
+  <a class="nav-a" href="#mod8"><span class="nn">08</span>Subqueries & CTEs</a>
+  <a class="nav-a" href="#mod9"><span class="nn">09</span>Built-in Functions</a>
+  <a class="nav-a" href="#mod10"><span class="nn">10</span>UPDATE & DELETE</a>
+  <a class="nav-a" href="#mod11"><span class="nn">11</span>Indexes & Performance</a>
+  <a class="nav-a" href="#mod12"><span class="nn">12</span>Views & Stored Procs</a>
+  <a class="nav-a" href="#mod13"><span class="nn">13</span>Transactions & ACID</a>
+  <a class="nav-a" href="#mod14"><span class="nn">14</span>Capstone Projects</a>
+  <div class="sb-label" style="margin-top:12px">Appendix</div>
+  <a class="nav-a" href="#appendix"><span class="nn">A</span>Quick Reference</a>
+</nav>
+
+<main id="content">
+
+<!-- ══════════════════════════════════════ COVER ══ -->
+<section id="cover" class="cover module">
+  <span class="cover-icon">🐬</span>
+  <h1>The Complete MySQL Mastery Course</h1>
+  <p class="cover-sub">Structured Query Language · Database Design · Real-World SQL</p>
+  <p class="cover-tag">From Absolute Beginner → Professional Database Developer</p>
+  <div class="badges">
+    <span class="badge o">70+ Exercises</span>
+    <span class="badge b">Full Solutions</span>
+    <span class="badge g">Live Query Outputs</span>
+    <span class="badge">Real-World Scenarios</span>
+  </div>
+
+  <div class="toc-grid" style="margin-top:44px">
+    <a class="toc-card" href="#mod1"><div class="toc-n">1</div><div><div class="toc-t">Intro & Setup</div><div class="toc-d">Install MySQL, first query</div></div></a>
+    <a class="toc-card" href="#mod2"><div class="toc-n">2</div><div><div class="toc-t">Databases & Tables</div><div class="toc-d">CREATE, ALTER, DROP, constraints</div></div></a>
+    <a class="toc-card" href="#mod3"><div class="toc-n">3</div><div><div class="toc-t">Inserting Data</div><div class="toc-d">INSERT, bulk inserts, defaults</div></div></a>
+    <a class="toc-card" href="#mod4"><div class="toc-n">4</div><div><div class="toc-t">SELECT Queries</div><div class="toc-d">SELECT, ORDER BY, LIMIT, DISTINCT</div></div></a>
+    <a class="toc-card" href="#mod5"><div class="toc-n">5</div><div><div class="toc-t">Filtering & Operators</div><div class="toc-d">WHERE, AND, OR, IN, LIKE, NULL</div></div></a>
+    <a class="toc-card" href="#mod6"><div class="toc-n">6</div><div><div class="toc-t">Aggregate Functions</div><div class="toc-d">COUNT, SUM, AVG, GROUP BY, HAVING</div></div></a>
+    <a class="toc-card" href="#mod7"><div class="toc-n">7</div><div><div class="toc-t">JOINs</div><div class="toc-d">INNER, LEFT, RIGHT, SELF, CROSS</div></div></a>
+    <a class="toc-card" href="#mod8"><div class="toc-n">8</div><div><div class="toc-t">Subqueries & CTEs</div><div class="toc-d">Subqueries, WITH, window funcs</div></div></a>
+    <a class="toc-card" href="#mod9"><div class="toc-n">9</div><div><div class="toc-t">Built-in Functions</div><div class="toc-d">String, Date, Math functions</div></div></a>
+    <a class="toc-card" href="#mod10"><div class="toc-n">10</div><div><div class="toc-t">UPDATE & DELETE</div><div class="toc-d">Modify and remove data safely</div></div></a>
+    <a class="toc-card" href="#mod11"><div class="toc-n">11</div><div><div class="toc-t">Indexes & Performance</div><div class="toc-d">EXPLAIN, indexes, optimisation</div></div></a>
+    <a class="toc-card" href="#mod12"><div class="toc-n">12</div><div><div class="toc-t">Views & Stored Procs</div><div class="toc-d">Views, procedures, triggers</div></div></a>
+    <a class="toc-card" href="#mod13"><div class="toc-n">13</div><div><div class="toc-t">Transactions & ACID</div><div class="toc-d">COMMIT, ROLLBACK, isolation</div></div></a>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════ MODULE 1 ══ -->
+<section id="mod1" class="module">
+  <div class="module-hdr">
+    <span class="mod-num">MODULE 01</span>
+    <h1 class="mod-title">Introduction & Setup</h1>
+  </div>
+
+  <h2 class="st">1.1  What is MySQL?</h2>
+  <p>MySQL is the world's most popular open-source relational database management system (RDBMS). It stores data in tables with rows and columns — like a highly structured, powerful spreadsheet — and you communicate with it using <strong>SQL</strong> (Structured Query Language).</p>
+  <p>It powers billions of applications — from WordPress to Airbnb, Twitter, Facebook, and YouTube.</p>
+
+  <h2 class="st">1.2  Installing MySQL</h2>
+  <div class="sql-block">
+    <div class="code-wrap standalone">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">BASH — INSTALLATION</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm"># macOS (Homebrew)</span>
+brew install mysql
+brew services start mysql
+
+<span class="cm"># Ubuntu / Debian</span>
+sudo apt update
+sudo apt install mysql-server
+sudo systemctl start mysql
+
+<span class="cm"># Windows: download installer from https://dev.mysql.com/downloads/installer/</span>
+
+<span class="cm"># Verify install</span>
+mysql --version
+<span class="cm"># → mysql  Ver 8.0.35 for Linux on x86_64 (MySQL Community Server - GPL)</span>
+
+<span class="cm"># Connect to MySQL shell</span>
+mysql -u root -p</pre>
+    </div>
+  </div>
+
+  <div class="callout tip"><div class="callout-hdr">💡 TIP — GUI Tools</div>
+    <ul>
+      <li><strong>MySQL Workbench</strong> — official, free GUI for all platforms</li>
+      <li><strong>DBeaver</strong> — universal, excellent free database client</li>
+      <li><strong>TablePlus</strong> — sleek, fast (Mac/Windows)</li>
+      <li><strong>phpMyAdmin</strong> — browser-based, great for learning</li>
+    </ul>
+  </div>
+
+  <h2 class="st">1.3  Your First SQL Commands</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Show all databases</span>
+<span class="kw">SHOW</span> <span class="kw">DATABASES</span>;
+
+<span class="cm">-- Show current date and time</span>
+<span class="kw">SELECT</span> <span class="fn">NOW</span>();
+
+<span class="cm">-- Simple calculation</span>
+<span class="kw">SELECT</span> <span class="nm">2</span> + <span class="nm">2</span> <span class="kw">AS</span> result;
+
+<span class="cm">-- MySQL version</span>
+<span class="kw">SELECT</span> <span class="fn">VERSION</span>();</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span><span class="row-count">1 row</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>result</th></tr></thead>
+          <tbody><tr><td class="num-val">4</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">1.4  SQL Syntax Rules — Memorise These</h2>
+  <div class="table-wrap">
+    <table class="ref"><thead><tr><th>Rule</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td>Case-insensitive keywords</td><td>SELECT = select = Select — convention: UPPERCASE keywords</td></tr>
+      <tr><td>Statements end with ;</td><td>Always end with a semicolon</td></tr>
+      <tr><td>Single-line comment</td><td>-- This is a comment</td></tr>
+      <tr><td>Multi-line comment</td><td>/* This spans multiple lines */</td></tr>
+      <tr><td>String literals</td><td>Use single quotes: 'Alice' NOT "Alice"</td></tr>
+      <tr><td>NULL</td><td>Represents absence of a value — NOT zero, NOT empty string</td></tr>
+      <tr><td>Whitespace ignored</td><td>SQL ignores extra spaces and newlines</td></tr>
+    </tbody></table>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════ MODULE 2 ══ -->
+<section id="mod2" class="module">
+  <div class="module-hdr"><span class="mod-num">MODULE 02</span><h1 class="mod-title">Databases & Tables</h1></div>
+
+  <h2 class="st">2.1  Create & Select a Database</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">CREATE DATABASE</span> bookstore;          <span class="cm">-- create database</span>
+<span class="kw">CREATE DATABASE IF NOT EXISTS</span> bookstore; <span class="cm">-- safe version</span>
+<span class="kw">USE</span> bookstore;                       <span class="cm">-- switch to it</span>
+<span class="kw">SHOW</span> <span class="kw">TABLES</span>;                         <span class="cm">-- list tables in current DB</span>
+<span class="kw">DROP DATABASE</span> bookstore;             <span class="cm">-- delete (irreversible!)</span></pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span></div>
+      <div class="out-text">Query OK, 1 row affected (0.01 sec)
+Database changed</div>
+    </div>
+  </div>
+
+  <h2 class="st">2.2  Data Types — The Building Blocks</h2>
+  <div class="table-wrap">
+    <table class="ref"><thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>INT</td><td>Whole number (–2B to 2B)</td><td>42, -7, 0</td></tr>
+      <tr><td>BIGINT</td><td>Large whole number</td><td>user_id, order_id</td></tr>
+      <tr><td>TINYINT(1)</td><td>Boolean (0 = false, 1 = true)</td><td>is_active</td></tr>
+      <tr><td>DECIMAL(p,s)</td><td>Exact decimal — use for money!</td><td>DECIMAL(10,2) → 99999999.99</td></tr>
+      <tr><td>FLOAT / DOUBLE</td><td>Approximate decimal (not for money)</td><td>scientific data</td></tr>
+      <tr><td>VARCHAR(n)</td><td>Variable-length string up to n chars</td><td>VARCHAR(100)</td></tr>
+      <tr><td>CHAR(n)</td><td>Fixed-length string</td><td>country_code CHAR(2)</td></tr>
+      <tr><td>TEXT</td><td>Long text (up to 65KB)</td><td>description, bio</td></tr>
+      <tr><td>DATE</td><td>Date only (YYYY-MM-DD)</td><td>'2024-03-15'</td></tr>
+      <tr><td>DATETIME</td><td>Date + time</td><td>'2024-03-15 14:30:00'</td></tr>
+      <tr><td>TIMESTAMP</td><td>Auto-records time of change</td><td>created_at, updated_at</td></tr>
+      <tr><td>BOOLEAN</td><td>Alias for TINYINT(1)</td><td>TRUE / FALSE</td></tr>
+      <tr><td>ENUM</td><td>One value from a fixed list</td><td>ENUM('S','M','L','XL')</td></tr>
+      <tr><td>JSON</td><td>JSON documents</td><td>metadata, settings</td></tr>
+    </tbody></table>
+  </div>
+
+  <h2 class="st">2.3  CREATE TABLE — Full Example</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">USE</span> bookstore;
+
+<span class="kw">CREATE TABLE</span> <span class="tb">authors</span> (
+    <span class="cl">author_id</span>   <span class="tp">INT</span>            <span class="kw">AUTO_INCREMENT PRIMARY KEY</span>,
+    <span class="cl">first_name</span>  <span class="tp">VARCHAR</span>(<span class="nm">50</span>)    <span class="kw">NOT NULL</span>,
+    <span class="cl">last_name</span>   <span class="tp">VARCHAR</span>(<span class="nm">50</span>)    <span class="kw">NOT NULL</span>,
+    <span class="cl">email</span>       <span class="tp">VARCHAR</span>(<span class="nm">120</span>)   <span class="kw">UNIQUE</span>,
+    <span class="cl">country</span>     <span class="tp">CHAR</span>(<span class="nm">2</span>)        <span class="kw">DEFAULT</span> <span class="st">'US'</span>,
+    <span class="cl">bio</span>         <span class="tp">TEXT</span>,
+    <span class="cl">created_at</span>  <span class="tp">TIMESTAMP</span>      <span class="kw">DEFAULT</span> <span class="fn">CURRENT_TIMESTAMP</span>
+);
+
+<span class="kw">CREATE TABLE</span> <span class="tb">books</span> (
+    <span class="cl">book_id</span>     <span class="tp">INT</span>            <span class="kw">AUTO_INCREMENT PRIMARY KEY</span>,
+    <span class="cl">title</span>       <span class="tp">VARCHAR</span>(<span class="nm">200</span>)   <span class="kw">NOT NULL</span>,
+    <span class="cl">author_id</span>   <span class="tp">INT</span>            <span class="kw">NOT NULL</span>,
+    <span class="cl">genre</span>       <span class="tp">VARCHAR</span>(<span class="nm">50</span>),
+    <span class="cl">price</span>       <span class="tp">DECIMAL</span>(<span class="nm">8</span>,<span class="nm">2</span>)  <span class="kw">NOT NULL</span>,
+    <span class="cl">stock</span>       <span class="tp">INT</span>            <span class="kw">DEFAULT</span> <span class="nm">0</span>,
+    <span class="cl">published</span>   <span class="tp">DATE</span>,
+    <span class="kw">FOREIGN KEY</span> (<span class="cl">author_id</span>) <span class="kw">REFERENCES</span> <span class="tb">authors</span>(<span class="cl">author_id</span>)
+                              <span class="kw">ON DELETE CASCADE</span>
+);</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span></div>
+      <div class="out-text">Query OK, 0 rows affected (0.04 sec)
+Query OK, 0 rows affected (0.03 sec)</div>
+    </div>
+  </div>
+
+  <h2 class="st">2.4  Constraints — Rules on Your Data</h2>
+  <div class="table-wrap">
+    <table class="ref"><thead><tr><th>Constraint</th><th>What it enforces</th></tr></thead>
+    <tbody>
+      <tr><td>PRIMARY KEY</td><td>Unique + NOT NULL identifier for each row</td></tr>
+      <tr><td>AUTO_INCREMENT</td><td>MySQL automatically assigns the next integer</td></tr>
+      <tr><td>NOT NULL</td><td>Column must have a value — never NULL</td></tr>
+      <tr><td>UNIQUE</td><td>All values in column must be distinct</td></tr>
+      <tr><td>DEFAULT value</td><td>Value used when INSERT doesn't specify</td></tr>
+      <tr><td>FOREIGN KEY</td><td>Value must exist in the referenced table</td></tr>
+      <tr><td>CHECK</td><td>Value must satisfy a condition: CHECK (price > 0)</td></tr>
+    </tbody></table>
+  </div>
+
+  <h2 class="st">2.5  ALTER TABLE — Modify Existing Tables</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Add a column</span>
+<span class="kw">ALTER TABLE</span> <span class="tb">books</span> <span class="kw">ADD COLUMN</span> <span class="cl">rating</span> <span class="tp">DECIMAL</span>(<span class="nm">3</span>,<span class="nm">2</span>);
+
+<span class="cm">-- Modify column type</span>
+<span class="kw">ALTER TABLE</span> <span class="tb">books</span> <span class="kw">MODIFY COLUMN</span> <span class="cl">genre</span> <span class="tp">VARCHAR</span>(<span class="nm">80</span>) <span class="kw">NOT NULL</span>;
+
+<span class="cm">-- Rename a column</span>
+<span class="kw">ALTER TABLE</span> <span class="tb">books</span> <span class="kw">RENAME COLUMN</span> <span class="cl">published</span> <span class="kw">TO</span> <span class="cl">publish_date</span>;
+
+<span class="cm">-- Drop a column</span>
+<span class="kw">ALTER TABLE</span> <span class="tb">books</span> <span class="kw">DROP COLUMN</span> <span class="cl">rating</span>;
+
+<span class="cm">-- Show table structure</span>
+<span class="kw">DESCRIBE</span> <span class="tb">books</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ DESCRIBE books</span><span class="row-count">7 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>Field</th><th>Type</th><th>Null</th><th>Key</th><th>Default</th><th>Extra</th></tr></thead>
+          <tbody>
+            <tr><td>book_id</td><td>int</td><td>NO</td><td>PRI</td><td class="null-val">NULL</td><td>auto_increment</td></tr>
+            <tr><td>title</td><td>varchar(200)</td><td>NO</td><td></td><td class="null-val">NULL</td><td></td></tr>
+            <tr><td>author_id</td><td>int</td><td>NO</td><td>MUL</td><td class="null-val">NULL</td><td></td></tr>
+            <tr><td>genre</td><td>varchar(80)</td><td>NO</td><td></td><td class="null-val">NULL</td><td></td></tr>
+            <tr><td>price</td><td>decimal(8,2)</td><td>NO</td><td></td><td class="null-val">NULL</td><td></td></tr>
+            <tr><td>stock</td><td>int</td><td>YES</td><td></td><td>0</td><td></td></tr>
+            <tr><td>publish_date</td><td>date</td><td>YES</td><td></td><td class="null-val">NULL</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout exercise"><div class="callout-hdr">✏️ EXERCISE — E-Commerce Schema</div>
+    <p><strong>Scenario:</strong> Design a database for an online clothing store.</p>
+    <ol>
+      <li>Create a database called <code>fashion_store</code></li>
+      <li>Create a <code>customers</code> table: id, name, email (unique), phone, city, created_at</li>
+      <li>Create a <code>products</code> table: id, name, category, price, size (ENUM S/M/L/XL), stock, description</li>
+      <li>Create an <code>orders</code> table: id, customer_id (FK), order_date, status (ENUM), total_amount</li>
+      <li>Add a <code>discount_pct</code> column to products with a CHECK that it's between 0 and 100</li>
+    </ol>
+  </div>
+
+  <div class="answer-block">
+    <div class="answer-hdr"><span>✅ ANSWER</span></div>
+    <div class="answer-body">
+      <pre><span class="kw">CREATE DATABASE IF NOT EXISTS</span> fashion_store;
+<span class="kw">USE</span> fashion_store;
+
+<span class="kw">CREATE TABLE</span> <span class="tb">customers</span> (
+    <span class="cl">customer_id</span>  <span class="tp">INT</span>           <span class="kw">AUTO_INCREMENT PRIMARY KEY</span>,
+    <span class="cl">name</span>         <span class="tp">VARCHAR</span>(<span class="nm">100</span>) <span class="kw">NOT NULL</span>,
+    <span class="cl">email</span>        <span class="tp">VARCHAR</span>(<span class="nm">150</span>) <span class="kw">UNIQUE NOT NULL</span>,
+    <span class="cl">phone</span>        <span class="tp">VARCHAR</span>(<span class="nm">20</span>),
+    <span class="cl">city</span>         <span class="tp">VARCHAR</span>(<span class="nm">80</span>),
+    <span class="cl">created_at</span>   <span class="tp">TIMESTAMP</span>     <span class="kw">DEFAULT</span> <span class="fn">CURRENT_TIMESTAMP</span>
+);
+
+<span class="kw">CREATE TABLE</span> <span class="tb">products</span> (
+    <span class="cl">product_id</span>   <span class="tp">INT</span>           <span class="kw">AUTO_INCREMENT PRIMARY KEY</span>,
+    <span class="cl">name</span>         <span class="tp">VARCHAR</span>(<span class="nm">150</span>) <span class="kw">NOT NULL</span>,
+    <span class="cl">category</span>     <span class="tp">VARCHAR</span>(<span class="nm">60</span>)  <span class="kw">NOT NULL</span>,
+    <span class="cl">price</span>        <span class="tp">DECIMAL</span>(<span class="nm">8</span>,<span class="nm">2</span>) <span class="kw">NOT NULL CHECK</span> (<span class="cl">price</span> > <span class="nm">0</span>),
+    <span class="cl">size</span>         <span class="tp">ENUM</span>(<span class="st">'XS'</span>,<span class="st">'S'</span>,<span class="st">'M'</span>,<span class="st">'L'</span>,<span class="st">'XL'</span>,<span class="st">'XXL'</span>),
+    <span class="cl">stock</span>        <span class="tp">INT</span>           <span class="kw">DEFAULT</span> <span class="nm">0</span>,
+    <span class="cl">description</span>  <span class="tp">TEXT</span>
+);
+
+<span class="kw">CREATE TABLE</span> <span class="tb">orders</span> (
+    <span class="cl">order_id</span>     <span class="tp">INT</span>           <span class="kw">AUTO_INCREMENT PRIMARY KEY</span>,
+    <span class="cl">customer_id</span>  <span class="tp">INT</span>           <span class="kw">NOT NULL</span>,
+    <span class="cl">order_date</span>   <span class="tp">TIMESTAMP</span>     <span class="kw">DEFAULT</span> <span class="fn">CURRENT_TIMESTAMP</span>,
+    <span class="cl">status</span>       <span class="tp">ENUM</span>(<span class="st">'pending'</span>,<span class="st">'shipped'</span>,<span class="st">'delivered'</span>,<span class="st">'cancelled'</span>)
+                              <span class="kw">DEFAULT</span> <span class="st">'pending'</span>,
+    <span class="cl">total_amount</span> <span class="tp">DECIMAL</span>(<span class="nm">10</span>,<span class="nm">2</span>) <span class="kw">NOT NULL</span>,
+    <span class="kw">FOREIGN KEY</span> (<span class="cl">customer_id</span>) <span class="kw">REFERENCES</span> <span class="tb">customers</span>(<span class="cl">customer_id</span>)
+);
+
+<span class="kw">ALTER TABLE</span> <span class="tb">products</span>
+    <span class="kw">ADD COLUMN</span> <span class="cl">discount_pct</span> <span class="tp">DECIMAL</span>(<span class="nm">5</span>,<span class="nm">2</span>) <span class="kw">DEFAULT</span> <span class="nm">0</span>
+    <span class="kw">CHECK</span> (<span class="cl">discount_pct</span> <span class="kw">BETWEEN</span> <span class="nm">0</span> <span class="kw">AND</span> <span class="nm">100</span>);</pre>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════ MODULE 3 ══ -->
+<section id="mod3" class="module">
+  <div class="module-hdr"><span class="mod-num">MODULE 03</span><h1 class="mod-title">Inserting Data</h1></div>
+
+  <h2 class="st">3.1  INSERT INTO — Basic Syntax</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">USE</span> bookstore;
+
+<span class="cm">-- Single row — specify all columns</span>
+<span class="kw">INSERT INTO</span> <span class="tb">authors</span> (<span class="cl">first_name</span>, <span class="cl">last_name</span>, <span class="cl">email</span>, <span class="cl">country</span>)
+<span class="kw">VALUES</span> (<span class="st">'George'</span>, <span class="st">'Orwell'</span>, <span class="st">'gorwell@mail.com'</span>, <span class="st">'GB'</span>);
+
+<span class="cm">-- Multiple rows in one statement (much faster!)</span>
+<span class="kw">INSERT INTO</span> <span class="tb">authors</span> (<span class="cl">first_name</span>, <span class="cl">last_name</span>, <span class="cl">email</span>, <span class="cl">country</span>)
+<span class="kw">VALUES</span>
+    (<span class="st">'J.K.'</span>,   <span class="st">'Rowling'</span>,  <span class="st">'jkr@mail.com'</span>,    <span class="st">'GB'</span>),
+    (<span class="st">'Harper'</span>, <span class="st">'Lee'</span>,      <span class="st">'hlee@mail.com'</span>,   <span class="st">'US'</span>),
+    (<span class="st">'Gabriel'</span>,<span class="st">'Garcia'</span>,   <span class="st">'gmarquez@mail.com'</span>,<span class="st">'CO'</span>),
+    (<span class="st">'Agatha'</span>, <span class="st">'Christie'</span>, <span class="st">'achristie@mail.com'</span>,<span class="st">'GB'</span>);
+
+<span class="cm">-- Get the auto-generated ID of last insert</span>
+<span class="kw">SELECT</span> <span class="fn">LAST_INSERT_ID</span>();</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span></div>
+      <div class="out-text">Query OK, 1 row affected (0.01 sec)
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0</div>
+    </div>
+  </div>
+
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL — INSERT BOOKS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">INSERT INTO</span> <span class="tb">books</span> (<span class="cl">title</span>, <span class="cl">author_id</span>, <span class="cl">genre</span>, <span class="cl">price</span>, <span class="cl">stock</span>, <span class="cl">publish_date</span>)
+<span class="kw">VALUES</span>
+    (<span class="st">'1984'</span>,                    <span class="nm">1</span>, <span class="st">'Dystopian'</span>,   <span class="nm">12.99</span>, <span class="nm">150</span>, <span class="st">'1949-06-08'</span>),
+    (<span class="st">'Animal Farm'</span>,             <span class="nm">1</span>, <span class="st">'Satire'</span>,      <span class="nm">8.99</span>,  <span class="nm">200</span>, <span class="st">'1945-08-17'</span>),
+    (<span class="st">"Harry Potter and the PS"</span>,  <span class="nm">2</span>, <span class="st">'Fantasy'</span>,    <span class="nm">14.99</span>, <span class="nm">300</span>, <span class="st">'1997-06-26'</span>),
+    (<span class="st">'To Kill a Mockingbird'</span>,    <span class="nm">3</span>, <span class="st">'Classic'</span>,    <span class="nm">11.99</span>, <span class="nm">120</span>, <span class="st">'1960-07-11'</span>),
+    (<span class="st">'One Hundred Years'</span>,        <span class="nm">4</span>, <span class="st">'Magical Realism'</span>,<span class="nm">13.99</span>,<span class="nm">80</span>,<span class="st">'1967-05-30'</span>),
+    (<span class="st">'And Then There Were None'</span>, <span class="nm">5</span>, <span class="st">'Mystery'</span>,    <span class="nm">9.99</span>,  <span class="nm">175</span>, <span class="st">'1939-11-06'</span>),
+    (<span class="st">'Murder on the Orient'</span>,     <span class="nm">5</span>, <span class="st">'Mystery'</span>,    <span class="nm">10.99</span>, <span class="nm">160</span>, <span class="st">'1934-01-01'</span>);</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span></div>
+      <div class="out-text">Query OK, 7 rows affected (0.01 sec)
+Records: 7  Duplicates: 0  Warnings: 0</div>
+    </div>
+  </div>
+
+  <h2 class="st">3.2  INSERT … ON DUPLICATE KEY UPDATE</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL — UPSERT</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Insert if not exists, update if duplicate key found</span>
+<span class="kw">INSERT INTO</span> <span class="tb">books</span> (<span class="cl">book_id</span>, <span class="cl">title</span>, <span class="cl">price</span>, <span class="cl">stock</span>)
+<span class="kw">VALUES</span> (<span class="nm">1</span>, <span class="st">'1984'</span>, <span class="nm">12.99</span>, <span class="nm">200</span>)
+<span class="kw">ON DUPLICATE KEY UPDATE</span>
+    <span class="cl">stock</span> = <span class="cl">stock</span> + <span class="kw">VALUES</span>(<span class="cl">stock</span>),  <span class="cm">-- add 200 to existing stock</span>
+    <span class="cl">price</span> = <span class="kw">VALUES</span>(<span class="cl">price</span>);            <span class="cm">-- update price</span></pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span></div>
+      <div class="out-text">Query OK, 2 rows affected (0.01 sec)
+<span style="color:var(--text2)">(2 rows affected means: existing row was updated)</span></div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════ MODULE 4 ══ -->
+<section id="mod4" class="module">
+  <div class="module-hdr"><span class="mod-num">MODULE 04</span><h1 class="mod-title">SELECT Queries</h1></div>
+
+  <h2 class="st">4.1  Basic SELECT</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Select all columns</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="tb">books</span>;
+
+<span class="cm">-- Select specific columns</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">price</span>, <span class="cl">stock</span> <span class="kw">FROM</span> <span class="tb">books</span>;
+
+<span class="cm">-- Aliases — rename columns in output</span>
+<span class="kw">SELECT</span>
+    <span class="cl">title</span>             <span class="kw">AS</span> <span class="st">'Book Title'</span>,
+    <span class="cl">price</span>             <span class="kw">AS</span> <span class="st">'Price ($)'</span>,
+    <span class="cl">stock</span> * <span class="cl">price</span>     <span class="kw">AS</span> <span class="st">'Inventory Value'</span>
+<span class="kw">FROM</span> <span class="tb">books</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span><span class="row-count">7 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>Book Title</th><th>Price ($)</th><th>Inventory Value</th></tr></thead>
+          <tbody>
+            <tr><td>1984</td><td class="num-val">12.99</td><td class="num-val">1948.50</td></tr>
+            <tr><td>Animal Farm</td><td class="num-val">8.99</td><td class="num-val">1798.00</td></tr>
+            <tr><td>Harry Potter and the PS</td><td class="num-val">14.99</td><td class="num-val">4497.00</td></tr>
+            <tr><td>To Kill a Mockingbird</td><td class="num-val">11.99</td><td class="num-val">1438.80</td></tr>
+            <tr><td>One Hundred Years</td><td class="num-val">13.99</td><td class="num-val">1119.20</td></tr>
+            <tr><td>And Then There Were None</td><td class="num-val">9.99</td><td class="num-val">1748.25</td></tr>
+            <tr><td>Murder on the Orient</td><td class="num-val">10.99</td><td class="num-val">1758.40</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">4.2  ORDER BY — Sort Results</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Sort by price ascending (default)</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">price</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">ORDER BY</span> <span class="cl">price</span> <span class="kw">ASC</span>;
+
+<span class="cm">-- Sort by price descending</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">price</span>, <span class="cl">stock</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">ORDER BY</span> <span class="cl">price</span> <span class="kw">DESC</span>;
+
+<span class="cm">-- Sort by multiple columns</span>
+<span class="kw">SELECT</span> <span class="cl">genre</span>, <span class="cl">title</span>, <span class="cl">price</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">ORDER BY</span> <span class="cl">genre</span> <span class="kw">ASC</span>, <span class="cl">price</span> <span class="kw">DESC</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ ORDER BY genre ASC, price DESC</span><span class="row-count">7 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>genre</th><th>title</th><th>price</th></tr></thead>
+          <tbody>
+            <tr><td>Classic</td><td>To Kill a Mockingbird</td><td class="num-val">11.99</td></tr>
+            <tr><td>Dystopian</td><td>1984</td><td class="num-val">12.99</td></tr>
+            <tr><td>Fantasy</td><td>Harry Potter and the PS</td><td class="num-val">14.99</td></tr>
+            <tr><td>Magical Realism</td><td>One Hundred Years</td><td class="num-val">13.99</td></tr>
+            <tr><td>Mystery</td><td>Murder on the Orient</td><td class="num-val">10.99</td></tr>
+            <tr><td>Mystery</td><td>And Then There Were None</td><td class="num-val">9.99</td></tr>
+            <tr><td>Satire</td><td>Animal Farm</td><td class="num-val">8.99</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">4.3  LIMIT & OFFSET — Pagination</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Top 3 most expensive books</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">price</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">ORDER BY</span> <span class="cl">price</span> <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="nm">3</span>;
+
+<span class="cm">-- Page 2 (rows 4-6) — OFFSET skips rows</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">price</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">ORDER BY</span> <span class="cl">price</span> <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="nm">3</span> <span class="kw">OFFSET</span> <span class="nm">3</span>;   <span class="cm">-- skip first 3, return next 3</span></pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ Top 3 most expensive</span><span class="row-count">3 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>title</th><th>price</th></tr></thead>
+          <tbody>
+            <tr><td>Harry Potter and the PS</td><td class="num-val">14.99</td></tr>
+            <tr><td>One Hundred Years</td><td class="num-val">13.99</td></tr>
+            <tr><td>1984</td><td class="num-val">12.99</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">4.4  DISTINCT — Remove Duplicates</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Unique genres in the books table</span>
+<span class="kw">SELECT DISTINCT</span> <span class="cl">genre</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">ORDER BY</span> <span class="cl">genre</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span><span class="row-count">6 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>genre</th></tr></thead>
+          <tbody>
+            <tr><td>Classic</td></tr>
+            <tr><td>Dystopian</td></tr>
+            <tr><td>Fantasy</td></tr>
+            <tr><td>Magical Realism</td></tr>
+            <tr><td>Mystery</td></tr>
+            <tr><td>Satire</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════ MODULE 5 ══ -->
+<section id="mod5" class="module">
+  <div class="module-hdr"><span class="mod-num">MODULE 05</span><h1 class="mod-title">Filtering & Operators</h1></div>
+
+  <h2 class="st">5.1  WHERE Clause</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Comparison operators: = != &lt; &gt; &lt;= &gt;=</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">price</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">price</span> > <span class="nm">12</span>;
+
+<span class="cm">-- AND / OR / NOT</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">genre</span>, <span class="cl">price</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">genre</span> = <span class="st">'Mystery'</span> <span class="kw">AND</span> <span class="cl">price</span> < <span class="nm">11</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ Mystery books under $11</span><span class="row-count">1 row</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>title</th><th>genre</th><th>price</th></tr></thead>
+          <tbody>
+            <tr><td>And Then There Were None</td><td>Mystery</td><td class="num-val">9.99</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">5.2  BETWEEN, IN, NOT IN</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- BETWEEN is inclusive on both ends</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">price</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">price</span> <span class="kw">BETWEEN</span> <span class="nm">10</span> <span class="kw">AND</span> <span class="nm">13</span>;
+
+<span class="cm">-- IN — match any value in a list</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">genre</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">genre</span> <span class="kw">IN</span> (<span class="st">'Mystery'</span>, <span class="st">'Fantasy'</span>, <span class="st">'Dystopian'</span>);
+
+<span class="cm">-- NOT IN — exclude values</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">genre</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">genre</span> <span class="kw">NOT IN</span> (<span class="st">'Satire'</span>, <span class="st">'Classic'</span>);</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ BETWEEN 10 AND 13</span><span class="row-count">3 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>title</th><th>price</th></tr></thead>
+          <tbody>
+            <tr><td>To Kill a Mockingbird</td><td class="num-val">11.99</td></tr>
+            <tr><td>And Then There Were None</td><td class="num-val">9.99</td></tr>
+            <tr><td>Murder on the Orient</td><td class="num-val">10.99</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">5.3  LIKE — Pattern Matching</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- % matches any number of characters (including none)</span>
+<span class="cm">-- _ matches exactly ONE character</span>
+
+<span class="kw">SELECT</span> <span class="cl">title</span> <span class="kw">FROM</span> <span class="tb">books</span> <span class="kw">WHERE</span> <span class="cl">title</span> <span class="kw">LIKE</span> <span class="st">'%Harry%'</span>;   <span class="cm">-- contains "Harry"</span>
+<span class="kw">SELECT</span> <span class="cl">title</span> <span class="kw">FROM</span> <span class="tb">books</span> <span class="kw">WHERE</span> <span class="cl">title</span> <span class="kw">LIKE</span> <span class="st">'1%'</span>;        <span class="cm">-- starts with "1"</span>
+<span class="kw">SELECT</span> <span class="cl">title</span> <span class="kw">FROM</span> <span class="tb">books</span> <span class="kw">WHERE</span> <span class="cl">title</span> <span class="kw">LIKE</span> <span class="st">'%Farm'</span>;     <span class="cm">-- ends with "Farm"</span>
+<span class="kw">SELECT</span> <span class="cl">email</span> <span class="kw">FROM</span> <span class="tb">authors</span> <span class="kw">WHERE</span> <span class="cl">email</span> <span class="kw">LIKE</span> <span class="st">'%@mail.com'</span>;
+
+<span class="cm">-- RLIKE / REGEXP — full regular expressions</span>
+<span class="kw">SELECT</span> <span class="cl">title</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">title</span> <span class="kw">REGEXP</span> <span class="st">'^(Harry|Animal)'</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ LIKE '%Harry%'</span><span class="row-count">1 row</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>title</th></tr></thead>
+          <tbody><tr><td>Harry Potter and the PS</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">5.4  NULL — The Special Case</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- ALWAYS use IS NULL / IS NOT NULL — never = NULL</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="tb">authors</span> <span class="kw">WHERE</span> <span class="cl">bio</span> <span class="kw">IS NULL</span>;
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="tb">authors</span> <span class="kw">WHERE</span> <span class="cl">bio</span> <span class="kw">IS NOT NULL</span>;
+
+<span class="cm">-- IFNULL — replace NULL with a default</span>
+<span class="kw">SELECT</span> <span class="cl">first_name</span>, <span class="fn">IFNULL</span>(<span class="cl">bio</span>, <span class="st">'No bio available'</span>) <span class="kw">AS</span> bio
+<span class="kw">FROM</span> <span class="tb">authors</span>;
+
+<span class="cm">-- COALESCE — returns first non-NULL from a list</span>
+<span class="kw">SELECT</span> <span class="fn">COALESCE</span>(<span class="cl">bio</span>, <span class="cl">email</span>, <span class="st">'Unknown'</span>) <span class="kw">AS</span> contact
+<span class="kw">FROM</span> <span class="tb">authors</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ IFNULL example</span><span class="row-count">5 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>first_name</th><th>bio</th></tr></thead>
+          <tbody>
+            <tr><td>George</td><td class="str-val">No bio available</td></tr>
+            <tr><td>J.K.</td><td class="str-val">No bio available</td></tr>
+            <tr><td>Harper</td><td class="str-val">No bio available</td></tr>
+            <tr><td>Gabriel</td><td class="str-val">No bio available</td></tr>
+            <tr><td>Agatha</td><td class="str-val">No bio available</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout exercise"><div class="callout-hdr">✏️ EXERCISE — Filtering Practise</div>
+    <p>Using the <code>bookstore</code> database:</p>
+    <ol>
+      <li>Find all books published before 1960</li>
+      <li>Find books where price is between $9 and $12 (inclusive)</li>
+      <li>Find all books by Agatha Christie (author_id = 5)</li>
+      <li>Find books whose title starts with "And" or contains "Hundred"</li>
+      <li>Find books with stock greater than 150 sorted by stock descending</li>
+      <li>Show all authors whose country is NOT 'US' or 'GB'</li>
+    </ol>
+  </div>
+
+  <div class="answer-block">
+    <div class="answer-hdr"><span>✅ ANSWERS</span></div>
+    <div class="answer-body">
+      <pre><span class="cm">-- 1. Books before 1960</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">publish_date</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">publish_date</span> < <span class="st">'1960-01-01'</span>
+<span class="kw">ORDER BY</span> <span class="cl">publish_date</span>;
+<span class="cm">-- → Animal Farm (1945), And Then There Were None (1939), Murder on the Orient (1934)</span>
+
+<span class="cm">-- 2. Price between $9 and $12</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">price</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">price</span> <span class="kw">BETWEEN</span> <span class="nm">9</span> <span class="kw">AND</span> <span class="nm">12</span>
+<span class="kw">ORDER BY</span> <span class="cl">price</span>;
+<span class="cm">-- → Animal Farm $8.99 (excluded), And Then $9.99, Murder $10.99, To Kill $11.99</span>
+
+<span class="cm">-- 3. Agatha Christie books</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">price</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">author_id</span> = <span class="nm">5</span>;
+
+<span class="cm">-- 4. Title starts with "And" OR contains "Hundred"</span>
+<span class="kw">SELECT</span> <span class="cl">title</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">title</span> <span class="kw">LIKE</span> <span class="st">'And%'</span> <span class="kw">OR</span> <span class="cl">title</span> <span class="kw">LIKE</span> <span class="st">'%Hundred%'</span>;
+
+<span class="cm">-- 5. Stock > 150 descending</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">stock</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">stock</span> > <span class="nm">150</span>
+<span class="kw">ORDER BY</span> <span class="cl">stock</span> <span class="kw">DESC</span>;
+
+<span class="cm">-- 6. Authors not from US or GB</span>
+<span class="kw">SELECT</span> <span class="cl">first_name</span>, <span class="cl">last_name</span>, <span class="cl">country</span> <span class="kw">FROM</span> <span class="tb">authors</span>
+<span class="kw">WHERE</span> <span class="cl">country</span> <span class="kw">NOT IN</span> (<span class="st">'US'</span>, <span class="st">'GB'</span>);
+<span class="cm">-- → Gabriel Garcia, CO</span></pre>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════ MODULE 6 ══ -->
+<section id="mod6" class="module">
+  <div class="module-hdr"><span class="mod-num">MODULE 06</span><h1 class="mod-title">Aggregate Functions</h1></div>
+
+  <h2 class="st">6.1  Core Aggregate Functions</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">SELECT</span>
+    <span class="fn">COUNT</span>(*)                  <span class="kw">AS</span> total_books,
+    <span class="fn">COUNT</span>(<span class="cl">genre</span>)              <span class="kw">AS</span> books_with_genre, <span class="cm">-- ignores NULLs</span>
+    <span class="fn">SUM</span>(<span class="cl">stock</span>)                <span class="kw">AS</span> total_stock,
+    <span class="fn">AVG</span>(<span class="cl">price</span>)                <span class="kw">AS</span> avg_price,
+    <span class="fn">MIN</span>(<span class="cl">price</span>)                <span class="kw">AS</span> cheapest,
+    <span class="fn">MAX</span>(<span class="cl">price</span>)                <span class="kw">AS</span> most_expensive,
+    <span class="fn">ROUND</span>(<span class="fn">AVG</span>(<span class="cl">price</span>), <span class="nm">2</span>)      <span class="kw">AS</span> avg_price_rounded
+<span class="kw">FROM</span> <span class="tb">books</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span><span class="row-count">1 row</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>total_books</th><th>books_with_genre</th><th>total_stock</th><th>avg_price</th><th>cheapest</th><th>most_expensive</th><th>avg_price_rounded</th></tr></thead>
+          <tbody>
+            <tr><td class="num-val">7</td><td class="num-val">7</td><td class="num-val">1185</td><td class="num-val">11.990000</td><td class="num-val">8.99</td><td class="num-val">14.99</td><td class="num-val">11.99</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">6.2  GROUP BY — Aggregate by Category</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Count and total stock per genre</span>
+<span class="kw">SELECT</span>
+    <span class="cl">genre</span>,
+    <span class="fn">COUNT</span>(*) <span class="kw">AS</span> num_books,
+    <span class="fn">SUM</span>(<span class="cl">stock</span>) <span class="kw">AS</span> total_stock,
+    <span class="fn">ROUND</span>(<span class="fn">AVG</span>(<span class="cl">price</span>), <span class="nm">2</span>) <span class="kw">AS</span> avg_price
+<span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">GROUP BY</span> <span class="cl">genre</span>
+<span class="kw">ORDER BY</span> total_stock <span class="kw">DESC</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span><span class="row-count">6 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>genre</th><th>num_books</th><th>total_stock</th><th>avg_price</th></tr></thead>
+          <tbody>
+            <tr><td>Fantasy</td><td class="num-val">1</td><td class="num-val">300</td><td class="num-val">14.99</td></tr>
+            <tr><td>Satire</td><td class="num-val">1</td><td class="num-val">200</td><td class="num-val">8.99</td></tr>
+            <tr><td>Mystery</td><td class="num-val">2</td><td class="num-val">335</td><td class="num-val">10.49</td></tr>
+            <tr><td>Dystopian</td><td class="num-val">1</td><td class="num-val">150</td><td class="num-val">12.99</td></tr>
+            <tr><td>Classic</td><td class="num-val">1</td><td class="num-val">120</td><td class="num-val">11.99</td></tr>
+            <tr><td>Magical Realism</td><td class="num-val">1</td><td class="num-val">80</td><td class="num-val">13.99</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">6.3  HAVING — Filter Groups (not rows)</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- WHERE filters rows BEFORE grouping</span>
+<span class="cm">-- HAVING filters groups AFTER aggregation</span>
+
+<span class="kw">SELECT</span> <span class="cl">genre</span>, <span class="fn">COUNT</span>(*) <span class="kw">AS</span> num_books, <span class="fn">AVG</span>(<span class="cl">price</span>) <span class="kw">AS</span> avg_price
+<span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">stock</span> > <span class="nm">50</span>                     <span class="cm">-- filter rows first</span>
+<span class="kw">GROUP BY</span> <span class="cl">genre</span>
+<span class="kw">HAVING</span> <span class="fn">AVG</span>(<span class="cl">price</span>) > <span class="nm">10</span>               <span class="cm">-- then filter groups</span>
+<span class="kw">ORDER BY</span> avg_price <span class="kw">DESC</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ Genres with avg price &gt; $10 (stock &gt; 50)</span><span class="row-count">4 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>genre</th><th>num_books</th><th>avg_price</th></tr></thead>
+          <tbody>
+            <tr><td>Fantasy</td><td class="num-val">1</td><td class="num-val">14.990000</td></tr>
+            <tr><td>Magical Realism</td><td class="num-val">1</td><td class="num-val">13.990000</td></tr>
+            <tr><td>Dystopian</td><td class="num-val">1</td><td class="num-val">12.990000</td></tr>
+            <tr><td>Classic</td><td class="num-val">1</td><td class="num-val">11.990000</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout tip"><div class="callout-hdr">💡 WHERE vs HAVING — The Golden Rule</div>
+    <ul>
+      <li><strong>WHERE</strong> — filters individual <em>rows</em> before grouping. Cannot use aggregate functions.</li>
+      <li><strong>HAVING</strong> — filters <em>groups</em> after <code>GROUP BY</code>. Must use aggregate functions.</li>
+      <li>SQL execution order: <code>FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT</code></li>
+    </ul>
+  </div>
+
+  <div class="callout exercise"><div class="callout-hdr">✏️ EXERCISE — Sales Analytics</div>
+    <p>Build a simple sales table and query it:</p>
+    <pre style="background:transparent;padding:0;font-size:.8rem;color:var(--text2)">CREATE TABLE sales (
+  sale_id INT AUTO_INCREMENT PRIMARY KEY,
+  product VARCHAR(60), category VARCHAR(40),
+  quantity INT, unit_price DECIMAL(8,2), sale_date DATE
+);
+INSERT INTO sales (product, category, quantity, unit_price, sale_date) VALUES
+  ('Laptop','Electronics',3,899.99,'2024-01-15'),
+  ('Phone','Electronics',10,499.99,'2024-01-20'),
+  ('Desk','Furniture',2,299.99,'2024-02-01'),
+  ('Chair','Furniture',5,149.99,'2024-02-10'),
+  ('Tablet','Electronics',7,349.99,'2024-02-15'),
+  ('Lamp','Furniture',8,49.99,'2024-03-01'),
+  ('Headphones','Electronics',15,79.99,'2024-03-10'),
+  ('Monitor','Electronics',4,399.99,'2024-03-20');</pre>
+    <ol style="margin-top:8px">
+      <li>Total revenue per category (quantity × unit_price)</li>
+      <li>Number of sales and avg unit price per category</li>
+      <li>Find categories where total revenue exceeds $2,000</li>
+      <li>Find the most expensive product per category</li>
+      <li>Count sales per month (use MONTH() function)</li>
+    </ol>
+  </div>
+
+  <div class="answer-block">
+    <div class="answer-hdr"><span>✅ ANSWERS</span></div>
+    <div class="answer-body">
+      <pre><span class="cm">-- 1. Total revenue per category</span>
+<span class="kw">SELECT</span>
+    <span class="cl">category</span>,
+    <span class="fn">SUM</span>(<span class="cl">quantity</span> * <span class="cl">unit_price</span>) <span class="kw">AS</span> total_revenue
+<span class="kw">FROM</span> <span class="tb">sales</span>
+<span class="kw">GROUP BY</span> <span class="cl">category</span>
+<span class="kw">ORDER BY</span> total_revenue <span class="kw">DESC</span>;
+<span class="cm">-- Electronics: 9,099.76 | Furniture: 1,549.87</span>
+
+<span class="cm">-- 2. Count & avg price per category</span>
+<span class="kw">SELECT</span>
+    <span class="cl">category</span>,
+    <span class="fn">COUNT</span>(*) <span class="kw">AS</span> num_sales,
+    <span class="fn">ROUND</span>(<span class="fn">AVG</span>(<span class="cl">unit_price</span>), <span class="nm">2</span>) <span class="kw">AS</span> avg_price
+<span class="kw">FROM</span> <span class="tb">sales</span>
+<span class="kw">GROUP BY</span> <span class="cl">category</span>;
+
+<span class="cm">-- 3. Categories with revenue > $2,000</span>
+<span class="kw">SELECT</span> <span class="cl">category</span>, <span class="fn">SUM</span>(<span class="cl">quantity</span> * <span class="cl">unit_price</span>) <span class="kw">AS</span> revenue
+<span class="kw">FROM</span> <span class="tb">sales</span>
+<span class="kw">GROUP BY</span> <span class="cl">category</span>
+<span class="kw">HAVING</span> revenue > <span class="nm">2000</span>;
+<span class="cm">-- → Electronics only</span>
+
+<span class="cm">-- 4. Most expensive product per category</span>
+<span class="kw">SELECT</span> <span class="cl">category</span>, <span class="fn">MAX</span>(<span class="cl">unit_price</span>) <span class="kw">AS</span> max_price
+<span class="kw">FROM</span> <span class="tb">sales</span>
+<span class="kw">GROUP BY</span> <span class="cl">category</span>;
+
+<span class="cm">-- 5. Sales count per month</span>
+<span class="kw">SELECT</span>
+    <span class="fn">MONTH</span>(<span class="cl">sale_date</span>) <span class="kw">AS</span> month_num,
+    <span class="fn">MONTHNAME</span>(<span class="cl">sale_date</span>) <span class="kw">AS</span> month_name,
+    <span class="fn">COUNT</span>(*) <span class="kw">AS</span> num_sales
+<span class="kw">FROM</span> <span class="tb">sales</span>
+<span class="kw">GROUP BY</span> <span class="fn">MONTH</span>(<span class="cl">sale_date</span>), <span class="fn">MONTHNAME</span>(<span class="cl">sale_date</span>)
+<span class="kw">ORDER BY</span> month_num;</pre>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════ MODULE 7 ══ -->
+<section id="mod7" class="module">
+  <div class="module-hdr"><span class="mod-num">MODULE 07</span><h1 class="mod-title">JOINs — Combining Tables</h1></div>
+
+  <div class="callout concept"><div class="callout-hdr">🔑 Core Concept</div>
+    <p>JOINs combine rows from two or more tables based on a related column. This is the heart of relational databases — normalised data spread across tables reunited by JOIN.</p>
+  </div>
+
+  <h2 class="st">7.1  INNER JOIN — Only Matching Rows</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Get books with their author names</span>
+<span class="kw">SELECT</span>
+    <span class="tb">b</span>.<span class="cl">title</span>,
+    <span class="fn">CONCAT</span>(<span class="tb">a</span>.<span class="cl">first_name</span>, <span class="st">' '</span>, <span class="tb">a</span>.<span class="cl">last_name</span>) <span class="kw">AS</span> author,
+    <span class="tb">b</span>.<span class="cl">genre</span>,
+    <span class="tb">b</span>.<span class="cl">price</span>
+<span class="kw">FROM</span> <span class="tb">books</span> <span class="kw">AS</span> b
+<span class="kw">INNER JOIN</span> <span class="tb">authors</span> <span class="kw">AS</span> a
+    <span class="kw">ON</span> b.<span class="cl">author_id</span> = a.<span class="cl">author_id</span>
+<span class="kw">ORDER BY</span> b.<span class="cl">price</span> <span class="kw">DESC</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span><span class="row-count">7 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>title</th><th>author</th><th>genre</th><th>price</th></tr></thead>
+          <tbody>
+            <tr><td>Harry Potter and the PS</td><td>J.K. Rowling</td><td>Fantasy</td><td class="num-val">14.99</td></tr>
+            <tr><td>One Hundred Years</td><td>Gabriel Garcia</td><td>Magical Realism</td><td class="num-val">13.99</td></tr>
+            <tr><td>1984</td><td>George Orwell</td><td>Dystopian</td><td class="num-val">12.99</td></tr>
+            <tr><td>To Kill a Mockingbird</td><td>Harper Lee</td><td>Classic</td><td class="num-val">11.99</td></tr>
+            <tr><td>Murder on the Orient</td><td>Agatha Christie</td><td>Mystery</td><td class="num-val">10.99</td></tr>
+            <tr><td>And Then There Were None</td><td>Agatha Christie</td><td>Mystery</td><td class="num-val">9.99</td></tr>
+            <tr><td>Animal Farm</td><td>George Orwell</td><td>Satire</td><td class="num-val">8.99</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">7.2  LEFT JOIN — All Left Rows + Matching Right</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- All authors, including those with no books</span>
+<span class="kw">SELECT</span>
+    <span class="fn">CONCAT</span>(<span class="tb">a</span>.<span class="cl">first_name</span>, <span class="st">' '</span>, <span class="tb">a</span>.<span class="cl">last_name</span>) <span class="kw">AS</span> author,
+    <span class="fn">COUNT</span>(<span class="tb">b</span>.<span class="cl">book_id</span>) <span class="kw">AS</span> book_count,
+    <span class="fn">IFNULL</span>(<span class="fn">SUM</span>(<span class="tb">b</span>.<span class="cl">price</span>), <span class="nm">0</span>) <span class="kw">AS</span> total_value
+<span class="kw">FROM</span> <span class="tb">authors</span> <span class="kw">AS</span> a
+<span class="kw">LEFT JOIN</span> <span class="tb">books</span> <span class="kw">AS</span> b
+    <span class="kw">ON</span> a.<span class="cl">author_id</span> = b.<span class="cl">author_id</span>
+<span class="kw">GROUP BY</span> a.<span class="cl">author_id</span>, a.<span class="cl">first_name</span>, a.<span class="cl">last_name</span>
+<span class="kw">ORDER BY</span> book_count <span class="kw">DESC</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT — Authors with book counts</span><span class="row-count">5 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>author</th><th>book_count</th><th>total_value</th></tr></thead>
+          <tbody>
+            <tr><td>George Orwell</td><td class="num-val">2</td><td class="num-val">21.98</td></tr>
+            <tr><td>Agatha Christie</td><td class="num-val">2</td><td class="num-val">20.98</td></tr>
+            <tr><td>J.K. Rowling</td><td class="num-val">1</td><td class="num-val">14.99</td></tr>
+            <tr><td>Gabriel Garcia</td><td class="num-val">1</td><td class="num-val">13.99</td></tr>
+            <tr><td>Harper Lee</td><td class="num-val">1</td><td class="num-val">11.99</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">7.3  JOIN Types Visual Reference</h2>
+  <div class="table-wrap">
+    <table class="ref"><thead><tr><th>JOIN Type</th><th>Returns</th><th>Use When</th></tr></thead>
+    <tbody>
+      <tr><td>INNER JOIN</td><td>Only rows with matches in BOTH tables</td><td>You only want complete records</td></tr>
+      <tr><td>LEFT JOIN</td><td>All left rows + matching right (NULL if no match)</td><td>Keep all records from the left table</td></tr>
+      <tr><td>RIGHT JOIN</td><td>All right rows + matching left (NULL if no match)</td><td>Keep all records from the right table</td></tr>
+      <tr><td>CROSS JOIN</td><td>Every combination of rows (cartesian product)</td><td>Generate all combinations</td></tr>
+      <tr><td>SELF JOIN</td><td>Table joined to itself</td><td>Hierarchies, employee-manager</td></tr>
+    </tbody></table>
+  </div>
+
+  <h2 class="st">7.4  Multi-Table JOIN — 3+ Tables</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL — Build an order system first</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Create customers and orders for the bookstore</span>
+<span class="kw">CREATE TABLE</span> <span class="tb">customers</span> (
+    <span class="cl">customer_id</span> <span class="tp">INT</span> <span class="kw">AUTO_INCREMENT PRIMARY KEY</span>,
+    <span class="cl">name</span>        <span class="tp">VARCHAR</span>(<span class="nm">100</span>) <span class="kw">NOT NULL</span>,
+    <span class="cl">email</span>       <span class="tp">VARCHAR</span>(<span class="nm">150</span>) <span class="kw">UNIQUE NOT NULL</span>,
+    <span class="cl">city</span>        <span class="tp">VARCHAR</span>(<span class="nm">80</span>)
+);
+<span class="kw">INSERT INTO</span> <span class="tb">customers</span> (<span class="cl">name</span>, <span class="cl">email</span>, <span class="cl">city</span>) <span class="kw">VALUES</span>
+    (<span class="st">'Alice Wang'</span>,   <span class="st">'alice@mail.com'</span>,   <span class="st">'New York'</span>),
+    (<span class="st">'Bob Martinez'</span>, <span class="st">'bob@mail.com'</span>,     <span class="st">'Chicago'</span>),
+    (<span class="st">'Carol Smith'</span>,  <span class="st">'carol@mail.com'</span>,   <span class="st">'London'</span>);
+
+<span class="kw">CREATE TABLE</span> <span class="tb">orders</span> (
+    <span class="cl">order_id</span>    <span class="tp">INT</span> <span class="kw">AUTO_INCREMENT PRIMARY KEY</span>,
+    <span class="cl">customer_id</span> <span class="tp">INT</span> <span class="kw">NOT NULL</span>,
+    <span class="cl">book_id</span>     <span class="tp">INT</span> <span class="kw">NOT NULL</span>,
+    <span class="cl">quantity</span>    <span class="tp">INT</span> <span class="kw">DEFAULT</span> <span class="nm">1</span>,
+    <span class="cl">order_date</span>  <span class="tp">DATE</span>,
+    <span class="kw">FOREIGN KEY</span> (<span class="cl">customer_id</span>) <span class="kw">REFERENCES</span> <span class="tb">customers</span>(<span class="cl">customer_id</span>),
+    <span class="kw">FOREIGN KEY</span> (<span class="cl">book_id</span>)     <span class="kw">REFERENCES</span> <span class="tb">books</span>(<span class="cl">book_id</span>)
+);
+<span class="kw">INSERT INTO</span> <span class="tb">orders</span> (<span class="cl">customer_id</span>, <span class="cl">book_id</span>, <span class="cl">quantity</span>, <span class="cl">order_date</span>) <span class="kw">VALUES</span>
+    (<span class="nm">1</span>, <span class="nm">1</span>, <span class="nm">2</span>, <span class="st">'2024-03-01'</span>),  <span class="cm">-- Alice ordered 1984 x2</span>
+    (<span class="nm">1</span>, <span class="nm">3</span>, <span class="nm">1</span>, <span class="st">'2024-03-02'</span>),  <span class="cm">-- Alice ordered Harry Potter</span>
+    (<span class="nm">2</span>, <span class="nm">4</span>, <span class="nm">3</span>, <span class="st">'2024-03-05'</span>),  <span class="cm">-- Bob ordered To Kill x3</span>
+    (<span class="nm">3</span>, <span class="nm">6</span>, <span class="nm">1</span>, <span class="st">'2024-03-08'</span>);  <span class="cm">-- Carol ordered Christie</span>
+
+<span class="cm">-- 3-table JOIN: Customer + Order + Book + Author</span>
+<span class="kw">SELECT</span>
+    <span class="tb">c</span>.<span class="cl">name</span>                                            <span class="kw">AS</span> customer,
+    <span class="tb">b</span>.<span class="cl">title</span>                                           <span class="kw">AS</span> book,
+    <span class="fn">CONCAT</span>(<span class="tb">a</span>.<span class="cl">first_name</span>, <span class="st">' '</span>, <span class="tb">a</span>.<span class="cl">last_name</span>)         <span class="kw">AS</span> author,
+    <span class="tb">o</span>.<span class="cl">quantity</span>,
+    <span class="tb">b</span>.<span class="cl">price</span>,
+    <span class="tb">o</span>.<span class="cl">quantity</span> * <span class="tb">b</span>.<span class="cl">price</span>                             <span class="kw">AS</span> total
+<span class="kw">FROM</span> <span class="tb">orders</span> <span class="kw">AS</span> o
+<span class="kw">INNER JOIN</span> <span class="tb">customers</span> <span class="kw">AS</span> c  <span class="kw">ON</span> o.<span class="cl">customer_id</span> = c.<span class="cl">customer_id</span>
+<span class="kw">INNER JOIN</span> <span class="tb">books</span>     <span class="kw">AS</span> b  <span class="kw">ON</span> o.<span class="cl">book_id</span>     = b.<span class="cl">book_id</span>
+<span class="kw">INNER JOIN</span> <span class="tb">authors</span>  <span class="kw">AS</span> a  <span class="kw">ON</span> b.<span class="cl">author_id</span>   = a.<span class="cl">author_id</span>
+<span class="kw">ORDER BY</span> <span class="tb">c</span>.<span class="cl">name</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT — Customer Orders Report</span><span class="row-count">4 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>customer</th><th>book</th><th>author</th><th>quantity</th><th>price</th><th>total</th></tr></thead>
+          <tbody>
+            <tr><td>Alice Wang</td><td>1984</td><td>George Orwell</td><td class="num-val">2</td><td class="num-val">12.99</td><td class="num-val">25.98</td></tr>
+            <tr><td>Alice Wang</td><td>Harry Potter and the PS</td><td>J.K. Rowling</td><td class="num-val">1</td><td class="num-val">14.99</td><td class="num-val">14.99</td></tr>
+            <tr><td>Bob Martinez</td><td>To Kill a Mockingbird</td><td>Harper Lee</td><td class="num-val">3</td><td class="num-val">11.99</td><td class="num-val">35.97</td></tr>
+            <tr><td>Carol Smith</td><td>And Then There Were None</td><td>Agatha Christie</td><td class="num-val">1</td><td class="num-val">9.99</td><td class="num-val">9.99</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">7.5  SELF JOIN — Table Joined to Itself</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL — Employee hierarchy example</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">CREATE TABLE</span> <span class="tb">employees</span> (
+    <span class="cl">emp_id</span>      <span class="tp">INT</span> <span class="kw">PRIMARY KEY</span>,
+    <span class="cl">name</span>        <span class="tp">VARCHAR</span>(<span class="nm">60</span>),
+    <span class="cl">manager_id</span>  <span class="tp">INT</span>,  <span class="cm">-- references emp_id of this same table</span>
+    <span class="cl">department</span>  <span class="tp">VARCHAR</span>(<span class="nm">50</span>)
+);
+<span class="kw">INSERT INTO</span> <span class="tb">employees</span> <span class="kw">VALUES</span>
+    (<span class="nm">1</span>, <span class="st">'Sarah CEO'</span>,    <span class="kw">NULL</span>,<span class="st">'Executive'</span>),
+    (<span class="nm">2</span>, <span class="st">'Alice'</span>,        <span class="nm">1</span>,   <span class="st">'Engineering'</span>),
+    (<span class="nm">3</span>, <span class="st">'Bob'</span>,          <span class="nm">1</span>,   <span class="st">'Marketing'</span>),
+    (<span class="nm">4</span>, <span class="st">'Carol'</span>,        <span class="nm">2</span>,   <span class="st">'Engineering'</span>),
+    (<span class="nm">5</span>, <span class="st">'David'</span>,        <span class="nm">2</span>,   <span class="st">'Engineering'</span>);
+
+<span class="cm">-- Show each employee with their manager's name</span>
+<span class="kw">SELECT</span>
+    <span class="tb">e</span>.<span class="cl">name</span>           <span class="kw">AS</span> employee,
+    <span class="fn">IFNULL</span>(<span class="tb">m</span>.<span class="cl">name</span>, <span class="st">'No Manager'</span>) <span class="kw">AS</span> manager
+<span class="kw">FROM</span> <span class="tb">employees</span> <span class="kw">AS</span> e
+<span class="kw">LEFT JOIN</span> <span class="tb">employees</span> <span class="kw">AS</span> m  <span class="cm">-- same table aliased twice!</span>
+    <span class="kw">ON</span> e.<span class="cl">manager_id</span> = m.<span class="cl">emp_id</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ Employee → Manager Hierarchy</span><span class="row-count">5 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>employee</th><th>manager</th></tr></thead>
+          <tbody>
+            <tr><td>Sarah CEO</td><td>No Manager</td></tr>
+            <tr><td>Alice</td><td>Sarah CEO</td></tr>
+            <tr><td>Bob</td><td>Sarah CEO</td></tr>
+            <tr><td>Carol</td><td>Alice</td></tr>
+            <tr><td>David</td><td>Alice</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════ MODULE 8 ══ -->
+<section id="mod8" class="module">
+  <div class="module-hdr"><span class="mod-num">MODULE 08</span><h1 class="mod-title">Subqueries & CTEs</h1></div>
+
+  <h2 class="st">8.1  Subqueries in WHERE</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Books priced above the average</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">price</span>
+<span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">price</span> > (<span class="kw">SELECT</span> <span class="fn">AVG</span>(<span class="cl">price</span>) <span class="kw">FROM</span> <span class="tb">books</span>)
+<span class="kw">ORDER BY</span> <span class="cl">price</span> <span class="kw">DESC</span>;
+
+<span class="cm">-- Books by authors from Great Britain</span>
+<span class="kw">SELECT</span> <span class="cl">title</span> <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">author_id</span> <span class="kw">IN</span> (
+    <span class="kw">SELECT</span> <span class="cl">author_id</span> <span class="kw">FROM</span> <span class="tb">authors</span>
+    <span class="kw">WHERE</span> <span class="cl">country</span> = <span class="st">'GB'</span>
+);</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ Books above average price ($11.99)</span><span class="row-count">3 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>title</th><th>price</th></tr></thead>
+          <tbody>
+            <tr><td>Harry Potter and the PS</td><td class="num-val">14.99</td></tr>
+            <tr><td>One Hundred Years</td><td class="num-val">13.99</td></tr>
+            <tr><td>1984</td><td class="num-val">12.99</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">8.2  Subqueries in FROM (Derived Tables)</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Authors with more than 1 book (using derived table)</span>
+<span class="kw">SELECT</span> author, book_count
+<span class="kw">FROM</span> (
+    <span class="kw">SELECT</span>
+        <span class="fn">CONCAT</span>(<span class="tb">a</span>.<span class="cl">first_name</span>, <span class="st">' '</span>, <span class="tb">a</span>.<span class="cl">last_name</span>) <span class="kw">AS</span> author,
+        <span class="fn">COUNT</span>(<span class="tb">b</span>.<span class="cl">book_id</span>) <span class="kw">AS</span> book_count
+    <span class="kw">FROM</span> <span class="tb">authors</span> <span class="kw">AS</span> a
+    <span class="kw">LEFT JOIN</span> <span class="tb">books</span> <span class="kw">AS</span> b <span class="kw">ON</span> a.<span class="cl">author_id</span> = b.<span class="cl">author_id</span>
+    <span class="kw">GROUP BY</span> a.<span class="cl">author_id</span>
+) <span class="kw">AS</span> author_counts                 <span class="cm">-- derived table MUST have alias</span>
+<span class="kw">WHERE</span> book_count > <span class="nm">1</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ Authors with 2+ books</span><span class="row-count">2 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>author</th><th>book_count</th></tr></thead>
+          <tbody>
+            <tr><td>George Orwell</td><td class="num-val">2</td></tr>
+            <tr><td>Agatha Christie</td><td class="num-val">2</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">8.3  CTE — Common Table Expression (WITH)</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL — CTEs are cleaner than subqueries</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Same query as above using CTE — much more readable!</span>
+<span class="kw">WITH</span> author_counts <span class="kw">AS</span> (
+    <span class="kw">SELECT</span>
+        a.<span class="cl">author_id</span>,
+        <span class="fn">CONCAT</span>(<span class="tb">a</span>.<span class="cl">first_name</span>, <span class="st">' '</span>, <span class="tb">a</span>.<span class="cl">last_name</span>) <span class="kw">AS</span> author,
+        <span class="fn">COUNT</span>(<span class="tb">b</span>.<span class="cl">book_id</span>) <span class="kw">AS</span> book_count,
+        <span class="fn">SUM</span>(<span class="tb">b</span>.<span class="cl">price</span>)    <span class="kw">AS</span> total_value
+    <span class="kw">FROM</span> <span class="tb">authors</span> <span class="kw">AS</span> a
+    <span class="kw">LEFT JOIN</span> <span class="tb">books</span> <span class="kw">AS</span> b <span class="kw">ON</span> a.<span class="cl">author_id</span> = b.<span class="cl">author_id</span>
+    <span class="kw">GROUP BY</span> a.<span class="cl">author_id</span>
+)
+<span class="kw">SELECT</span> author, book_count, total_value
+<span class="kw">FROM</span> author_counts
+<span class="kw">WHERE</span> book_count > <span class="nm">1</span>
+<span class="kw">ORDER BY</span> total_value <span class="kw">DESC</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span><span class="row-count">2 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>author</th><th>book_count</th><th>total_value</th></tr></thead>
+          <tbody>
+            <tr><td>George Orwell</td><td class="num-val">2</td><td class="num-val">21.98</td></tr>
+            <tr><td>Agatha Christie</td><td class="num-val">2</td><td class="num-val">20.98</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">8.4  Window Functions — Advanced Analytics</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL — OVER() clause</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- ROW_NUMBER, RANK, DENSE_RANK</span>
+<span class="kw">SELECT</span>
+    <span class="cl">title</span>, <span class="cl">genre</span>, <span class="cl">price</span>,
+    <span class="fn">ROW_NUMBER</span>()   <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> <span class="cl">genre</span> <span class="kw">ORDER BY</span> <span class="cl">price</span> <span class="kw">DESC</span>) <span class="kw">AS</span> row_n,
+    <span class="fn">RANK</span>()         <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> <span class="cl">price</span> <span class="kw">DESC</span>)                   <span class="kw">AS</span> price_rank,
+    <span class="fn">AVG</span>(<span class="cl">price</span>)     <span class="kw">OVER</span> (<span class="kw">PARTITION BY</span> <span class="cl">genre</span>)                       <span class="kw">AS</span> genre_avg,
+    <span class="fn">SUM</span>(<span class="cl">price</span>)     <span class="kw">OVER</span> ()                                           <span class="kw">AS</span> grand_total
+<span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">ORDER BY</span> <span class="cl">genre</span>, <span class="cl">price</span> <span class="kw">DESC</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ Window Function Results</span><span class="row-count">7 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>title</th><th>genre</th><th>price</th><th>row_n</th><th>price_rank</th><th>genre_avg</th><th>grand_total</th></tr></thead>
+          <tbody>
+            <tr><td>To Kill a Mockingbird</td><td>Classic</td><td class="num-val">11.99</td><td class="num-val">1</td><td class="num-val">4</td><td class="num-val">11.99</td><td class="num-val">83.93</td></tr>
+            <tr><td>1984</td><td>Dystopian</td><td class="num-val">12.99</td><td class="num-val">1</td><td class="num-val">3</td><td class="num-val">12.99</td><td class="num-val">83.93</td></tr>
+            <tr><td>Harry Potter and the PS</td><td>Fantasy</td><td class="num-val">14.99</td><td class="num-val">1</td><td class="num-val">1</td><td class="num-val">14.99</td><td class="num-val">83.93</td></tr>
+            <tr><td>One Hundred Years</td><td>Magical Realism</td><td class="num-val">13.99</td><td class="num-val">1</td><td class="num-val">2</td><td class="num-val">13.99</td><td class="num-val">83.93</td></tr>
+            <tr><td>Murder on the Orient</td><td>Mystery</td><td class="num-val">10.99</td><td class="num-val">1</td><td class="num-val">5</td><td class="num-val">10.49</td><td class="num-val">83.93</td></tr>
+            <tr><td>And Then There Were None</td><td>Mystery</td><td class="num-val">9.99</td><td class="num-val">2</td><td class="num-val">6</td><td class="num-val">10.49</td><td class="num-val">83.93</td></tr>
+            <tr><td>Animal Farm</td><td>Satire</td><td class="num-val">8.99</td><td class="num-val">1</td><td class="num-val">7</td><td class="num-val">8.99</td><td class="num-val">83.93</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════ MODULE 9 ══ -->
+<section id="mod9" class="module">
+  <div class="module-hdr"><span class="mod-num">MODULE 09</span><h1 class="mod-title">Built-in Functions</h1></div>
+
+  <h2 class="st">9.1  String Functions</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">SELECT</span>
+    <span class="fn">CONCAT</span>(<span class="st">'Hello'</span>, <span class="st">' '</span>, <span class="st">'World'</span>)        <span class="kw">AS</span> concat_ex,
+    <span class="fn">UPPER</span>(<span class="st">'hello'</span>)                        <span class="kw">AS</span> upper_ex,
+    <span class="fn">LOWER</span>(<span class="st">'WORLD'</span>)                        <span class="kw">AS</span> lower_ex,
+    <span class="fn">LENGTH</span>(<span class="st">'Python'</span>)                      <span class="kw">AS</span> len_ex,
+    <span class="fn">TRIM</span>(<span class="st">'  hello  '</span>)                    <span class="kw">AS</span> trim_ex,
+    <span class="fn">SUBSTRING</span>(<span class="st">'MySQL Mastery'</span>, <span class="nm">1</span>, <span class="nm">5</span>)    <span class="kw">AS</span> substr_ex,
+    <span class="fn">REPLACE</span>(<span class="st">'Hello World'</span>, <span class="st">'World'</span>, <span class="st">'SQL'</span>) <span class="kw">AS</span> replace_ex,
+    <span class="fn">LEFT</span>(<span class="st">'MySQL'</span>, <span class="nm">3</span>)                      <span class="kw">AS</span> left_ex,
+    <span class="fn">RIGHT</span>(<span class="st">'MySQL'</span>, <span class="nm">3</span>)                     <span class="kw">AS</span> right_ex,
+    <span class="fn">INSTR</span>(<span class="st">'Hello World'</span>, <span class="st">'World'</span>)        <span class="kw">AS</span> pos_ex,
+    <span class="fn">LPAD</span>(<span class="st">'42'</span>, <span class="nm">6</span>, <span class="st">'0'</span>)                   <span class="kw">AS</span> lpad_ex,
+    <span class="fn">REPEAT</span>(<span class="st">'AB'</span>, <span class="nm">3</span>)                       <span class="kw">AS</span> repeat_ex;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span><span class="row-count">1 row</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>concat_ex</th><th>upper_ex</th><th>lower_ex</th><th>len_ex</th><th>trim_ex</th><th>substr_ex</th><th>replace_ex</th><th>left_ex</th><th>right_ex</th><th>pos_ex</th><th>lpad_ex</th><th>repeat_ex</th></tr></thead>
+          <tbody>
+            <tr><td>Hello World</td><td>HELLO</td><td>world</td><td class="num-val">6</td><td>hello</td><td>MySQL</td><td>Hello SQL</td><td>MyS</td><td>SQL</td><td class="num-val">7</td><td>000042</td><td>ABABAB</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">9.2  Date & Time Functions</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">SELECT</span>
+    <span class="fn">NOW</span>()                              <span class="kw">AS</span> current_datetime,
+    <span class="fn">CURDATE</span>()                          <span class="kw">AS</span> current_date,
+    <span class="fn">CURTIME</span>()                          <span class="kw">AS</span> current_time,
+    <span class="fn">YEAR</span>(<span class="st">'2024-03-15'</span>)                <span class="kw">AS</span> yr,
+    <span class="fn">MONTH</span>(<span class="st">'2024-03-15'</span>)               <span class="kw">AS</span> mo,
+    <span class="fn">DAY</span>(<span class="st">'2024-03-15'</span>)                 <span class="kw">AS</span> dy,
+    <span class="fn">DAYNAME</span>(<span class="st">'2024-03-15'</span>)             <span class="kw">AS</span> day_name,
+    <span class="fn">MONTHNAME</span>(<span class="st">'2024-03-15'</span>)           <span class="kw">AS</span> month_name,
+    <span class="fn">DATEDIFF</span>(<span class="st">'2024-12-31'</span>, <span class="fn">CURDATE</span>()) <span class="kw">AS</span> days_left,
+    <span class="fn">DATE_ADD</span>(<span class="st">'2024-01-01'</span>, <span class="kw">INTERVAL</span> <span class="nm">30</span> <span class="kw">DAY</span>) <span class="kw">AS</span> plus_30,
+    <span class="fn">DATE_FORMAT</span>(<span class="st">'2024-03-15'</span>, <span class="st">'%d/%m/%Y'</span>)  <span class="kw">AS</span> formatted;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ Date function results</span><span class="row-count">1 row</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>yr</th><th>mo</th><th>dy</th><th>day_name</th><th>month_name</th><th>plus_30</th><th>formatted</th></tr></thead>
+          <tbody>
+            <tr><td class="num-val">2024</td><td class="num-val">3</td><td class="num-val">15</td><td>Friday</td><td>March</td><td>2024-01-31</td><td>15/03/2024</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">9.3  Math Functions</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">SELECT</span>
+    <span class="fn">ROUND</span>(<span class="nm">3.14159</span>, <span class="nm">2</span>)   <span class="kw">AS</span> rounded,     <span class="cm">-- 3.14</span>
+    <span class="fn">CEIL</span>(<span class="nm">4.1</span>)            <span class="kw">AS</span> ceiling,     <span class="cm">-- 5</span>
+    <span class="fn">FLOOR</span>(<span class="nm">4.9</span>)           <span class="kw">AS</span> floored,     <span class="cm">-- 4</span>
+    <span class="fn">ABS</span>(-<span class="nm">42</span>)             <span class="kw">AS</span> absolute,    <span class="cm">-- 42</span>
+    <span class="fn">POWER</span>(<span class="nm">2</span>, <span class="nm">10</span>)         <span class="kw">AS</span> two_to_ten,  <span class="cm">-- 1024</span>
+    <span class="fn">SQRT</span>(<span class="nm">144</span>)            <span class="kw">AS</span> sq_root,     <span class="cm">-- 12</span>
+    <span class="fn">MOD</span>(<span class="nm">17</span>, <span class="nm">5</span>)           <span class="kw">AS</span> modulus,     <span class="cm">-- 2</span>
+    <span class="fn">RAND</span>()               <span class="kw">AS</span> random_num;  <span class="cm">-- 0 to 1</span></pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span><span class="row-count">1 row</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>rounded</th><th>ceiling</th><th>floored</th><th>absolute</th><th>two_to_ten</th><th>sq_root</th><th>modulus</th></tr></thead>
+          <tbody>
+            <tr><td class="num-val">3.14</td><td class="num-val">5</td><td class="num-val">4</td><td class="num-val">42</td><td class="num-val">1024</td><td class="num-val">12</td><td class="num-val">2</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">9.4  CASE WHEN — Conditional Logic</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">SELECT</span>
+    <span class="cl">title</span>,
+    <span class="cl">price</span>,
+    <span class="cl">stock</span>,
+    <span class="kw">CASE</span>
+        <span class="kw">WHEN</span> <span class="cl">price</span> < <span class="nm">10</span>   <span class="kw">THEN</span> <span class="st">'Budget'</span>
+        <span class="kw">WHEN</span> <span class="cl">price</span> < <span class="nm">13</span>   <span class="kw">THEN</span> <span class="st">'Mid-range'</span>
+        <span class="kw">ELSE</span>                    <span class="st">'Premium'</span>
+    <span class="kw">END</span> <span class="kw">AS</span> price_tier,
+    <span class="kw">CASE</span>
+        <span class="kw">WHEN</span> <span class="cl">stock</span> = <span class="nm">0</span>    <span class="kw">THEN</span> <span class="st">'Out of Stock'</span>
+        <span class="kw">WHEN</span> <span class="cl">stock</span> < <span class="nm">100</span>  <span class="kw">THEN</span> <span class="st">'Low Stock'</span>
+        <span class="kw">WHEN</span> <span class="cl">stock</span> < <span class="nm">200</span>  <span class="kw">THEN</span> <span class="st">'In Stock'</span>
+        <span class="kw">ELSE</span>                    <span class="st">'Well Stocked'</span>
+    <span class="kw">END</span> <span class="kw">AS</span> stock_status
+<span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">ORDER BY</span> <span class="cl">price</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT — Price & Stock Categorisation</span><span class="row-count">7 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>title</th><th>price</th><th>stock</th><th>price_tier</th><th>stock_status</th></tr></thead>
+          <tbody>
+            <tr><td>Animal Farm</td><td class="num-val">8.99</td><td class="num-val">200</td><td>Budget</td><td>Well Stocked</td></tr>
+            <tr><td>And Then There Were None</td><td class="num-val">9.99</td><td class="num-val">175</td><td>Budget</td><td>In Stock</td></tr>
+            <tr><td>Murder on the Orient</td><td class="num-val">10.99</td><td class="num-val">160</td><td>Mid-range</td><td>In Stock</td></tr>
+            <tr><td>To Kill a Mockingbird</td><td class="num-val">11.99</td><td class="num-val">120</td><td>Mid-range</td><td>In Stock</td></tr>
+            <tr><td>1984</td><td class="num-val">12.99</td><td class="num-val">150</td><td>Mid-range</td><td>In Stock</td></tr>
+            <tr><td>One Hundred Years</td><td class="num-val">13.99</td><td class="num-val">80</td><td>Premium</td><td>Low Stock</td></tr>
+            <tr><td>Harry Potter and the PS</td><td class="num-val">14.99</td><td class="num-val">300</td><td>Premium</td><td>Well Stocked</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════ MODULE 10 ══ -->
+<section id="mod10" class="module">
+  <div class="module-hdr"><span class="mod-num">MODULE 10</span><h1 class="mod-title">UPDATE & DELETE</h1></div>
+
+  <div class="callout warning"><div class="callout-hdr">⚠️ CRITICAL SAFETY RULE</div>
+    <p>Always run a <code>SELECT</code> with the same <code>WHERE</code> clause FIRST to verify which rows will be affected before running <code>UPDATE</code> or <code>DELETE</code>. And always work with transactions when modifying data.</p>
+  </div>
+
+  <h2 class="st">10.1  UPDATE</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- ALWAYS check what you're about to update first!</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="tb">books</span> <span class="kw">WHERE</span> <span class="cl">book_id</span> = <span class="nm">1</span>;
+
+<span class="cm">-- Update a single row</span>
+<span class="kw">UPDATE</span> <span class="tb">books</span>
+<span class="kw">SET</span>
+    <span class="cl">price</span> = <span class="nm">13.99</span>,
+    <span class="cl">stock</span> = <span class="cl">stock</span> + <span class="nm">50</span>   <span class="cm">-- increment existing value</span>
+<span class="kw">WHERE</span> <span class="cl">book_id</span> = <span class="nm">1</span>;
+
+<span class="cm">-- Update multiple rows — 10% price increase for all Mystery books</span>
+<span class="kw">UPDATE</span> <span class="tb">books</span>
+<span class="kw">SET</span> <span class="cl">price</span> = <span class="fn">ROUND</span>(<span class="cl">price</span> * <span class="nm">1.10</span>, <span class="nm">2</span>)
+<span class="kw">WHERE</span> <span class="cl">genre</span> = <span class="st">'Mystery'</span>;
+
+<span class="cm">-- Conditional update with CASE</span>
+<span class="kw">UPDATE</span> <span class="tb">books</span>
+<span class="kw">SET</span> <span class="cl">price</span> = <span class="kw">CASE</span>
+    <span class="kw">WHEN</span> <span class="cl">genre</span> = <span class="st">'Fantasy'</span>  <span class="kw">THEN</span> <span class="cl">price</span> * <span class="nm">1.05</span>
+    <span class="kw">WHEN</span> <span class="cl">genre</span> = <span class="st">'Classic'</span>  <span class="kw">THEN</span> <span class="cl">price</span> * <span class="nm">0.95</span>  <span class="cm">-- discount classics</span>
+    <span class="kw">ELSE</span> <span class="cl">price</span>
+<span class="kw">END</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span></div>
+      <div class="out-text">Query OK, 1 row affected (0.01 sec)  -- single update
+Rows matched: 1  Changed: 1  Warnings: 0
+
+Query OK, 2 rows affected (0.01 sec)  -- mystery update
+Rows matched: 2  Changed: 2  Warnings: 0</div>
+    </div>
+  </div>
+
+  <h2 class="st">10.2  DELETE</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Delete a specific row</span>
+<span class="kw">DELETE FROM</span> <span class="tb">books</span> <span class="kw">WHERE</span> <span class="cl">book_id</span> = <span class="nm">99</span>;
+
+<span class="cm">-- Delete with condition</span>
+<span class="kw">DELETE FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">stock</span> = <span class="nm">0</span> <span class="kw">AND</span> <span class="cl">publish_date</span> < <span class="st">'1950-01-01'</span>;
+
+<span class="cm">-- TRUNCATE — delete ALL rows (very fast, cannot roll back)</span>
+<span class="kw">TRUNCATE TABLE</span> temp_table;
+
+<span class="cm">-- Soft delete pattern (industry best practice)</span>
+<span class="cm">-- Instead of deleting, mark as deleted:</span>
+<span class="kw">ALTER TABLE</span> <span class="tb">books</span> <span class="kw">ADD COLUMN</span> <span class="cl">deleted_at</span> <span class="tp">TIMESTAMP</span> <span class="kw">NULL DEFAULT</span> <span class="kw">NULL</span>;
+
+<span class="kw">UPDATE</span> <span class="tb">books</span>
+<span class="kw">SET</span> <span class="cl">deleted_at</span> = <span class="fn">NOW</span>()
+<span class="kw">WHERE</span> <span class="cl">book_id</span> = <span class="nm">5</span>;   <span class="cm">-- "soft deleted" — still in DB, hidden from queries</span>
+
+<span class="cm">-- Query only active records</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="tb">books</span> <span class="kw">WHERE</span> <span class="cl">deleted_at</span> <span class="kw">IS NULL</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span></div>
+      <div class="out-text">Query OK, 0 rows affected (0.00 sec)  -- no matching rows for book_id=99
+Query OK, 1 row affected (0.01 sec)   -- soft delete applied</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════ MODULE 11 ══ -->
+<section id="mod11" class="module">
+  <div class="module-hdr"><span class="mod-num">MODULE 11</span><h1 class="mod-title">Indexes & Performance</h1></div>
+
+  <h2 class="st">11.1  What is an Index?</h2>
+  <p>An index is a data structure that speeds up data retrieval at the cost of additional storage and slightly slower writes. Think of it as a book's index — instead of reading every page, you jump directly to the right page.</p>
+
+  <h2 class="st">11.2  Creating Indexes</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Single-column index</span>
+<span class="kw">CREATE INDEX</span> idx_genre   <span class="kw">ON</span> <span class="tb">books</span>(<span class="cl">genre</span>);
+<span class="kw">CREATE INDEX</span> idx_price   <span class="kw">ON</span> <span class="tb">books</span>(<span class="cl">price</span>);
+
+<span class="cm">-- Unique index (enforces uniqueness)</span>
+<span class="kw">CREATE UNIQUE INDEX</span> idx_email <span class="kw">ON</span> <span class="tb">authors</span>(<span class="cl">email</span>);
+
+<span class="cm">-- Composite index (columns used together in WHERE)</span>
+<span class="kw">CREATE INDEX</span> idx_genre_price <span class="kw">ON</span> <span class="tb">books</span>(<span class="cl">genre</span>, <span class="cl">price</span>);
+
+<span class="cm">-- Full-text index (for LIKE '%...%' type searches)</span>
+<span class="kw">CREATE FULLTEXT INDEX</span> idx_title_ft <span class="kw">ON</span> <span class="tb">books</span>(<span class="cl">title</span>);
+
+<span class="cm">-- Show all indexes on a table</span>
+<span class="kw">SHOW INDEX FROM</span> <span class="tb">books</span>;
+
+<span class="cm">-- Drop an index</span>
+<span class="kw">DROP INDEX</span> idx_genre <span class="kw">ON</span> <span class="tb">books</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ SHOW INDEX FROM books (sample)</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>Table</th><th>Key_name</th><th>Column_name</th><th>Non_unique</th><th>Index_type</th></tr></thead>
+          <tbody>
+            <tr><td>books</td><td>PRIMARY</td><td>book_id</td><td class="num-val">0</td><td>BTREE</td></tr>
+            <tr><td>books</td><td>idx_genre</td><td>genre</td><td class="num-val">1</td><td>BTREE</td></tr>
+            <tr><td>books</td><td>idx_price</td><td>price</td><td class="num-val">1</td><td>BTREE</td></tr>
+            <tr><td>books</td><td>idx_title_ft</td><td>title</td><td class="num-val">1</td><td>FULLTEXT</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">11.3  EXPLAIN — Analyse Query Performance</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Prepend EXPLAIN to see MySQL's query plan</span>
+<span class="kw">EXPLAIN</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">price</span>
+<span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">genre</span> = <span class="st">'Mystery'</span>
+<span class="kw">ORDER BY</span> <span class="cl">price</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ EXPLAIN output</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>type</th><th>key</th><th>key_len</th><th>rows</th><th>Extra</th></tr></thead>
+          <tbody>
+            <tr><td>ref</td><td>idx_genre</td><td class="num-val">203</td><td class="num-val">2</td><td>Using index condition; Using filesort</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table class="ref"><thead><tr><th>EXPLAIN type</th><th>Meaning</th><th>Performance</th></tr></thead>
+    <tbody>
+      <tr><td>system / const</td><td>Single row match (PK/unique lookup)</td><td>⚡ Best</td></tr>
+      <tr><td>ref</td><td>Non-unique index used</td><td>✅ Good</td></tr>
+      <tr><td>range</td><td>Index used for BETWEEN / &gt; / &lt;</td><td>✅ Good</td></tr>
+      <tr><td>index</td><td>Full index scan</td><td>⚠️ OK</td></tr>
+      <tr><td>ALL</td><td>Full table scan — no index used!</td><td>🔴 Fix this</td></tr>
+    </tbody></table>
+  </div>
+
+  <div class="callout tip"><div class="callout-hdr">💡 Index Best Practices</div>
+    <ul>
+      <li>Index columns used in <code>WHERE</code>, <code>JOIN ON</code>, and <code>ORDER BY</code></li>
+      <li>Don't index every column — each index slows down INSERT/UPDATE/DELETE</li>
+      <li>Composite indexes: put the most selective column first</li>
+      <li><code>LIKE '%term'</code> (leading wildcard) cannot use a B-tree index — use FULLTEXT instead</li>
+      <li>Foreign key columns should almost always be indexed</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════ MODULE 12 ══ -->
+<section id="mod12" class="module">
+  <div class="module-hdr"><span class="mod-num">MODULE 12</span><h1 class="mod-title">Views & Stored Procedures</h1></div>
+
+  <h2 class="st">12.1  Views — Saved Queries</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL — CREATE VIEW</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Create a view = saved SELECT query</span>
+<span class="kw">CREATE VIEW</span> v_book_details <span class="kw">AS</span>
+<span class="kw">SELECT</span>
+    <span class="tb">b</span>.<span class="cl">book_id</span>,
+    <span class="tb">b</span>.<span class="cl">title</span>,
+    <span class="fn">CONCAT</span>(<span class="tb">a</span>.<span class="cl">first_name</span>, <span class="st">' '</span>, <span class="tb">a</span>.<span class="cl">last_name</span>) <span class="kw">AS</span> author,
+    <span class="tb">a</span>.<span class="cl">country</span>,
+    <span class="tb">b</span>.<span class="cl">genre</span>,
+    <span class="tb">b</span>.<span class="cl">price</span>,
+    <span class="tb">b</span>.<span class="cl">stock</span>
+<span class="kw">FROM</span> <span class="tb">books</span> b
+<span class="kw">JOIN</span> <span class="tb">authors</span> a <span class="kw">ON</span> b.<span class="cl">author_id</span> = a.<span class="cl">author_id</span>;
+
+<span class="cm">-- Query the view just like a table!</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> v_book_details <span class="kw">WHERE</span> <span class="cl">genre</span> = <span class="st">'Mystery'</span>;
+
+<span class="cm">-- List all views</span>
+<span class="kw">SHOW</span> <span class="kw">FULL</span> <span class="kw">TABLES WHERE</span> Table_type = <span class="st">'VIEW'</span>;
+
+<span class="cm">-- Drop a view</span>
+<span class="kw">DROP VIEW</span> v_book_details;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ SELECT from v_book_details WHERE genre = 'Mystery'</span><span class="row-count">2 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>book_id</th><th>title</th><th>author</th><th>country</th><th>genre</th><th>price</th><th>stock</th></tr></thead>
+          <tbody>
+            <tr><td class="num-val">6</td><td>And Then There Were None</td><td>Agatha Christie</td><td>GB</td><td>Mystery</td><td class="num-val">10.99</td><td class="num-val">175</td></tr>
+            <tr><td class="num-val">7</td><td>Murder on the Orient</td><td>Agatha Christie</td><td>GB</td><td>Mystery</td><td class="num-val">12.09</td><td class="num-val">160</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">12.2  Stored Procedures</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL — Stored Procedure with parameters</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">DELIMITER</span> //   <span class="cm">-- change delimiter so ; inside proc doesn't end it</span>
+
+<span class="kw">CREATE PROCEDURE</span> <span class="fn">get_books_by_genre</span>(
+    <span class="kw">IN</span>  p_genre      <span class="tp">VARCHAR</span>(<span class="nm">50</span>),
+    <span class="kw">IN</span>  p_max_price  <span class="tp">DECIMAL</span>(<span class="nm">8</span>,<span class="nm">2</span>),
+    <span class="kw">OUT</span> p_count      <span class="tp">INT</span>
+)
+<span class="kw">BEGIN</span>
+    <span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">price</span>, <span class="cl">stock</span>
+    <span class="kw">FROM</span> <span class="tb">books</span>
+    <span class="kw">WHERE</span> <span class="cl">genre</span> = p_genre
+      <span class="kw">AND</span> <span class="cl">price</span> <= p_max_price
+    <span class="kw">ORDER BY</span> <span class="cl">price</span>;
+
+    <span class="kw">SELECT</span> <span class="fn">COUNT</span>(*) <span class="kw">INTO</span> p_count
+    <span class="kw">FROM</span> <span class="tb">books</span>
+    <span class="kw">WHERE</span> <span class="cl">genre</span> = p_genre <span class="kw">AND</span> <span class="cl">price</span> <= p_max_price;
+<span class="kw">END</span>//
+
+<span class="kw">DELIMITER</span> ;   <span class="cm">-- restore delimiter</span>
+
+<span class="cm">-- Call the procedure</span>
+<span class="kw">CALL</span> <span class="fn">get_books_by_genre</span>(<span class="st">'Mystery'</span>, <span class="nm">15.00</span>, @count);
+<span class="kw">SELECT</span> @count <span class="kw">AS</span> books_found;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ Procedure results</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>title</th><th>price</th><th>stock</th></tr></thead>
+          <tbody>
+            <tr><td>And Then There Were None</td><td class="num-val">10.99</td><td class="num-val">175</td></tr>
+            <tr><td>Murder on the Orient</td><td class="num-val">12.09</td><td class="num-val">160</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="out-text" style="padding:8px 18px">books_found: 2</div>
+    </div>
+  </div>
+
+  <h2 class="st">12.3  Triggers</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL — Auto-update stock on order</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">DELIMITER</span> //
+
+<span class="kw">CREATE TRIGGER</span> trg_reduce_stock
+<span class="kw">AFTER INSERT ON</span> <span class="tb">orders</span>
+<span class="kw">FOR EACH ROW</span>
+<span class="kw">BEGIN</span>
+    <span class="cm">-- Automatically reduce book stock when an order is placed</span>
+    <span class="kw">UPDATE</span> <span class="tb">books</span>
+    <span class="kw">SET</span>    <span class="cl">stock</span> = <span class="cl">stock</span> - NEW.<span class="cl">quantity</span>
+    <span class="kw">WHERE</span>  <span class="cl">book_id</span> = NEW.<span class="cl">book_id</span>;
+<span class="kw">END</span>//
+
+<span class="kw">DELIMITER</span> ;
+
+<span class="cm">-- Show all triggers</span>
+<span class="kw">SHOW TRIGGERS</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ Trigger created</span></div>
+      <div class="out-text">Query OK, 0 rows affected (0.02 sec)
+-- Now every INSERT into orders automatically decrements books.stock!</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════ MODULE 13 ══ -->
+<section id="mod13" class="module">
+  <div class="module-hdr"><span class="mod-num">MODULE 13</span><h1 class="mod-title">Transactions & ACID</h1></div>
+
+  <h2 class="st">13.1  ACID Properties</h2>
+  <div class="table-wrap">
+    <table class="ref"><thead><tr><th>Property</th><th>Meaning</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Atomicity</td><td>All operations succeed or all fail — never partial</td><td>Bank transfer: debit AND credit both happen, or neither</td></tr>
+      <tr><td>Consistency</td><td>Data always moves from one valid state to another</td><td>Account balance never goes negative if business rule forbids it</td></tr>
+      <tr><td>Isolation</td><td>Concurrent transactions don't interfere with each other</td><td>Two users booking the last seat can't both succeed</td></tr>
+      <tr><td>Durability</td><td>Committed changes survive crashes</td><td>Confirmed order stays after server restart</td></tr>
+    </tbody></table>
+  </div>
+
+  <h2 class="st">13.2  Transactions — COMMIT & ROLLBACK</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL — Bank Transfer Example</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- Setup</span>
+<span class="kw">CREATE TABLE</span> <span class="tb">accounts</span> (
+    <span class="cl">account_id</span> <span class="tp">INT</span> <span class="kw">PRIMARY KEY</span>,
+    <span class="cl">name</span>       <span class="tp">VARCHAR</span>(<span class="nm">60</span>),
+    <span class="cl">balance</span>    <span class="tp">DECIMAL</span>(<span class="nm">12</span>,<span class="nm">2</span>) <span class="kw">NOT NULL CHECK</span> (<span class="cl">balance</span> >= <span class="nm">0</span>)
+);
+<span class="kw">INSERT INTO</span> <span class="tb">accounts</span> <span class="kw">VALUES</span> (<span class="nm">1</span>, <span class="st">'Alice'</span>, <span class="nm">1000.00</span>), (<span class="nm">2</span>, <span class="st">'Bob'</span>, <span class="nm">500.00</span>);
+
+<span class="cm">-- ── Successful transfer ─────────────────────────────</span>
+<span class="kw">START TRANSACTION</span>;
+
+<span class="kw">UPDATE</span> <span class="tb">accounts</span> <span class="kw">SET</span> <span class="cl">balance</span> = <span class="cl">balance</span> - <span class="nm">200</span> <span class="kw">WHERE</span> <span class="cl">account_id</span> = <span class="nm">1</span>;
+<span class="kw">UPDATE</span> <span class="tb">accounts</span> <span class="kw">SET</span> <span class="cl">balance</span> = <span class="cl">balance</span> + <span class="nm">200</span> <span class="kw">WHERE</span> <span class="cl">account_id</span> = <span class="nm">2</span>;
+
+<span class="kw">COMMIT</span>;   <span class="cm">-- permanently saves both changes</span>
+
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="tb">accounts</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ After COMMIT</span><span class="row-count">2 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>account_id</th><th>name</th><th>balance</th></tr></thead>
+          <tbody>
+            <tr><td class="num-val">1</td><td>Alice</td><td class="num-val">800.00</td></tr>
+            <tr><td class="num-val">2</td><td>Bob</td><td class="num-val">700.00</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL — ROLLBACK on error</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">START TRANSACTION</span>;
+
+<span class="kw">UPDATE</span> <span class="tb">accounts</span> <span class="kw">SET</span> <span class="cl">balance</span> = <span class="cl">balance</span> - <span class="nm">2000</span> <span class="kw">WHERE</span> <span class="cl">account_id</span> = <span class="nm">1</span>;
+<span class="cm">-- ↑ This would make Alice's balance = -1200 → violates CHECK constraint!</span>
+
+<span class="kw">ROLLBACK</span>;   <span class="cm">-- undo everything since START TRANSACTION</span>
+
+<span class="cm">-- Verify: Alice's balance is unchanged</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> <span class="tb">accounts</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ After ROLLBACK — balances unchanged</span><span class="row-count">2 rows</span></div>
+      <div class="out-table-wrap">
+        <table class="out-table">
+          <thead><tr><th>account_id</th><th>name</th><th>balance</th></tr></thead>
+          <tbody>
+            <tr><td class="num-val">1</td><td>Alice</td><td class="num-val">800.00</td></tr>
+            <tr><td class="num-val">2</td><td>Bob</td><td class="num-val">700.00</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="st">13.3  SAVEPOINTs</h2>
+  <div class="sql-block">
+    <div class="code-wrap">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">START TRANSACTION</span>;
+
+<span class="kw">INSERT INTO</span> <span class="tb">orders</span> (<span class="cl">customer_id</span>, <span class="cl">book_id</span>, <span class="cl">quantity</span>, <span class="cl">order_date</span>)
+<span class="kw">VALUES</span> (<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">1</span>, <span class="fn">CURDATE</span>());
+
+<span class="kw">SAVEPOINT</span> after_order;   <span class="cm">-- bookmark this point</span>
+
+<span class="kw">UPDATE</span> <span class="tb">books</span> <span class="kw">SET</span> <span class="cl">stock</span> = <span class="cl">stock</span> - <span class="nm">99999</span> <span class="kw">WHERE</span> <span class="cl">book_id</span> = <span class="nm">2</span>;
+<span class="cm">-- Oops! Too large a deduction</span>
+
+<span class="kw">ROLLBACK TO SAVEPOINT</span> after_order;   <span class="cm">-- go back to savepoint, keep order insert</span>
+
+<span class="kw">UPDATE</span> <span class="tb">books</span> <span class="kw">SET</span> <span class="cl">stock</span> = <span class="cl">stock</span> - <span class="nm">1</span> <span class="kw">WHERE</span> <span class="cl">book_id</span> = <span class="nm">2</span>;
+<span class="cm">-- Correct deduction</span>
+
+<span class="kw">COMMIT</span>;</pre>
+    </div>
+    <div class="output-wrap">
+      <div class="output-hdr"><span class="out-label">▶ OUTPUT</span></div>
+      <div class="out-text">Query OK, 1 row affected (0.00 sec)  -- INSERT
+Query OK, 0 rows affected (0.00 sec)  -- SAVEPOINT set
+Query OK, 1 row affected (0.01 sec)  -- bad UPDATE
+Query OK, 0 rows affected (0.00 sec)  -- ROLLBACK TO SAVEPOINT
+Query OK, 1 row affected (0.00 sec)  -- correct UPDATE
+Query OK, 0 rows affected (0.00 sec)  -- COMMIT</div>
+    </div>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════ MODULE 14 ══ -->
+<section id="mod14" class="module">
+  <div class="module-hdr"><span class="mod-num">MODULE 14</span><h1 class="mod-title">Capstone Projects</h1></div>
+
+  <div class="callout" style="background:rgba(0,174,255,.07);border-color:rgba(0,174,255,.4);margin-bottom:20px">
+    <div class="callout-hdr" style="color:var(--mysql-blue)">🏨 Project 1 — Hotel Booking System</div>
+    <ul>
+      <li>Tables: hotels, rooms, guests, bookings, payments</li>
+      <li>Queries: Available rooms for a date range, revenue per hotel per month</li>
+      <li>View: v_booking_summary with guest + room + hotel details</li>
+      <li>Stored Procedure: book_room(guest_id, room_id, check_in, check_out)</li>
+      <li>Trigger: Auto-update room availability status on booking insert/delete</li>
+      <li>Transaction: Payment processing with rollback on failure</li>
+    </ul>
+  </div>
+
+  <div class="callout" style="background:rgba(0,232,120,.06);border-color:rgba(0,232,120,.35);margin-bottom:20px">
+    <div class="callout-hdr" style="color:var(--green)">🛒 Project 2 — E-Commerce Analytics Platform</div>
+    <ul>
+      <li>Tables: users, products, categories, orders, order_items, reviews</li>
+      <li>Window functions: Product ranking by revenue within each category</li>
+      <li>CTE: Monthly revenue trend with month-over-month growth %</li>
+      <li>Complex JOIN: Customer lifetime value calculation</li>
+      <li>Subquery: Find customers who ordered but never reviewed</li>
+      <li>Index optimisation: Use EXPLAIN to speed up slow queries</li>
+    </ul>
+  </div>
+
+  <div class="callout" style="background:rgba(255,140,0,.06);border-color:rgba(255,140,0,.35)">
+    <div class="callout-hdr" style="color:var(--mysql-org)">🏥 Project 3 — Hospital Management System</div>
+    <ul>
+      <li>Tables: doctors, patients, appointments, prescriptions, wards, staff</li>
+      <li>Self JOIN: Doctor-to-supervisor hierarchy</li>
+      <li>CASE WHEN: Patient risk scoring based on age and diagnosis</li>
+      <li>Pivot: Appointments per doctor per weekday (using conditional aggregation)</li>
+      <li>Stored Procedure: schedule_appointment with conflict checking</li>
+      <li>Transaction: Transfer patient between wards atomically</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="div">
+
+<!-- ══════════════════════════════════════ APPENDIX ══ -->
+<section id="appendix" class="module">
+  <div class="module-hdr"><span class="mod-num">APPENDIX</span><h1 class="mod-title">Quick Reference</h1></div>
+
+  <h2 class="st">A.1  SQL Execution Order</h2>
+  <div class="sql-block">
+    <div class="code-wrap standalone">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL — How MySQL Processes a Query</span></div>
+      <pre><span class="cm">-- Writing order (what you type):</span>
+<span class="kw">SELECT</span>    columns
+<span class="kw">FROM</span>      table
+<span class="kw">JOIN</span>      other_table <span class="kw">ON</span> condition
+<span class="kw">WHERE</span>     row_filter
+<span class="kw">GROUP BY</span>  grouping_column
+<span class="kw">HAVING</span>    group_filter
+<span class="kw">ORDER BY</span>  sort_column
+<span class="kw">LIMIT</span>     n;
+
+<span class="cm">-- Execution order (what MySQL does):</span>
+<span class="cm">-- 1. FROM + JOIN    → determine all rows</span>
+<span class="cm">-- 2. WHERE          → filter rows</span>
+<span class="cm">-- 3. GROUP BY       → create groups</span>
+<span class="cm">-- 4. HAVING         → filter groups</span>
+<span class="cm">-- 5. SELECT         → choose columns + aliases</span>
+<span class="cm">-- 6. DISTINCT       → remove duplicates</span>
+<span class="cm">-- 7. ORDER BY       → sort</span>
+<span class="cm">-- 8. LIMIT/OFFSET   → paginate</span></pre>
+    </div>
+  </div>
+
+  <h2 class="st">A.2  Essential SQL Commands</h2>
+  <div class="table-wrap">
+    <table class="ref"><thead><tr><th>Command</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>CREATE DATABASE / TABLE</td><td>Create new database or table</td></tr>
+      <tr><td>USE db_name</td><td>Switch to a database</td></tr>
+      <tr><td>SHOW DATABASES / TABLES</td><td>List all databases or tables</td></tr>
+      <tr><td>DESCRIBE table</td><td>Show table structure</td></tr>
+      <tr><td>INSERT INTO … VALUES</td><td>Add new rows</td></tr>
+      <tr><td>SELECT … FROM … WHERE</td><td>Query data</td></tr>
+      <tr><td>UPDATE … SET … WHERE</td><td>Modify existing rows</td></tr>
+      <tr><td>DELETE FROM … WHERE</td><td>Remove rows</td></tr>
+      <tr><td>ALTER TABLE … ADD/MODIFY/DROP</td><td>Change table structure</td></tr>
+      <tr><td>DROP TABLE / DATABASE</td><td>Delete table or database (permanent!)</td></tr>
+      <tr><td>CREATE INDEX</td><td>Add an index for performance</td></tr>
+      <tr><td>EXPLAIN SELECT …</td><td>Analyse query execution plan</td></tr>
+      <tr><td>START TRANSACTION / COMMIT / ROLLBACK</td><td>Transaction control</td></tr>
+      <tr><td>CREATE VIEW</td><td>Save a query as a virtual table</td></tr>
+      <tr><td>CREATE PROCEDURE / CALL</td><td>Create and execute stored procedures</td></tr>
+    </tbody></table>
+  </div>
+
+  <h2 class="st">A.3  String Functions Reference</h2>
+  <div class="table-wrap">
+    <table class="ref"><thead><tr><th>Function</th><th>Example → Result</th></tr></thead>
+    <tbody>
+      <tr><td>CONCAT(a, b)</td><td>CONCAT('Hello',' World') → Hello World</td></tr>
+      <tr><td>CONCAT_WS(sep, a, b)</td><td>CONCAT_WS('-','2024','03','15') → 2024-03-15</td></tr>
+      <tr><td>LENGTH(s)</td><td>LENGTH('Hello') → 5</td></tr>
+      <tr><td>UPPER(s) / LOWER(s)</td><td>UPPER('hello') → HELLO</td></tr>
+      <tr><td>TRIM(s)</td><td>TRIM('  hi  ') → hi</td></tr>
+      <tr><td>SUBSTRING(s,pos,len)</td><td>SUBSTRING('MySQL',1,2) → My</td></tr>
+      <tr><td>REPLACE(s,old,new)</td><td>REPLACE('aababc','ab','X') → aXXc</td></tr>
+      <tr><td>INSTR(s, sub)</td><td>INSTR('Hello','ll') → 3</td></tr>
+      <tr><td>LEFT(s,n) / RIGHT(s,n)</td><td>LEFT('MySQL',2) → My</td></tr>
+      <tr><td>LPAD(s,n,pad) / RPAD</td><td>LPAD('42',6,'0') → 000042</td></tr>
+      <tr><td>FORMAT(n, decimals)</td><td>FORMAT(1234567.89,2) → 1,234,567.89</td></tr>
+    </tbody></table>
+  </div>
+
+  <h2 class="st">A.4  Date Functions Reference</h2>
+  <div class="table-wrap">
+    <table class="ref"><thead><tr><th>Function</th><th>Example → Result</th></tr></thead>
+    <tbody>
+      <tr><td>NOW()</td><td>2024-03-15 14:30:00</td></tr>
+      <tr><td>CURDATE() / CURTIME()</td><td>2024-03-15 / 14:30:00</td></tr>
+      <tr><td>YEAR(d) / MONTH(d) / DAY(d)</td><td>2024 / 3 / 15</td></tr>
+      <tr><td>DAYNAME(d) / MONTHNAME(d)</td><td>Friday / March</td></tr>
+      <tr><td>DATEDIFF(a, b)</td><td>DATEDIFF('2024-12-31','2024-01-01') → 365</td></tr>
+      <tr><td>DATE_ADD(d, INTERVAL n UNIT)</td><td>DATE_ADD('2024-01-01', INTERVAL 1 MONTH)</td></tr>
+      <tr><td>DATE_SUB(d, INTERVAL n UNIT)</td><td>DATE_SUB(NOW(), INTERVAL 7 DAY)</td></tr>
+      <tr><td>DATE_FORMAT(d, fmt)</td><td>DATE_FORMAT(NOW(),'%d/%m/%Y') → 15/03/2024</td></tr>
+      <tr><td>STR_TO_DATE(s, fmt)</td><td>STR_TO_DATE('15/03/2024','%d/%m/%Y')</td></tr>
+      <tr><td>TIMESTAMPDIFF(unit, a, b)</td><td>TIMESTAMPDIFF(YEAR, dob, NOW())</td></tr>
+    </tbody></table>
+  </div>
+
+  <h2 class="st">A.5  Common Interview Questions</h2>
+  <div class="sql-block">
+    <div class="code-wrap standalone">
+      <div class="code-hdr"><div class="dots"><span></span><span></span><span></span></div><span class="code-label">SQL — Classic interview patterns</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm">-- 1. Nth highest salary / price</span>
+<span class="kw">SELECT</span> <span class="fn">MAX</span>(<span class="cl">price</span>) <span class="kw">FROM</span> <span class="tb">books</span>
+<span class="kw">WHERE</span> <span class="cl">price</span> < (<span class="kw">SELECT</span> <span class="fn">MAX</span>(<span class="cl">price</span>) <span class="kw">FROM</span> <span class="tb">books</span>);  <span class="cm">-- 2nd highest</span>
+
+<span class="cm">-- 2. Find duplicates</span>
+<span class="kw">SELECT</span> <span class="cl">email</span>, <span class="fn">COUNT</span>(*) <span class="kw">AS</span> cnt
+<span class="kw">FROM</span> <span class="tb">authors</span>
+<span class="kw">GROUP BY</span> <span class="cl">email</span>
+<span class="kw">HAVING</span> cnt > <span class="nm">1</span>;
+
+<span class="cm">-- 3. Delete duplicates, keep lowest ID</span>
+<span class="kw">DELETE FROM</span> <span class="tb">authors</span>
+<span class="kw">WHERE</span> <span class="cl">author_id</span> <span class="kw">NOT IN</span> (
+    <span class="kw">SELECT</span> <span class="fn">MIN</span>(<span class="cl">author_id</span>)
+    <span class="kw">FROM</span> <span class="tb">authors</span>
+    <span class="kw">GROUP BY</span> <span class="cl">email</span>
+);
+
+<span class="cm">-- 4. Running total</span>
+<span class="kw">SELECT</span>
+    <span class="cl">title</span>, <span class="cl">price</span>,
+    <span class="fn">SUM</span>(<span class="cl">price</span>) <span class="kw">OVER</span> (<span class="kw">ORDER BY</span> <span class="cl">price</span>) <span class="kw">AS</span> running_total
+<span class="kw">FROM</span> <span class="tb">books</span>;
+
+<span class="cm">-- 5. Rows where value > group average (classic!)</span>
+<span class="kw">SELECT</span> <span class="cl">title</span>, <span class="cl">genre</span>, <span class="cl">price</span>
+<span class="kw">FROM</span> <span class="tb">books</span> b
+<span class="kw">WHERE</span> <span class="cl">price</span> > (
+    <span class="kw">SELECT</span> <span class="fn">AVG</span>(<span class="cl">price</span>)
+    <span class="kw">FROM</span> <span class="tb">books</span>
+    <span class="kw">WHERE</span> <span class="cl">genre</span> = b.<span class="cl">genre</span>  <span class="cm">-- correlated subquery</span>
+);
+
+<span class="cm">-- 6. Pivot (conditional aggregation)</span>
+<span class="kw">SELECT</span>
+    <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> <span class="cl">genre</span> = <span class="st">'Mystery'</span>  <span class="kw">THEN</span> <span class="nm">1</span> <span class="kw">ELSE</span> <span class="nm">0</span> <span class="kw">END</span>) <span class="kw">AS</span> mystery_count,
+    <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> <span class="cl">genre</span> = <span class="st">'Fantasy'</span>  <span class="kw">THEN</span> <span class="nm">1</span> <span class="kw">ELSE</span> <span class="nm">0</span> <span class="kw">END</span>) <span class="kw">AS</span> fantasy_count,
+    <span class="fn">SUM</span>(<span class="kw">CASE WHEN</span> <span class="cl">genre</span> = <span class="st">'Classic'</span>  <span class="kw">THEN</span> <span class="nm">1</span> <span class="kw">ELSE</span> <span class="nm">0</span> <span class="kw">END</span>) <span class="kw">AS</span> classic_count
+<span class="kw">FROM</span> <span class="tb">books</span>;</pre>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:52px 20px 20px">
+    <div style="font-size:3.5rem;margin-bottom:12px">🐬</div>
+    <p style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:var(--mysql-blue);margin-bottom:8px">You're now a SQL Developer!</p>
+    <p style="color:var(--text2);font-style:italic">Practice every day. Write queries for real datasets. Build something.</p>
+  </div>
+</section>
+
+</main>
+
+<button id="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">▲</button>
+
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks  = document.querySelectorAll('.nav-a');
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const l = document.querySelector(`.nav-a[href="#${e.target.id}"]`);
+        if (l) l.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px' });
+  sections.forEach(s => obs.observe(s));
+
+  window.addEventListener('scroll', () => {
+    const el = document.documentElement;
+    const pct = (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100;
+    document.getElementById('prog').style.width = pct + '%';
+    document.getElementById('prog-lbl').textContent = Math.round(pct) + '%';
+    document.getElementById('top-btn').classList.toggle('show', el.scrollTop > 400);
+  });
+
+  function copyCode(btn) {
+    const pre = btn.closest('.code-wrap').querySelector('pre');
+    navigator.clipboard.writeText(pre.innerText).then(() => {
+      btn.textContent = '✓ Copied';
+      btn.classList.add('ok');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 2000);
+    });
+  }
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+  }
+
+  function filterNav(q) {
+    q = q.toLowerCase();
+    document.querySelectorAll('.nav-a').forEach(l => {
+      l.style.display = l.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+  }
+</script>
+</body>
+</html>

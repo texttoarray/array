@@ -1,0 +1,2247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐍 The Complete Python Mastery Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0d1117;
+    --bg2:       #161b22;
+    --bg3:       #1c2333;
+    --surface:   #21262d;
+    --border:    #30363d;
+    --py-blue:   #4d9fdc;
+    --py-yellow: #ffd43b;
+    --py-green:  #4ec9b0;
+    --accent:    #58a6ff;
+    --danger:    #ff7b72;
+    --success:   #3fb950;
+    --text:      #e6edf3;
+    --text2:     #8b949e;
+    --text3:     #c9d1d9;
+    --code-bg:   #161b22;
+    --ex-bg:     #1a1d2e;
+    --ans-bg:    #0d1f17;
+    --tip-bg:    #1f1a0d;
+    --sidebar-w: 290px;
+    --header-h:  64px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 24px); }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ── HEADER ─────────────────────────────────────────────────── */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: var(--header-h);
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 28px;
+    gap: 16px;
+  }
+  .header-brand {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 1.15rem; font-weight: 700; color: var(--text);
+    white-space: nowrap;
+  }
+  .header-brand .snake { font-size: 1.4rem; }
+  .header-brand span { color: var(--py-yellow); }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .progress-bar-wrap {
+    width: 140px; height: 6px;
+    background: var(--surface);
+    border-radius: 99px; overflow: hidden;
+  }
+  #progress-bar {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--py-blue), var(--py-yellow));
+    transition: width 0.3s ease;
+    border-radius: 99px;
+  }
+  #progress-label { font-size: 0.75rem; color: var(--text2); white-space: nowrap; }
+  #menu-toggle {
+    display: none; background: none; border: none;
+    color: var(--text); cursor: pointer; font-size: 1.4rem; padding: 4px;
+  }
+
+  /* ── SIDEBAR ─────────────────────────────────────────────────── */
+  #sidebar {
+    position: fixed; top: var(--header-h); left: 0; bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 90;
+    padding: 24px 0 40px;
+    transition: transform 0.3s ease;
+  }
+  #sidebar::-webkit-scrollbar { width: 4px; }
+  #sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .sidebar-section-label {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text2);
+    padding: 16px 20px 6px;
+  }
+  .nav-link {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 20px;
+    font-size: 0.82rem; color: var(--text2);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all 0.15s ease;
+    line-height: 1.4;
+  }
+  .nav-link:hover { color: var(--text); background: var(--surface); }
+  .nav-link.active {
+    color: var(--py-yellow); border-left-color: var(--py-yellow);
+    background: rgba(255,212,59,0.06);
+    font-weight: 600;
+  }
+  .nav-link .num {
+    font-size: 0.7rem; font-weight: 700; color: var(--py-blue);
+    min-width: 20px;
+  }
+
+  /* ── MAIN CONTENT ─────────────────────────────────────────────── */
+  #content {
+    margin-left: var(--sidebar-w);
+    margin-top: var(--header-h);
+    padding: 48px 60px 100px;
+    max-width: 1000px;
+  }
+
+  /* ── COVER ─────────────────────────────────────────────────── */
+  .cover {
+    text-align: center;
+    padding: 80px 20px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(77,159,220,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(255,212,59,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .cover-emoji { font-size: 5rem; display: block; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  .cover h1 {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 800; line-height: 1.15;
+    background: linear-gradient(135deg, #fff 0%, var(--py-yellow) 50%, var(--py-blue) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+  }
+  .cover-sub {
+    font-size: 1.25rem; color: var(--py-blue); font-weight: 600;
+    letter-spacing: 0.04em; margin-bottom: 12px;
+  }
+  .cover-tagline { font-size: 1rem; color: var(--text2); font-style: italic; margin-bottom: 32px; }
+  .cover-badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .badge {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 99px; padding: 6px 16px;
+    font-size: 0.82rem; font-weight: 600; color: var(--text3);
+  }
+  .badge.yellow { border-color: var(--py-yellow); color: var(--py-yellow); }
+  .badge.blue   { border-color: var(--py-blue);   color: var(--py-blue); }
+  .badge.green  { border-color: var(--py-green);  color: var(--py-green); }
+
+  /* ── MODULES / SECTIONS ─────────────────────────────────────── */
+  .module {
+    margin-bottom: 72px;
+    animation: fadeUp 0.4s ease both;
+  }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  .module-header {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 32px; padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+    position: relative;
+  }
+  .module-header::after {
+    content: ''; position: absolute; bottom: -2px; left: 0;
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, var(--py-yellow), var(--py-blue));
+  }
+  .module-num {
+    background: linear-gradient(135deg, var(--py-yellow), #e6a800);
+    color: #000; font-weight: 800; font-size: 0.85rem;
+    border-radius: 8px; padding: 6px 12px;
+    white-space: nowrap;
+  }
+  .module-title {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    font-weight: 700; color: var(--text);
+  }
+
+  h2.section-title {
+    font-size: 1.15rem; font-weight: 700;
+    color: var(--py-blue);
+    margin: 36px 0 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  h2.section-title::before {
+    content: ''; display: block;
+    width: 4px; height: 20px; border-radius: 2px;
+    background: linear-gradient(to bottom, var(--py-yellow), var(--py-blue));
+    flex-shrink: 0;
+  }
+
+  h3.subsection {
+    font-size: 0.95rem; font-weight: 700;
+    color: var(--py-green);
+    margin: 24px 0 10px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+
+  p { color: var(--text3); margin-bottom: 14px; }
+
+  /* ── CODE BLOCKS ─────────────────────────────────────────────── */
+  .code-wrap {
+    position: relative;
+    margin: 18px 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .code-header {
+    background: var(--surface);
+    padding: 8px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+  .code-dots { display: flex; gap: 6px; }
+  .code-dots span {
+    width: 11px; height: 11px; border-radius: 50%;
+  }
+  .code-dots span:nth-child(1) { background: #ff5f56; }
+  .code-dots span:nth-child(2) { background: #ffbd2e; }
+  .code-dots span:nth-child(3) { background: #27c93f; }
+  .code-lang { font-size: 0.7rem; color: var(--text2); font-family: 'JetBrains Mono', monospace; }
+  .copy-btn {
+    background: none; border: 1px solid var(--border);
+    color: var(--text2); cursor: pointer;
+    font-size: 0.7rem; padding: 3px 10px;
+    border-radius: 4px; font-family: 'Outfit', sans-serif;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { background: var(--bg3); color: var(--text); }
+  .copy-btn.copied { color: var(--success); border-color: var(--success); }
+  pre {
+    background: var(--code-bg);
+    padding: 20px 22px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.83rem;
+    line-height: 1.7;
+    tab-size: 4;
+  }
+  pre::-webkit-scrollbar { height: 4px; }
+  pre::-webkit-scrollbar-thumb { background: var(--border); }
+
+  /* Syntax highlighting */
+  .kw  { color: #ff7b72; }  /* keywords */
+  .fn  { color: #d2a8ff; }  /* functions */
+  .st  { color: #a5d6ff; }  /* strings */
+  .cm  { color: #8b949e; font-style: italic; } /* comments */
+  .nm  { color: #ffa657; }  /* numbers */
+  .op  { color: #79c0ff; }  /* operators */
+  .bi  { color: #79c0ff; }  /* builtins */
+
+  /* ── CALLOUT BOXES ─────────────────────────────────────────────── */
+  .callout {
+    border-radius: 10px; padding: 18px 22px;
+    margin: 18px 0;
+    border: 1px solid;
+  }
+  .callout-header {
+    font-weight: 700; font-size: 0.85rem;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .callout p, .callout li { font-size: 0.88rem; margin-bottom: 4px; }
+  .callout ul { padding-left: 18px; }
+  .callout li { color: var(--text3); margin-bottom: 5px; }
+  .callout code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background: rgba(255,255,255,0.07);
+    padding: 1px 5px; border-radius: 4px;
+  }
+
+  .tip     { background: rgba(255,212,59,0.06); border-color: rgba(255,212,59,0.3); }
+  .tip .callout-header { color: var(--py-yellow); }
+
+  .exercise { background: var(--ex-bg); border-color: rgba(77,159,220,0.35); }
+  .exercise .callout-header { color: var(--py-blue); }
+
+  .answer-wrap { margin: 18px 0; }
+  .answer-toggle {
+    width: 100%; text-align: left;
+    background: var(--ans-bg); border: 1px solid rgba(63,185,80,0.35);
+    color: var(--success); cursor: pointer;
+    padding: 12px 18px; border-radius: 10px;
+    font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: background 0.2s;
+  }
+  .answer-toggle:hover { background: rgba(63,185,80,0.1); }
+  .answer-toggle .chevron { transition: transform 0.25s; font-size: 0.9rem; }
+  .answer-toggle.open .chevron { transform: rotate(180deg); }
+  .answer-body {
+    display: none;
+    background: var(--ans-bg);
+    border: 1px solid rgba(63,185,80,0.25);
+    border-top: none; border-radius: 0 0 10px 10px;
+    padding: 0;
+    overflow: hidden;
+  }
+  .answer-body.open { display: block; }
+  .answer-body pre { border-radius: 0; border: none; }
+
+  /* ── TABLES ─────────────────────────────────────────────────── */
+  .table-wrap { overflow-x: auto; margin: 18px 0; border-radius: 10px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    background: var(--surface); color: var(--py-yellow);
+    font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 10px 16px; font-size: 0.85rem; color: var(--text3);
+    border-bottom: 1px solid rgba(48,54,61,0.5);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  td:first-child { color: var(--py-blue); }
+
+  /* ── INLINE CODE ─────────────────────────────────────────────── */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82em;
+    background: var(--surface);
+    color: var(--py-green);
+    padding: 2px 6px; border-radius: 4px;
+    border: 1px solid var(--border);
+  }
+
+  /* ── TOC MODULE LIST ─────────────────────────────────────────── */
+  .toc-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px; margin: 24px 0 48px;
+  }
+  .toc-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px 18px;
+    text-decoration: none; color: var(--text3);
+    display: flex; align-items: center; gap: 14px;
+    transition: all 0.2s;
+  }
+  .toc-card:hover {
+    border-color: var(--py-yellow); color: var(--text);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .toc-card .toc-num {
+    background: var(--surface); border: 1px solid var(--border);
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700; color: var(--py-yellow);
+    flex-shrink: 0;
+  }
+  .toc-card .toc-title { font-size: 0.88rem; font-weight: 600; line-height: 1.3; }
+  .toc-card .toc-desc  { font-size: 0.75rem; color: var(--text2); margin-top: 2px; }
+
+  /* ── CHAPTER DIVIDER ─────────────────────────────────────────── */
+  .chapter-divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 60px 0;
+  }
+
+  /* ── RESPONSIVE ─────────────────────────────────────────────── */
+  @media(max-width: 900px) {
+    #sidebar { transform: translateX(-100%); }
+    #sidebar.open { transform: translateX(0); }
+    #content { margin-left: 0; padding: 32px 20px 80px; }
+    #menu-toggle { display: block; }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 85; }
+    .overlay.show { display: block; }
+  }
+  @media(max-width: 480px) {
+    #content { padding: 20px 14px 80px; }
+    .cover h1 { font-size: 1.8rem; }
+  }
+
+  /* ── SCROLL TO TOP ─────────────────────────────────────────────── */
+  #top-btn {
+    position: fixed; bottom: 32px; right: 32px;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--py-yellow); color: #000;
+    border: none; cursor: pointer; font-size: 1.1rem;
+    display: none; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    transition: transform 0.2s;
+    z-index: 99;
+  }
+  #top-btn.show { display: flex; }
+  #top-btn:hover { transform: scale(1.1); }
+
+  /* ── SEARCH ─────────────────────────────────────────────────── */
+  #search {
+    width: 100%; background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 8px 14px;
+    color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.82rem;
+    margin: 0 0 12px;
+  }
+  #search::placeholder { color: var(--text2); }
+  #search:focus { outline: none; border-color: var(--py-blue); }
+
+  .highlight-match { background: rgba(255,212,59,0.35); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- Overlay for mobile -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- Header -->
+<header>
+  <div class="header-brand">
+    <span class="snake">🐍</span>
+    <span>Python <span>Mastery</span></span>
+  </div>
+  <div class="header-right">
+    <div class="progress-bar-wrap"><div id="progress-bar"></div></div>
+    <span id="progress-label">0%</span>
+    <button id="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">☰</button>
+  </div>
+</header>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+  <div style="padding:0 12px 12px">
+    <input id="search" type="search" placeholder="🔍  Search topics…" oninput="filterNav(this.value)" />
+  </div>
+  <div class="sidebar-section-label">Modules</div>
+
+  <a class="nav-link active" href="#cover"><span class="num">🏠</span> Home</a>
+
+  <a class="nav-link" href="#mod1"><span class="num">01</span> Introduction & Setup</a>
+  <a class="nav-link" href="#mod2"><span class="num">02</span> Variables & Data Types</a>
+  <a class="nav-link" href="#mod3"><span class="num">03</span> Strings</a>
+  <a class="nav-link" href="#mod4"><span class="num">04</span> Control Flow</a>
+  <a class="nav-link" href="#mod5"><span class="num">05</span> Loops</a>
+  <a class="nav-link" href="#mod6"><span class="num">06</span> Functions</a>
+  <a class="nav-link" href="#mod7"><span class="num">07</span> Data Structures</a>
+  <a class="nav-link" href="#mod8"><span class="num">08</span> File I/O & Errors</a>
+  <a class="nav-link" href="#mod9"><span class="num">09</span> OOP</a>
+  <a class="nav-link" href="#mod10"><span class="num">10</span> Modules & Packages</a>
+  <a class="nav-link" href="#mod11"><span class="num">11</span> NumPy</a>
+  <a class="nav-link" href="#mod12"><span class="num">12</span> Pandas</a>
+  <a class="nav-link" href="#mod13"><span class="num">13</span> Capstone Projects</a>
+
+  <div class="sidebar-section-label" style="margin-top:16px">Appendix</div>
+  <a class="nav-link" href="#appendix"><span class="num">A</span> Quick References</a>
+</nav>
+
+<!-- Main Content -->
+<main id="content">
+
+  <!-- COVER -->
+  <section id="cover" class="cover module">
+    <span class="cover-emoji">🐍</span>
+    <h1>The Complete Python Mastery Course</h1>
+    <p class="cover-sub">Python · NumPy · Pandas</p>
+    <p class="cover-tagline">From Absolute Beginner → Professional Developer</p>
+    <div class="cover-badges">
+      <span class="badge yellow">80+ Exercises</span>
+      <span class="badge blue">Full Solutions</span>
+      <span class="badge green">Real-World Scenarios</span>
+      <span class="badge">Beginner Friendly</span>
+    </div>
+    <div style="margin-top:48px">
+      <div class="toc-grid">
+        <a class="toc-card" href="#mod1"><div class="toc-num">1</div><div><div class="toc-title">Introduction & Setup</div><div class="toc-desc">Install Python, first program</div></div></a>
+        <a class="toc-card" href="#mod2"><div class="toc-num">2</div><div><div class="toc-title">Variables & Data Types</div><div class="toc-desc">int, float, str, bool, None</div></div></a>
+        <a class="toc-card" href="#mod3"><div class="toc-num">3</div><div><div class="toc-title">Strings</div><div class="toc-desc">Indexing, slicing, f-strings</div></div></a>
+        <a class="toc-card" href="#mod4"><div class="toc-num">4</div><div><div class="toc-title">Control Flow</div><div class="toc-desc">if / elif / else, ternary</div></div></a>
+        <a class="toc-card" href="#mod5"><div class="toc-num">5</div><div><div class="toc-title">Loops</div><div class="toc-desc">for, while, comprehensions</div></div></a>
+        <a class="toc-card" href="#mod6"><div class="toc-num">6</div><div><div class="toc-title">Functions</div><div class="toc-desc">args, kwargs, lambda, scope</div></div></a>
+        <a class="toc-card" href="#mod7"><div class="toc-num">7</div><div><div class="toc-title">Data Structures</div><div class="toc-desc">List, Tuple, Dict, Set</div></div></a>
+        <a class="toc-card" href="#mod8"><div class="toc-num">8</div><div><div class="toc-title">File I/O & Errors</div><div class="toc-desc">CSV, JSON, exceptions</div></div></a>
+        <a class="toc-card" href="#mod9"><div class="toc-num">9</div><div><div class="toc-title">OOP</div><div class="toc-desc">Classes, inheritance, properties</div></div></a>
+        <a class="toc-card" href="#mod10"><div class="toc-num">10</div><div><div class="toc-title">Modules & Packages</div><div class="toc-desc">stdlib, venv, pip</div></div></a>
+        <a class="toc-card" href="#mod11"><div class="toc-num">11</div><div><div class="toc-title">NumPy</div><div class="toc-desc">Arrays, broadcasting, linalg</div></div></a>
+        <a class="toc-card" href="#mod12"><div class="toc-num">12</div><div><div class="toc-title">Pandas</div><div class="toc-desc">DataFrames, groupby, merge</div></div></a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="chapter-divider">
+
+  <!-- MODULE 1 -->
+  <section id="mod1" class="module">
+    <div class="module-header">
+      <span class="module-num">MODULE 01</span>
+      <h1 class="module-title">Introduction & Setup</h1>
+    </div>
+
+    <h2 class="section-title">1.1  What is Python?</h2>
+    <p>Python is a high-level, interpreted, general-purpose programming language created by Guido van Rossum in 1991. Its design philosophy emphasises code readability and simplicity, making it one of the most beginner-friendly languages while also being powerful enough for cutting-edge AI and data science.</p>
+
+    <h2 class="section-title">1.2  Why Learn Python?</h2>
+    <ul style="padding-left:20px;color:var(--text3);line-height:2">
+      <li>Web development (Django, Flask, FastAPI)</li>
+      <li>Data Science & Machine Learning (NumPy, Pandas, scikit-learn, TensorFlow)</li>
+      <li>Automation & scripting — save hours of repetitive work</li>
+      <li>Finance & Quantitative Analysis</li>
+      <li>Scientific computing & research</li>
+      <li>DevOps, Cloud, and APIs</li>
+    </ul>
+
+    <h2 class="section-title">1.3  Installing Python</h2>
+    <p>Step 1: Visit <strong>https://www.python.org/downloads/</strong> and download Python 3.11+ for your OS.</p>
+    <p>Step 2: During installation on Windows, tick <strong>"Add Python to PATH"</strong>.</p>
+    <p>Step 3: Verify installation:</p>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>python --version   <span class="cm"># e.g. Python 3.11.4</span>
+pip --version      <span class="cm"># package manager</span></pre>
+    </div>
+
+    <h2 class="section-title">1.4  Installing Libraries</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>pip install numpy pandas matplotlib jupyter</pre>
+    </div>
+
+    <h2 class="section-title">1.5  Your First Python Program</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm"># my_first_program.py</span>
+<span class="bi">print</span>(<span class="st">"Hello, World!"</span>)
+<span class="bi">print</span>(<span class="st">"Welcome to Python! 🐍"</span>)</pre>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-header">💡 TIP</div>
+      <ul>
+        <li>VS Code + Python extension is the best free IDE for beginners.</li>
+        <li>Jupyter Notebook is great for interactive coding: run <code>jupyter notebook</code></li>
+        <li>Online alternative: <strong>https://replit.com</strong> — no installation needed.</li>
+      </ul>
+    </div>
+
+    <div class="callout exercise">
+      <div class="callout-header">✏️ EXERCISE</div>
+      <ol style="padding-left:18px;line-height:2">
+        <li>Install Python and create a file called <code>hello.py</code></li>
+        <li>Print your name, age, and favourite hobby on separate lines.</li>
+        <li>Add a comment at the top describing what the program does.</li>
+      </ol>
+    </div>
+    <div class="answer-wrap">
+      <button class="answer-toggle" onclick="toggleAnswer(this)">✅ Show Answer <span class="chevron">▼</span></button>
+      <div class="answer-body">
+        <pre><span class="cm"># Introduces me to Python</span>
+<span class="bi">print</span>(<span class="st">"Name: Alex"</span>)
+<span class="bi">print</span>(<span class="st">"Age: 25"</span>)
+<span class="bi">print</span>(<span class="st">"Hobby: Hiking"</span>)</pre>
+      </div>
+    </div>
+  </section>
+
+  <hr class="chapter-divider">
+
+  <!-- MODULE 2 -->
+  <section id="mod2" class="module">
+    <div class="module-header">
+      <span class="module-num">MODULE 02</span>
+      <h1 class="module-title">Variables & Data Types</h1>
+    </div>
+
+    <h2 class="section-title">2.1  What is a Variable?</h2>
+    <p>A variable is a labelled container that stores a value. In Python you do NOT need to declare a type — Python infers it automatically (dynamic typing).</p>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>name    = <span class="st">"Alice"</span>          <span class="cm"># str  – text</span>
+age     = <span class="nm">30</span>               <span class="cm"># int  – whole number</span>
+height  = <span class="nm">1.75</span>             <span class="cm"># float – decimal</span>
+is_cool = <span class="kw">True</span>             <span class="cm"># bool – True / False</span>
+nothing = <span class="kw">None</span>             <span class="cm"># NoneType – absence of value</span>
+
+<span class="bi">print</span>(<span class="bi">type</span>(name))          <span class="cm"># &lt;class 'str'&gt;</span>
+<span class="bi">print</span>(<span class="bi">type</span>(age))           <span class="cm"># &lt;class 'int'&gt;</span>
+<span class="bi">print</span>(<span class="bi">type</span>(height))        <span class="cm"># &lt;class 'float'&gt;</span></pre>
+    </div>
+
+    <h2 class="section-title">2.2  Core Data Types</h2>
+    <div class="table-wrap">
+      <table><thead><tr><th>Type</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>int</td><td>42, -7, 1_000_000</td></tr>
+        <tr><td>float</td><td>3.14, -0.001, 2.5e3</td></tr>
+        <tr><td>str</td><td>"hello", 'world'</td></tr>
+        <tr><td>bool</td><td>True, False</td></tr>
+        <tr><td>NoneType</td><td>None</td></tr>
+        <tr><td>complex</td><td>3 + 4j</td></tr>
+      </tbody></table>
+    </div>
+
+    <h2 class="section-title">2.3  Arithmetic Operators</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>a, b = <span class="nm">10</span>, <span class="nm">3</span>
+<span class="bi">print</span>(a + b)    <span class="cm"># 13   addition</span>
+<span class="bi">print</span>(a - b)    <span class="cm"># 7    subtraction</span>
+<span class="bi">print</span>(a * b)    <span class="cm"># 30   multiplication</span>
+<span class="bi">print</span>(a / b)    <span class="cm"># 3.333... true division</span>
+<span class="bi">print</span>(a // b)   <span class="cm"># 3    floor division</span>
+<span class="bi">print</span>(a % b)    <span class="cm"># 1    modulus (remainder)</span>
+<span class="bi">print</span>(a ** b)   <span class="cm"># 1000 exponentiation</span></pre>
+    </div>
+
+    <h2 class="section-title">2.4  Comparison & Logical Operators</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="bi">print</span>(<span class="nm">5</span> == <span class="nm">5</span>)   <span class="cm"># True   equal</span>
+<span class="bi">print</span>(<span class="nm">5</span> != <span class="nm">3</span>)   <span class="cm"># True   not equal</span>
+<span class="bi">print</span>(<span class="nm">5</span> > <span class="nm">3</span>)    <span class="cm"># True   greater than</span>
+<span class="bi">print</span>(<span class="nm">5</span> <= <span class="nm">5</span>)   <span class="cm"># True   less than or equal</span>
+
+<span class="bi">print</span>(<span class="kw">True</span> <span class="kw">and</span> <span class="kw">False</span>)  <span class="cm"># False</span>
+<span class="bi">print</span>(<span class="kw">True</span> <span class="kw">or</span>  <span class="kw">False</span>)  <span class="cm"># True</span>
+<span class="bi">print</span>(<span class="kw">not</span> <span class="kw">True</span>)        <span class="cm"># False</span></pre>
+    </div>
+
+    <h2 class="section-title">2.5  Type Conversion</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>x = <span class="st">"42"</span>
+y = <span class="bi">int</span>(x)          <span class="cm"># str → int</span>
+z = <span class="bi">float</span>(x)        <span class="cm"># str → float</span>
+w = <span class="bi">str</span>(<span class="nm">100</span>)        <span class="cm"># int → str</span>
+b = <span class="bi">bool</span>(<span class="nm">0</span>)         <span class="cm"># int → bool (0 → False)</span>
+
+<span class="cm"># Two-step conversion</span>
+<span class="bi">int</span>(<span class="bi">float</span>(<span class="st">"3.14"</span>))  <span class="cm"># 3</span></pre>
+    </div>
+
+    <h2 class="section-title">2.6  Multiple Assignment & Swapping</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>x, y, z = <span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>
+
+<span class="cm"># Swap without a temp variable — pure Python magic!</span>
+a, b = <span class="nm">10</span>, <span class="nm">20</span>
+a, b = b, a
+<span class="bi">print</span>(a, b)   <span class="cm"># 20 10</span>
+
+<span class="cm"># Same value to many variables</span>
+p = q = r = <span class="nm">0</span></pre>
+    </div>
+
+    <div class="callout tip">
+      <div class="callout-header">💡 TIP</div>
+      <ul>
+        <li>Variable names are case-sensitive: <code>myVar</code> ≠ <code>myvar</code> ≠ <code>MYVAR</code></li>
+        <li>Use <strong>snake_case</strong> — it's the Python convention (PEP 8).</li>
+        <li>Avoid single-letter names except for counters (<code>i</code>, <code>j</code>, <code>k</code>).</li>
+      </ul>
+    </div>
+
+    <div class="callout exercise">
+      <div class="callout-header">✏️ EXERCISE — Payroll Calculator</div>
+      <p><strong>Scenario:</strong> You are building a simple payroll calculator for a small café.</p>
+      <ol style="padding-left:18px;line-height:2">
+        <li>Create variables: <code>employee_name</code>, <code>hourly_rate</code>, <code>hours_worked</code>, <code>tax_rate</code> (use realistic values)</li>
+        <li>Calculate <code>gross_pay</code>, <code>tax_amount</code>, and <code>net_pay</code></li>
+        <li>Print a formatted payslip showing all values</li>
+        <li>Verify all types using <code>type()</code></li>
+      </ol>
+    </div>
+    <div class="answer-wrap">
+      <button class="answer-toggle" onclick="toggleAnswer(this)">✅ Show Answer <span class="chevron">▼</span></button>
+      <div class="answer-body">
+        <pre>employee_name = <span class="st">"Maria"</span>
+hourly_rate   = <span class="nm">15.50</span>
+hours_worked  = <span class="nm">40</span>
+tax_rate      = <span class="nm">0.20</span>
+
+gross_pay   = hourly_rate * hours_worked   <span class="cm"># 620.0</span>
+tax_amount  = gross_pay * tax_rate         <span class="cm"># 124.0</span>
+net_pay     = gross_pay - tax_amount       <span class="cm"># 496.0</span>
+
+<span class="bi">print</span>(<span class="st">"===== PAYSLIP ====="</span>)
+<span class="bi">print</span>(<span class="st">"Employee  :"</span>, employee_name)
+<span class="bi">print</span>(<span class="st">"Gross Pay : $"</span>, gross_pay)
+<span class="bi">print</span>(<span class="st">"Tax (20%) : $"</span>, tax_amount)
+<span class="bi">print</span>(<span class="st">"Net Pay   : $"</span>, net_pay)
+
+<span class="bi">print</span>(<span class="bi">type</span>(employee_name))  <span class="cm"># &lt;class 'str'&gt;</span>
+<span class="bi">print</span>(<span class="bi">type</span>(hourly_rate))    <span class="cm"># &lt;class 'float'&gt;</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <hr class="chapter-divider">
+
+  <!-- MODULE 3 -->
+  <section id="mod3" class="module">
+    <div class="module-header">
+      <span class="module-num">MODULE 03</span>
+      <h1 class="module-title">Strings: The Language of Data</h1>
+    </div>
+
+    <h2 class="section-title">3.1  Creating Strings</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>s1 = <span class="st">"Hello"</span>             <span class="cm"># double quotes</span>
+s2 = <span class="st">'World'</span>             <span class="cm"># single quotes (identical)</span>
+s3 = <span class="st">"""This is a
+multi-line string."""</span>     <span class="cm"># triple quotes</span>
+s4 = <span class="st">r"C:\Users\file"</span>   <span class="cm"># raw string — backslash is literal</span></pre>
+    </div>
+
+    <h2 class="section-title">3.2  String Indexing & Slicing ← MEMORISE THIS</h2>
+    <p>Python uses zero-based indexing. Negative indices count from the end.</p>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>word = <span class="st">"Python"</span>
+<span class="cm">#       P y t h o n</span>
+<span class="cm">#       0 1 2 3 4 5   (positive)</span>
+<span class="cm">#      -6-5-4-3-2-1   (negative)</span>
+
+<span class="bi">print</span>(word[<span class="nm">0</span>])      <span class="cm"># P      — first character</span>
+<span class="bi">print</span>(word[-<span class="nm">1</span>])     <span class="cm"># n      — last character</span>
+<span class="bi">print</span>(word[<span class="nm">2</span>:<span class="nm">5</span>])    <span class="cm"># tho    — slice [start:stop] (stop excluded)</span>
+<span class="bi">print</span>(word[:<span class="nm">3</span>])     <span class="cm"># Pyt    — from start</span>
+<span class="bi">print</span>(word[<span class="nm">3</span>:])     <span class="cm"># hon    — to end</span>
+<span class="bi">print</span>(word[::<span class="nm">2</span>])    <span class="cm"># Pto    — every 2nd character (step)</span>
+<span class="bi">print</span>(word[::-<span class="nm">1</span>])   <span class="cm"># nohtyP — REVERSE the string!</span></pre>
+    </div>
+
+    <h2 class="section-title">3.3  Essential String Methods</h2>
+    <div class="table-wrap">
+      <table><thead><tr><th>Method</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td>.upper() / .lower()</td><td>Convert case</td></tr>
+        <tr><td>.strip() / .lstrip() / .rstrip()</td><td>Remove whitespace</td></tr>
+        <tr><td>.split(sep)</td><td>Split into a list</td></tr>
+        <tr><td>.join(iterable)</td><td>Join a list into string</td></tr>
+        <tr><td>.replace(old, new)</td><td>Find & replace</td></tr>
+        <tr><td>.find(sub)</td><td>Index of first occurrence (-1 if not found)</td></tr>
+        <tr><td>.count(sub)</td><td>Count occurrences</td></tr>
+        <tr><td>.startswith(s) / .endswith(s)</td><td>Boolean checks</td></tr>
+        <tr><td>.isdigit() / .isalpha()</td><td>Character type checks</td></tr>
+        <tr><td>.zfill(n)</td><td>Pad with zeros on the left</td></tr>
+        <tr><td>.center(n, char)</td><td>Centre in a field of width n</td></tr>
+      </tbody></table>
+    </div>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>text = <span class="st">"  Hello, World!  "</span>
+<span class="bi">print</span>(text.strip())              <span class="cm"># "Hello, World!"</span>
+<span class="bi">print</span>(text.strip().lower())      <span class="cm"># "hello, world!"</span>
+<span class="bi">print</span>(text.strip().split(<span class="st">", "</span>))  <span class="cm"># ["Hello", "World!"]</span>
+
+words = [<span class="st">"Python"</span>, <span class="st">"is"</span>, <span class="st">"awesome"</span>]
+<span class="bi">print</span>(<span class="st">" "</span>.join(words))           <span class="cm"># "Python is awesome"</span>
+
+email = <span class="st">"user@example.com"</span>
+<span class="bi">print</span>(email.split(<span class="st">"@"</span>)[<span class="nm">1</span>])       <span class="cm"># "example.com"</span>
+<span class="bi">print</span>(email.replace(<span class="st">"@"</span>, <span class="st">" at "</span>)) <span class="cm"># "user at example.com"</span></pre>
+    </div>
+
+    <h2 class="section-title">3.4  f-Strings — Modern Python's Superpower</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>name  = <span class="st">"Alice"</span>
+score = <span class="nm">95.678</span>
+
+<span class="bi">print</span>(<span class="st">f"Hello, {name}!"</span>)
+<span class="bi">print</span>(<span class="st">f"Score: {score:.2f}"</span>)       <span class="cm"># Score: 95.68 (2 decimal places)</span>
+<span class="bi">print</span>(<span class="st">f"Score: {score:08.2f}"</span>)     <span class="cm"># Score: 00095.68 (zero-padded)</span>
+<span class="bi">print</span>(<span class="st">f"2 + 2 = {2 + 2}"</span>)          <span class="cm"># expressions inside {}</span>
+<span class="bi">print</span>(<span class="st">f"Name upper: {name.upper()}"</span>)
+
+<span class="cm"># Debug shorthand (Python 3.8+)</span>
+x = <span class="nm">42</span>
+<span class="bi">print</span>(<span class="st">f"{x = }"</span>)                   <span class="cm"># x = 42</span></pre>
+    </div>
+
+    <h2 class="section-title">3.5  Format Spec Cheat Sheet</h2>
+    <div class="table-wrap">
+      <table><thead><tr><th>Format Spec</th><th>Meaning & Example</th></tr></thead>
+      <tbody>
+        <tr><td>{:.2f}</td><td>Float 2 decimal places → 3.14</td></tr>
+        <tr><td>{:,}</td><td>Thousand separator → 1,000,000</td></tr>
+        <tr><td>{:>10}</td><td>Right-align in width 10</td></tr>
+        <tr><td>{:&lt;10}</td><td>Left-align in width 10</td></tr>
+        <tr><td>{:^10}</td><td>Centre in width 10</td></tr>
+        <tr><td>{:05d}</td><td>Zero-pad integer → 00042</td></tr>
+        <tr><td>{:.2%}</td><td>Percentage → 75.00%</td></tr>
+        <tr><td>{:e}</td><td>Scientific notation → 1.23e+04</td></tr>
+        <tr><td>{:b}</td><td>Binary → 1010</td></tr>
+        <tr><td>{:x}</td><td>Hex → ff</td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="callout exercise">
+      <div class="callout-header">✏️ EXERCISE — Coffee Shop Receipt</div>
+      <p><strong>Scenario:</strong> Build a receipt generator for a coffee shop.</p>
+      <ol style="padding-left:18px;line-height:2">
+        <li>Store: <code>shop_name="The Daily Grind"</code>, <code>item="Latte"</code>, <code>qty=3</code>, <code>price=4.75</code>, <code>customer="Bob"</code></li>
+        <li>Calculate <code>total = qty * price</code></li>
+        <li>Print a formatted receipt with shop name centred in a 40-char line of <code>=</code></li>
+        <li>Extract the domain from <code>"orders@dailygrind.com"</code></li>
+        <li>Count how many vowels are in the item name</li>
+      </ol>
+    </div>
+    <div class="answer-wrap">
+      <button class="answer-toggle" onclick="toggleAnswer(this)">✅ Show Answer <span class="chevron">▼</span></button>
+      <div class="answer-body">
+        <pre>shop_name = <span class="st">"The Daily Grind"</span>
+item      = <span class="st">"Latte"</span>
+qty       = <span class="nm">3</span>
+price     = <span class="nm">4.75</span>
+customer  = <span class="st">"Bob"</span>
+
+total = qty * price
+
+<span class="bi">print</span>(<span class="st">"="</span> * <span class="nm">40</span>)
+<span class="bi">print</span>(shop_name.center(<span class="nm">40</span>))
+<span class="bi">print</span>(<span class="st">"="</span> * <span class="nm">40</span>)
+<span class="bi">print</span>(<span class="st">f"Customer : {customer}"</span>)
+<span class="bi">print</span>(<span class="st">f"Item     : {item}  x{qty}  @ ${price:.2f} each"</span>)
+<span class="bi">print</span>(<span class="st">f"Total    : ${total:.2f}"</span>)
+<span class="bi">print</span>(<span class="st">f"Thank you for visiting {shop_name.upper()}!"</span>)
+
+email = <span class="st">"orders@dailygrind.com"</span>
+<span class="bi">print</span>(<span class="st">"Domain:"</span>, email.split(<span class="st">"@"</span>)[<span class="nm">1</span>])  <span class="cm"># dailygrind.com</span>
+
+vowels = <span class="bi">sum</span>(<span class="nm">1</span> <span class="kw">for</span> ch <span class="kw">in</span> item.lower() <span class="kw">if</span> ch <span class="kw">in</span> <span class="st">"aeiou"</span>)
+<span class="bi">print</span>(<span class="st">f"Vowels in '{item}': {vowels}"</span>)  <span class="cm"># 2</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <hr class="chapter-divider">
+
+  <!-- MODULE 4 -->
+  <section id="mod4" class="module">
+    <div class="module-header">
+      <span class="module-num">MODULE 04</span>
+      <h1 class="module-title">Control Flow: if / elif / else</h1>
+    </div>
+
+    <h2 class="section-title">4.1  The if Statement</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>temperature = <span class="nm">35</span>
+<span class="kw">if</span> temperature > <span class="nm">30</span>:
+    <span class="bi">print</span>(<span class="st">"It is hot outside!"</span>)   <span class="cm"># 4-space indent is mandatory</span></pre>
+    </div>
+
+    <h2 class="section-title">4.2  if / elif / else</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>score = <span class="nm">72</span>
+
+<span class="kw">if</span> score >= <span class="nm">90</span>:
+    grade = <span class="st">"A"</span>
+<span class="kw">elif</span> score >= <span class="nm">80</span>:
+    grade = <span class="st">"B"</span>
+<span class="kw">elif</span> score >= <span class="nm">70</span>:
+    grade = <span class="st">"C"</span>
+<span class="kw">elif</span> score >= <span class="nm">60</span>:
+    grade = <span class="st">"D"</span>
+<span class="kw">else</span>:
+    grade = <span class="st">"F"</span>
+
+<span class="bi">print</span>(<span class="st">f"Grade: {grade}"</span>)   <span class="cm"># Grade: C</span></pre>
+    </div>
+
+    <h2 class="section-title">4.3  Ternary (One-line if)</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm"># value_if_true  if  condition  else  value_if_false</span>
+age = <span class="nm">20</span>
+status = <span class="st">"adult"</span> <span class="kw">if</span> age >= <span class="nm">18</span> <span class="kw">else</span> <span class="st">"minor"</span>
+discount = <span class="nm">0.20</span> <span class="kw">if</span> age >= <span class="nm">65</span> <span class="kw">else</span> <span class="nm">0.0</span></pre>
+    </div>
+
+    <h2 class="section-title">4.4  Truthy & Falsy Values — Critical Knowledge</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm"># FALSY values — evaluated as False in boolean context:</span>
+<span class="kw">False</span>, <span class="kw">None</span>, <span class="nm">0</span>, <span class="nm">0.0</span>, <span class="nm">0j</span>, <span class="st">""</span>, [], (), {}, set()
+
+<span class="cm"># TRUTHY: everything else</span>
+
+name = <span class="st">""</span>
+<span class="kw">if not</span> name:
+    <span class="bi">print</span>(<span class="st">"Name cannot be empty!"</span>)
+
+items = []
+<span class="kw">if not</span> items:
+    <span class="bi">print</span>(<span class="st">"Cart is empty"</span>)</pre>
+    </div>
+
+    <h2 class="section-title">4.5  match / case (Python 3.10+)</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>command = <span class="st">"quit"</span>
+
+<span class="kw">match</span> command:
+    <span class="kw">case</span> <span class="st">"start"</span>:
+        <span class="bi">print</span>(<span class="st">"Starting..."</span>)
+    <span class="kw">case</span> <span class="st">"stop"</span> | <span class="st">"quit"</span>:
+        <span class="bi">print</span>(<span class="st">"Stopping..."</span>)
+    <span class="kw">case</span> _:          <span class="cm"># default (like else)</span>
+        <span class="bi">print</span>(<span class="st">f"Unknown: {command}"</span>)</pre>
+    </div>
+
+    <div class="callout exercise">
+      <div class="callout-header">✏️ EXERCISE — Cinema Ticket Pricing</div>
+      <p><strong>Rules:</strong> Child (0-12) $8 · Teen (13-17) $10 · Adult (18-64) $15 · Senior (65+) $10</p>
+      <p>Tuesday = 20% off · Members get extra $2 off after all discounts</p>
+      <ol style="padding-left:18px;line-height:2">
+        <li>Test: <code>age=25, day="Tuesday", is_member=True</code> → should be <strong>$10</strong></li>
+        <li>Test: <code>age=10, day="Friday", is_member=False</code> → should be <strong>$8</strong></li>
+      </ol>
+    </div>
+    <div class="answer-wrap">
+      <button class="answer-toggle" onclick="toggleAnswer(this)">✅ Show Answer <span class="chevron">▼</span></button>
+      <div class="answer-body">
+        <pre>age       = <span class="nm">25</span>
+day       = <span class="st">"Tuesday"</span>
+is_member = <span class="kw">True</span>
+
+<span class="kw">if</span> age <= <span class="nm">12</span>:   price = <span class="nm">8</span>
+<span class="kw">elif</span> age <= <span class="nm">17</span>: price = <span class="nm">10</span>
+<span class="kw">elif</span> age <= <span class="nm">64</span>: price = <span class="nm">15</span>
+<span class="kw">else</span>:            price = <span class="nm">10</span>
+
+<span class="kw">if</span> day == <span class="st">"Tuesday"</span>:
+    price = price * <span class="nm">0.80</span>
+
+<span class="kw">if</span> is_member:
+    price = price - <span class="nm">2</span>
+
+<span class="bi">print</span>(<span class="st">f"Ticket price: ${price:.2f}"</span>)  <span class="cm"># $10.00</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <hr class="chapter-divider">
+
+  <!-- MODULE 5 -->
+  <section id="mod5" class="module">
+    <div class="module-header">
+      <span class="module-num">MODULE 05</span>
+      <h1 class="module-title">Loops: for & while</h1>
+    </div>
+
+    <h2 class="section-title">5.1  for Loop</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">5</span>):        <span class="cm"># 0, 1, 2, 3, 4</span>
+    <span class="bi">print</span>(i)
+
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, <span class="nm">11</span>, <span class="nm">2</span>): <span class="cm"># 1, 3, 5, 7, 9</span>
+    <span class="bi">print</span>(i)
+
+fruits = [<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"cherry"</span>]
+<span class="kw">for</span> fruit <span class="kw">in</span> fruits:
+    <span class="bi">print</span>(fruit.upper())</pre>
+    </div>
+
+    <h2 class="section-title">5.2  enumerate() — Index + Value</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>students = [<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Carol"</span>]
+<span class="kw">for</span> i, name <span class="kw">in</span> <span class="bi">enumerate</span>(students, start=<span class="nm">1</span>):
+    <span class="bi">print</span>(<span class="st">f"{i}. {name}"</span>)</pre>
+    </div>
+
+    <h2 class="section-title">5.3  zip() — Loop Multiple Lists Together</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>names  = [<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Carol"</span>]
+scores = [<span class="nm">95</span>, <span class="nm">82</span>, <span class="nm">78</span>]
+<span class="kw">for</span> name, score <span class="kw">in</span> <span class="bi">zip</span>(names, scores):
+    <span class="bi">print</span>(<span class="st">f"{name}: {score}"</span>)</pre>
+    </div>
+
+    <h2 class="section-title">5.4  while Loop</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>n = <span class="nm">5</span>
+<span class="kw">while</span> n > <span class="nm">0</span>:
+    <span class="bi">print</span>(n)
+    n -= <span class="nm">1</span>
+<span class="bi">print</span>(<span class="st">"Blastoff!"</span>)</pre>
+    </div>
+
+    <h2 class="section-title">5.5  break, continue, else</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm"># break — exit loop immediately</span>
+<span class="kw">for</span> n <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">10</span>):
+    <span class="kw">if</span> n == <span class="nm">5</span>: <span class="kw">break</span>
+    <span class="bi">print</span>(n)   <span class="cm"># prints 0 1 2 3 4</span>
+
+<span class="cm"># continue — skip to next iteration</span>
+<span class="kw">for</span> n <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">10</span>):
+    <span class="kw">if</span> n % <span class="nm">2</span> == <span class="nm">0</span>: <span class="kw">continue</span>
+    <span class="bi">print</span>(n)        <span class="cm"># prints 1 3 5 7 9</span>
+
+<span class="cm"># else on a for loop — runs only if no break</span>
+<span class="kw">for</span> n <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">2</span>, <span class="nm">10</span>):
+    <span class="kw">if</span> <span class="nm">100</span> % n == <span class="nm">0</span>:
+        <span class="bi">print</span>(<span class="st">f"Factor: {n}"</span>); <span class="kw">break</span>
+<span class="kw">else</span>:
+    <span class="bi">print</span>(<span class="st">"No factor found"</span>)</pre>
+    </div>
+
+    <h2 class="section-title">5.6  List Comprehensions — Pythonic One-Liners</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm"># [expression  for  item  in  iterable  if  condition]</span>
+
+squares = [x**<span class="nm">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, <span class="nm">11</span>)]
+<span class="cm"># [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]</span>
+
+evens = [x <span class="kw">for</span> x <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">20</span>) <span class="kw">if</span> x % <span class="nm">2</span> == <span class="nm">0</span>]
+
+upper = [n.upper() <span class="kw">for</span> n <span class="kw">in</span> [<span class="st">"alice"</span>, <span class="st">"bob"</span>]]
+
+<span class="cm"># Nested — 3×3 multiplication table</span>
+table = [[i*j <span class="kw">for</span> j <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>,<span class="nm">4</span>)] <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>,<span class="nm">4</span>)]</pre>
+    </div>
+
+    <div class="callout exercise">
+      <div class="callout-header">✏️ EXERCISE — E-Commerce Sales Analytics</div>
+      <pre style="background:transparent;padding:0;font-size:0.82rem">daily_sales = [120, 85, 200, 60, 175, 90, 310, 45, 220, 130]</pre>
+      <ol style="padding-left:18px;line-height:2;margin-top:8px">
+        <li>Print each day's sales with day number (<em>Day 1: $120</em>)</li>
+        <li>Find total sales using a loop</li>
+        <li>List comprehension: sales that exceeded $100</li>
+        <li>Find which day had highest sales using enumerate</li>
+        <li>While loop: start $1000, subtract sales &gt;$150, stop when &lt;$500</li>
+        <li>Count days with sales below $100 using a comprehension</li>
+      </ol>
+    </div>
+    <div class="answer-wrap">
+      <button class="answer-toggle" onclick="toggleAnswer(this)">✅ Show Answer <span class="chevron">▼</span></button>
+      <div class="answer-body">
+        <pre>daily_sales = [<span class="nm">120</span>, <span class="nm">85</span>, <span class="nm">200</span>, <span class="nm">60</span>, <span class="nm">175</span>, <span class="nm">90</span>, <span class="nm">310</span>, <span class="nm">45</span>, <span class="nm">220</span>, <span class="nm">130</span>]
+
+<span class="cm"># 1. Print each day</span>
+<span class="kw">for</span> i, sale <span class="kw">in</span> <span class="bi">enumerate</span>(daily_sales, start=<span class="nm">1</span>):
+    <span class="bi">print</span>(<span class="st">f"Day {i}: ${sale}"</span>)
+
+<span class="cm"># 2. Total</span>
+total = <span class="bi">sum</span>(daily_sales)
+<span class="bi">print</span>(<span class="st">f"Total: ${total}"</span>)  <span class="cm"># $1435</span>
+
+<span class="cm"># 3. Sales > $100</span>
+high_sales = [s <span class="kw">for</span> s <span class="kw">in</span> daily_sales <span class="kw">if</span> s > <span class="nm">100</span>]
+
+<span class="cm"># 4. Best day</span>
+best_day, best_sale = <span class="nm">1</span>, daily_sales[<span class="nm">0</span>]
+<span class="kw">for</span> i, sale <span class="kw">in</span> <span class="bi">enumerate</span>(daily_sales, start=<span class="nm">1</span>):
+    <span class="kw">if</span> sale > best_sale: best_sale, best_day = sale, i
+<span class="bi">print</span>(<span class="st">f"Best: Day {best_day} – ${best_sale}"</span>)  <span class="cm"># Day 7 – $310</span>
+
+<span class="cm"># 5. Cash register</span>
+balance = <span class="nm">1000</span>
+big_days = [s <span class="kw">for</span> s <span class="kw">in</span> daily_sales <span class="kw">if</span> s > <span class="nm">150</span>]
+idx = <span class="nm">0</span>
+<span class="kw">while</span> balance >= <span class="nm">500</span> <span class="kw">and</span> idx < <span class="bi">len</span>(big_days):
+    balance -= big_days[idx]; idx += <span class="nm">1</span>
+    <span class="bi">print</span>(<span class="st">f"Balance: ${balance}"</span>)
+
+<span class="cm"># 6. Slow days</span>
+slow = [s <span class="kw">for</span> s <span class="kw">in</span> daily_sales <span class="kw">if</span> s < <span class="nm">100</span>]
+<span class="bi">print</span>(<span class="st">f"Slow days: {len(slow)}"</span>)  <span class="cm"># 3</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <hr class="chapter-divider">
+
+  <!-- MODULE 6 -->
+  <section id="mod6" class="module">
+    <div class="module-header">
+      <span class="module-num">MODULE 06</span>
+      <h1 class="module-title">Functions</h1>
+    </div>
+
+    <h2 class="section-title">6.1  Defining & Calling</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">def</span> <span class="fn">greet</span>(name):
+    <span class="st">"""Greet a person by name."""</span>   <span class="cm"># docstring</span>
+    <span class="kw">return</span> <span class="st">f"Hello, {name}!"</span>
+
+message = greet(<span class="st">"Alice"</span>)
+<span class="bi">print</span>(message)   <span class="cm"># Hello, Alice!</span></pre>
+    </div>
+
+    <h2 class="section-title">6.2  Parameters: Positional, Keyword, Default</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">def</span> <span class="fn">create_profile</span>(name, age, country=<span class="st">"US"</span>):
+    <span class="kw">return</span> <span class="st">f"{name}, {age}, {country}"</span>
+
+<span class="bi">print</span>(create_profile(<span class="st">"Alice"</span>, <span class="nm">30</span>))          <span class="cm"># Alice, 30, US</span>
+<span class="bi">print</span>(create_profile(age=<span class="nm">25</span>, name=<span class="st">"Bob"</span>))  <span class="cm"># keyword order doesn't matter</span>
+<span class="bi">print</span>(create_profile(<span class="st">"Chen"</span>, <span class="nm">22</span>, <span class="st">"CN"</span>))    <span class="cm"># override default</span></pre>
+    </div>
+
+    <h2 class="section-title">6.3  *args and **kwargs</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm"># *args — any number of positional arguments (stored as tuple)</span>
+<span class="kw">def</span> <span class="fn">add_all</span>(*numbers):
+    <span class="kw">return</span> <span class="bi">sum</span>(numbers)
+
+<span class="bi">print</span>(add_all(<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>))  <span class="cm"># 15</span>
+
+<span class="cm"># **kwargs — any number of keyword arguments (stored as dict)</span>
+<span class="kw">def</span> <span class="fn">print_info</span>(**details):
+    <span class="kw">for</span> key, value <span class="kw">in</span> details.items():
+        <span class="bi">print</span>(<span class="st">f"{key}: {value}"</span>)
+
+print_info(name=<span class="st">"Alice"</span>, job=<span class="st">"Engineer"</span>, city=<span class="st">"NYC"</span>)</pre>
+    </div>
+
+    <h2 class="section-title">6.4  Lambda Functions</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm"># lambda  args : expression</span>
+square = <span class="kw">lambda</span> x: x ** <span class="nm">2</span>
+<span class="bi">print</span>(square(<span class="nm">5</span>))   <span class="cm"># 25</span>
+
+<span class="cm"># Lambdas shine as sort keys</span>
+students = [(<span class="st">"Alice"</span>, <span class="nm">88</span>), (<span class="st">"Bob"</span>, <span class="nm">72</span>), (<span class="st">"Carol"</span>, <span class="nm">95</span>)]
+students.sort(key=<span class="kw">lambda</span> s: s[<span class="nm">1</span>], reverse=<span class="kw">True</span>)
+<span class="bi">print</span>(students)   <span class="cm"># [("Carol",95), ("Alice",88), ("Bob",72)]</span></pre>
+    </div>
+
+    <h2 class="section-title">6.5  Scope — LEGB Rule</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm"># L → Local   E → Enclosing   G → Global   B → Built-in</span>
+x = <span class="st">"global"</span>
+<span class="kw">def</span> <span class="fn">outer</span>():
+    x = <span class="st">"enclosing"</span>
+    <span class="kw">def</span> <span class="fn">inner</span>():
+        x = <span class="st">"local"</span>
+        <span class="bi">print</span>(x)    <span class="cm"># local</span>
+    inner()
+    <span class="bi">print</span>(x)        <span class="cm"># enclosing</span>
+outer()
+<span class="bi">print</span>(x)            <span class="cm"># global</span></pre>
+    </div>
+
+    <h2 class="section-title">6.6  map(), filter(), reduce()</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>numbers = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>]
+
+doubled = <span class="bi">list</span>(<span class="bi">map</span>(<span class="kw">lambda</span> x: x * <span class="nm">2</span>, numbers))    <span class="cm"># [2,4,6,8,10,12]</span>
+evens   = <span class="bi">list</span>(<span class="bi">filter</span>(<span class="kw">lambda</span> x: x % <span class="nm">2</span> == <span class="nm">0</span>, numbers))  <span class="cm"># [2,4,6]</span>
+
+<span class="kw">from</span> functools <span class="kw">import</span> reduce
+product = reduce(<span class="kw">lambda</span> a, b: a * b, numbers)  <span class="cm"># 720</span></pre>
+    </div>
+
+    <div class="callout exercise">
+      <div class="callout-header">✏️ EXERCISE — Bank Account Module</div>
+      <ol style="padding-left:18px;line-height:2">
+        <li>Write <code>deposit(balance, amount)</code> — raise <code>ValueError</code> if amount ≤ 0</li>
+        <li>Write <code>withdraw(balance, amount)</code> — raise error if amount &gt; balance</li>
+        <li>Write <code>transaction_summary(*transactions)</code> → returns <code>(deposited, withdrawn, net)</code></li>
+        <li>Write <code>apply_interest(balance, rate=0.05)</code></li>
+        <li>Use <code>map</code> + lambda to apply a 2% fee to a list of withdrawal amounts</li>
+      </ol>
+    </div>
+    <div class="answer-wrap">
+      <button class="answer-toggle" onclick="toggleAnswer(this)">✅ Show Answer <span class="chevron">▼</span></button>
+      <div class="answer-body">
+        <pre><span class="kw">def</span> <span class="fn">deposit</span>(balance, amount):
+    <span class="kw">if</span> amount <= <span class="nm">0</span>: <span class="kw">raise</span> <span class="bi">ValueError</span>(<span class="st">"Must be positive"</span>)
+    <span class="kw">return</span> balance + amount
+
+<span class="kw">def</span> <span class="fn">withdraw</span>(balance, amount):
+    <span class="kw">if</span> amount <= <span class="nm">0</span>: <span class="kw">raise</span> <span class="bi">ValueError</span>(<span class="st">"Must be positive"</span>)
+    <span class="kw">if</span> amount > balance: <span class="kw">raise</span> <span class="bi">ValueError</span>(<span class="st">"Insufficient funds"</span>)
+    <span class="kw">return</span> balance - amount
+
+<span class="kw">def</span> <span class="fn">transaction_summary</span>(*transactions):
+    deposited = <span class="bi">sum</span>(t <span class="kw">for</span> t <span class="kw">in</span> transactions <span class="kw">if</span> t > <span class="nm">0</span>)
+    withdrawn = <span class="bi">sum</span>(<span class="bi">abs</span>(t) <span class="kw">for</span> t <span class="kw">in</span> transactions <span class="kw">if</span> t < <span class="nm">0</span>)
+    <span class="kw">return</span> deposited, withdrawn, deposited - withdrawn
+
+<span class="kw">def</span> <span class="fn">apply_interest</span>(balance, rate=<span class="nm">0.05</span>):
+    <span class="kw">return</span> balance * (<span class="nm">1</span> + rate)
+
+bal = <span class="nm">1000</span>
+bal = deposit(bal, <span class="nm">500</span>)           <span class="cm"># 1500</span>
+bal = withdraw(bal, <span class="nm">200</span>)          <span class="cm"># 1300</span>
+bal = apply_interest(bal)          <span class="cm"># 1365.0</span>
+
+withdrawals = [<span class="nm">100</span>, <span class="nm">250</span>, <span class="nm">75</span>]
+after_fee   = <span class="bi">list</span>(<span class="bi">map</span>(<span class="kw">lambda</span> x: x * <span class="nm">1.02</span>, withdrawals))</pre>
+      </div>
+    </div>
+  </section>
+
+  <hr class="chapter-divider">
+
+  <!-- MODULE 7 -->
+  <section id="mod7" class="module">
+    <div class="module-header">
+      <span class="module-num">MODULE 07</span>
+      <h1 class="module-title">Data Structures: List, Tuple, Dict, Set</h1>
+    </div>
+
+    <h2 class="section-title">7.1  Lists — Ordered & Mutable</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>fruits = [<span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"cherry"</span>]
+fruits.append(<span class="st">"date"</span>)          <span class="cm"># add to end</span>
+fruits.insert(<span class="nm">1</span>, <span class="st">"avocado"</span>)    <span class="cm"># insert at index</span>
+fruits.remove(<span class="st">"apple"</span>)         <span class="cm"># remove by value</span>
+popped = fruits.pop()           <span class="cm"># remove & return last</span>
+fruits.sort()                   <span class="cm"># sort in-place</span>
+<span class="bi">print</span>(fruits.count(<span class="st">"date"</span>))    <span class="cm"># count occurrences</span>
+
+<span class="cm"># Safe copy (important!)</span>
+copy = fruits[:]       <span class="cm"># slice copy</span>
+<span class="cm"># WARNING: other = fruits  → NOT a copy, just a reference!</span></pre>
+    </div>
+
+    <h2 class="section-title">7.2  Tuples — Ordered & Immutable</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>point = (<span class="nm">3</span>, <span class="nm">4</span>)
+x, y  = point                  <span class="cm"># unpacking</span>
+
+<span class="kw">from</span> collections <span class="kw">import</span> namedtuple
+Person = namedtuple(<span class="st">"Person"</span>, [<span class="st">"name"</span>, <span class="st">"age"</span>, <span class="st">"city"</span>])
+alice  = Person(<span class="st">"Alice"</span>, <span class="nm">30</span>, <span class="st">"NYC"</span>)
+<span class="bi">print</span>(alice.name)   <span class="cm"># Alice</span></pre>
+    </div>
+
+    <h2 class="section-title">7.3  Dictionaries — Key-Value Store</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>person = {<span class="st">"name"</span>: <span class="st">"Alice"</span>, <span class="st">"age"</span>: <span class="nm">30</span>}
+person.get(<span class="st">"salary"</span>, <span class="nm">0</span>)         <span class="cm"># default if key missing</span>
+person[<span class="st">"email"</span>] = <span class="st">"a@mail.com"</span>  <span class="cm"># add key</span>
+<span class="kw">del</span> person[<span class="st">"age"</span>]               <span class="cm"># delete key</span>
+
+<span class="kw">for</span> key, val <span class="kw">in</span> person.items():
+    <span class="bi">print</span>(<span class="st">f"{key}: {val}"</span>)
+
+<span class="cm"># Dict comprehension</span>
+squares = {x: x**<span class="nm">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, <span class="nm">6</span>)}</pre>
+    </div>
+
+    <h2 class="section-title">7.4  Sets — Unordered & Unique</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>a = {<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>}
+b = {<span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>, <span class="nm">7</span>, <span class="nm">8</span>}
+
+a | b    <span class="cm"># union         {1,2,3,4,5,6,7,8}</span>
+a & b    <span class="cm"># intersection  {4, 5}</span>
+a - b    <span class="cm"># difference    {1, 2, 3}</span>
+a ^ b    <span class="cm"># symmetric diff {1,2,3,6,7,8}</span>
+
+<span class="cm"># Remove duplicates from a list</span>
+unique = <span class="bi">list</span>(<span class="bi">set</span>([<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"a"</span>]))</pre>
+    </div>
+
+    <div class="callout exercise">
+      <div class="callout-header">✏️ EXERCISE — Grocery Store Inventory</div>
+      <pre style="background:transparent;padding:0;font-size:0.8rem;color:var(--text3)">inventory = {
+  "apple":  {"price": 0.50, "stock": 200, "category": "fruit"},
+  "bread":  {"price": 2.50, "stock": 50,  "category": "bakery"},
+  "milk":   {"price": 1.20, "stock": 80,  "category": "dairy"},
+  "banana": {"price": 0.30, "stock": 150, "category": "fruit"},
+  "cheese": {"price": 4.00, "stock": 30,  "category": "dairy"},
+}</pre>
+      <ol style="padding-left:18px;line-height:2;margin-top:8px">
+        <li>Print each item with price and stock</li>
+        <li>Find items with stock below 60</li>
+        <li>Calculate total inventory value (price × stock)</li>
+        <li>Add eggs: price=$3.00, stock=100, category="dairy"</li>
+        <li>Apply 10% price increase to all fruit</li>
+        <li>Get a set of all unique categories</li>
+        <li>Create a list of (item, price) tuples sorted by price descending</li>
+      </ol>
+    </div>
+    <div class="answer-wrap">
+      <button class="answer-toggle" onclick="toggleAnswer(this)">✅ Show Answer <span class="chevron">▼</span></button>
+      <div class="answer-body">
+        <pre><span class="cm"># 1. Print all</span>
+<span class="kw">for</span> item, d <span class="kw">in</span> inventory.items():
+    <span class="bi">print</span>(<span class="st">f"{item:10} ${d['price']:.2f}  stock: {d['stock']}"</span>)
+
+<span class="cm"># 2. Low stock</span>
+low = [item <span class="kw">for</span> item, d <span class="kw">in</span> inventory.items() <span class="kw">if</span> d[<span class="st">"stock"</span>] < <span class="nm">60</span>]
+
+<span class="cm"># 3. Total value</span>
+total = <span class="bi">sum</span>(d[<span class="st">"price"</span>] * d[<span class="st">"stock"</span>] <span class="kw">for</span> d <span class="kw">in</span> inventory.values())
+
+<span class="cm"># 4. Add eggs</span>
+inventory[<span class="st">"eggs"</span>] = {<span class="st">"price"</span>: <span class="nm">3.00</span>, <span class="st">"stock"</span>: <span class="nm">100</span>, <span class="st">"category"</span>: <span class="st">"dairy"</span>}
+
+<span class="cm"># 5. Fruit price increase</span>
+<span class="kw">for</span> item, d <span class="kw">in</span> inventory.items():
+    <span class="kw">if</span> d[<span class="st">"category"</span>] == <span class="st">"fruit"</span>:
+        d[<span class="st">"price"</span>] = <span class="bi">round</span>(d[<span class="st">"price"</span>] * <span class="nm">1.10</span>, <span class="nm">2</span>)
+
+<span class="cm"># 6. Unique categories</span>
+cats = {d[<span class="st">"category"</span>] <span class="kw">for</span> d <span class="kw">in</span> inventory.values()}
+
+<span class="cm"># 7. Sorted by price</span>
+by_price = <span class="bi">sorted</span>(inventory.items(),
+                   key=<span class="kw">lambda</span> x: x[<span class="nm">1</span>][<span class="st">"price"</span>], reverse=<span class="kw">True</span>)</pre>
+      </div>
+    </div>
+  </section>
+
+  <hr class="chapter-divider">
+
+  <!-- MODULE 8 -->
+  <section id="mod8" class="module">
+    <div class="module-header">
+      <span class="module-num">MODULE 08</span>
+      <h1 class="module-title">File I/O & Error Handling</h1>
+    </div>
+
+    <h2 class="section-title">8.1  Reading & Writing Files</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm"># Use "with" — file closes automatically</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"data.txt"</span>, <span class="st">"r"</span>) <span class="kw">as</span> f:
+    content = f.read()          <span class="cm"># entire file as string</span>
+
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"data.txt"</span>, <span class="st">"r"</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> line <span class="kw">in</span> f:              <span class="cm"># memory-efficient</span>
+        <span class="bi">print</span>(line.strip())
+
+<span class="cm"># "w" = write (overwrites), "a" = append</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"output.txt"</span>, <span class="st">"w"</span>) <span class="kw">as</span> f:
+    f.write(<span class="st">"Line 1\n"</span>)</pre>
+    </div>
+
+    <h2 class="section-title">8.2  CSV & JSON</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">import</span> csv, json
+
+<span class="cm"># Read CSV</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"sales.csv"</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> row <span class="kw">in</span> csv.DictReader(f):
+        <span class="bi">print</span>(row[<span class="st">"product"</span>], row[<span class="st">"revenue"</span>])
+
+<span class="cm"># JSON read / write</span>
+data = {<span class="st">"name"</span>: <span class="st">"Alice"</span>, <span class="st">"scores"</span>: [<span class="nm">95</span>, <span class="nm">82</span>, <span class="nm">78</span>]}
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"data.json"</span>, <span class="st">"w"</span>) <span class="kw">as</span> f:
+    json.dump(data, f, indent=<span class="nm">4</span>)
+
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"data.json"</span>) <span class="kw">as</span> f:
+    loaded = json.load(f)</pre>
+    </div>
+
+    <h2 class="section-title">8.3  Exception Handling</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">try</span>:
+    x = <span class="bi">int</span>(<span class="bi">input</span>(<span class="st">"Enter a number: "</span>))
+    y = <span class="nm">100</span> / x
+<span class="kw">except</span> <span class="bi">ValueError</span>:
+    <span class="bi">print</span>(<span class="st">"That is not a number!"</span>)
+<span class="kw">except</span> <span class="bi">ZeroDivisionError</span>:
+    <span class="bi">print</span>(<span class="st">"Cannot divide by zero!"</span>)
+<span class="kw">else</span>:
+    <span class="bi">print</span>(<span class="st">f"Result: {y}"</span>)   <span class="cm"># runs only if NO exception</span>
+<span class="kw">finally</span>:
+    <span class="bi">print</span>(<span class="st">"This ALWAYS runs"</span>)</pre>
+    </div>
+
+    <h2 class="section-title">8.4  Custom Exceptions</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">class</span> <span class="fn">InsufficientFundsError</span>(<span class="bi">Exception</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, amount, balance):
+        <span class="bi">super</span>().__init__(
+            <span class="st">f"Cannot withdraw ${amount}; balance is ${balance}"</span>)
+
+<span class="kw">def</span> <span class="fn">withdraw</span>(balance, amount):
+    <span class="kw">if</span> amount > balance:
+        <span class="kw">raise</span> InsufficientFundsError(amount, balance)
+    <span class="kw">return</span> balance - amount</pre>
+    </div>
+
+    <div class="callout exercise">
+      <div class="callout-header">✏️ EXERCISE — Student Grade Book</div>
+      <ol style="padding-left:18px;line-height:2">
+        <li>Create a dict of 5 students with 4 test scores each</li>
+        <li>Write <code>save_gradebook(data, filename)</code> — saves to JSON</li>
+        <li>Write <code>load_gradebook(filename)</code> — handles <code>FileNotFoundError</code></li>
+        <li>Write <code>get_average(scores)</code> — raises <code>ValueError</code> if empty</li>
+        <li>Save, load, and print each student's average</li>
+        <li>Export to CSV: Name, Score1…Score4, Average</li>
+      </ol>
+    </div>
+    <div class="answer-wrap">
+      <button class="answer-toggle" onclick="toggleAnswer(this)">✅ Show Answer <span class="chevron">▼</span></button>
+      <div class="answer-body">
+        <pre><span class="kw">import</span> json, csv
+
+gradebook = {
+    <span class="st">"Alice"</span>: [<span class="nm">92</span>, <span class="nm">88</span>, <span class="nm">95</span>, <span class="nm">91</span>],
+    <span class="st">"Bob"</span>:   [<span class="nm">75</span>, <span class="nm">82</span>, <span class="nm">70</span>, <span class="nm">78</span>],
+    <span class="st">"Carol"</span>: [<span class="nm">98</span>, <span class="nm">96</span>, <span class="nm">100</span>, <span class="nm">94</span>],
+}
+
+<span class="kw">def</span> <span class="fn">save_gradebook</span>(data, filename):
+    <span class="kw">with</span> <span class="bi">open</span>(filename, <span class="st">"w"</span>) <span class="kw">as</span> f: json.dump(data, f, indent=<span class="nm">4</span>)
+
+<span class="kw">def</span> <span class="fn">load_gradebook</span>(filename):
+    <span class="kw">try</span>:
+        <span class="kw">with</span> <span class="bi">open</span>(filename) <span class="kw">as</span> f: <span class="kw">return</span> json.load(f)
+    <span class="kw">except</span> <span class="bi">FileNotFoundError</span>:
+        <span class="bi">print</span>(<span class="st">"File not found"</span>); <span class="kw">return</span> {}
+
+<span class="kw">def</span> <span class="fn">get_average</span>(scores):
+    <span class="kw">if not</span> scores: <span class="kw">raise</span> <span class="bi">ValueError</span>(<span class="st">"Empty list"</span>)
+    <span class="kw">return</span> <span class="bi">sum</span>(scores) / <span class="bi">len</span>(scores)
+
+save_gradebook(gradebook, <span class="st">"grades.json"</span>)
+loaded = load_gradebook(<span class="st">"grades.json"</span>)
+<span class="kw">for</span> name, scores <span class="kw">in</span> loaded.items():
+    <span class="bi">print</span>(<span class="st">f"{name}: {get_average(scores):.1f}"</span>)
+
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"grades.csv"</span>, <span class="st">"w"</span>, newline=<span class="st">""</span>) <span class="kw">as</span> f:
+    w = csv.writer(f)
+    w.writerow([<span class="st">"Name"</span>,<span class="st">"S1"</span>,<span class="st">"S2"</span>,<span class="st">"S3"</span>,<span class="st">"S4"</span>,<span class="st">"Average"</span>])
+    <span class="kw">for</span> name, scores <span class="kw">in</span> loaded.items():
+        w.writerow([name] + scores + [<span class="bi">round</span>(get_average(scores),<span class="nm">1</span>)])</pre>
+      </div>
+    </div>
+  </section>
+
+  <hr class="chapter-divider">
+
+  <!-- MODULE 9 -->
+  <section id="mod9" class="module">
+    <div class="module-header">
+      <span class="module-num">MODULE 09</span>
+      <h1 class="module-title">Object-Oriented Programming</h1>
+    </div>
+
+    <h2 class="section-title">9.1  Classes & Objects</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">class</span> <span class="fn">Dog</span>:
+    species = <span class="st">"Canis lupus familiaris"</span>  <span class="cm"># class variable</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, name, breed, age):
+        self.name  = name     <span class="cm"># instance variables</span>
+        self.breed = breed
+        self.age   = age
+
+    <span class="kw">def</span> <span class="fn">bark</span>(self):
+        <span class="kw">return</span> <span class="st">f"{self.name} says: Woof!"</span>
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(self):
+        <span class="kw">return</span> <span class="st">f"{self.name} ({self.breed}, {self.age} yrs)"</span>
+
+rex = Dog(<span class="st">"Rex"</span>, <span class="st">"Labrador"</span>, <span class="nm">3</span>)
+<span class="bi">print</span>(rex)           <span class="cm"># Rex (Labrador, 3 yrs)</span>
+<span class="bi">print</span>(rex.bark())    <span class="cm"># Rex says: Woof!</span></pre>
+    </div>
+
+    <h2 class="section-title">9.2  Inheritance & Polymorphism</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">class</span> <span class="fn">Animal</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, name): self.name = name
+    <span class="kw">def</span> <span class="fn">speak</span>(self): <span class="kw">raise</span> <span class="bi">NotImplementedError</span>
+
+<span class="kw">class</span> <span class="fn">Cat</span>(Animal):
+    <span class="kw">def</span> <span class="fn">speak</span>(self): <span class="kw">return</span> <span class="st">f"{self.name} says: Meow!"</span>
+
+<span class="kw">class</span> <span class="fn">Duck</span>(Animal):
+    <span class="kw">def</span> <span class="fn">speak</span>(self): <span class="kw">return</span> <span class="st">f"{self.name} says: Quack!"</span>
+
+animals = [Cat(<span class="st">"Whiskers"</span>), Duck(<span class="st">"Donald"</span>)]
+<span class="kw">for</span> a <span class="kw">in</span> animals:
+    <span class="bi">print</span>(a.speak())   <span class="cm"># polymorphism — same call, different result</span></pre>
+    </div>
+
+    <h2 class="section-title">9.3  Properties & Encapsulation</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">class</span> <span class="fn">BankAccount</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, owner, balance=<span class="nm">0</span>):
+        self.owner    = owner
+        self._balance = balance   <span class="cm"># _ = private by convention</span>
+
+    <span class="kw">@property</span>
+    <span class="kw">def</span> <span class="fn">balance</span>(self): <span class="kw">return</span> self._balance
+
+    <span class="kw">@balance.setter</span>
+    <span class="kw">def</span> <span class="fn">balance</span>(self, amount):
+        <span class="kw">if</span> amount < <span class="nm">0</span>: <span class="kw">raise</span> <span class="bi">ValueError</span>(<span class="st">"Cannot be negative"</span>)
+        self._balance = amount
+
+    <span class="kw">def</span> <span class="fn">deposit</span>(self, amount):
+        self._balance += amount; <span class="kw">return</span> self  <span class="cm"># enables chaining</span>
+
+acc = BankAccount(<span class="st">"Alice"</span>, <span class="nm">1000</span>)
+acc.deposit(<span class="nm">500</span>)   <span class="cm"># method chaining</span>
+<span class="bi">print</span>(acc.balance)  <span class="cm"># 1500</span></pre>
+    </div>
+
+    <h2 class="section-title">9.4  Magic (Dunder) Methods Reference</h2>
+    <div class="table-wrap">
+      <table><thead><tr><th>Method</th><th>Triggered by</th></tr></thead>
+      <tbody>
+        <tr><td>__init__</td><td>Construction: Dog()</td></tr>
+        <tr><td>__str__</td><td>print(obj) / str(obj)</td></tr>
+        <tr><td>__repr__</td><td>repr(obj), in REPL</td></tr>
+        <tr><td>__len__</td><td>len(obj)</td></tr>
+        <tr><td>__getitem__</td><td>obj[key]</td></tr>
+        <tr><td>__contains__</td><td>"x" in obj</td></tr>
+        <tr><td>__add__</td><td>obj1 + obj2</td></tr>
+        <tr><td>__eq__</td><td>obj1 == obj2</td></tr>
+        <tr><td>__lt__</td><td>obj1 &lt; obj2 (enables sorting)</td></tr>
+        <tr><td>__enter__ / __exit__</td><td>with obj: (context manager)</td></tr>
+      </tbody></table>
+    </div>
+
+    <div class="callout exercise">
+      <div class="callout-header">✏️ EXERCISE — Library System</div>
+      <ol style="padding-left:18px;line-height:2">
+        <li>Create <code>Book</code> class: title, author, year, isbn, available=True. Methods: <code>checkout()</code>, <code>return_book()</code></li>
+        <li>Create <code>Library</code> class: <code>add_book()</code>, <code>remove_book(isbn)</code>, <code>find_by_author()</code>, <code>available_books()</code>, <code>__len__</code></li>
+        <li>Add 5 books, checkout 2, call <code>available_books()</code> and <code>find_by_author()</code></li>
+      </ol>
+    </div>
+    <div class="answer-wrap">
+      <button class="answer-toggle" onclick="toggleAnswer(this)">✅ Show Answer <span class="chevron">▼</span></button>
+      <div class="answer-body">
+        <pre><span class="kw">class</span> <span class="fn">Book</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, title, author, year, isbn):
+        self.title, self.author = title, author
+        self.year,  self.isbn   = year,  isbn
+        self.available = <span class="kw">True</span>
+
+    <span class="kw">def</span> <span class="fn">checkout</span>(self):
+        <span class="kw">if not</span> self.available:
+            <span class="kw">raise</span> <span class="bi">ValueError</span>(<span class="st">f"{self.title} already checked out"</span>)
+        self.available = <span class="kw">False</span>
+
+    <span class="kw">def</span> <span class="fn">return_book</span>(self): self.available = <span class="kw">True</span>
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(self):
+        s = <span class="st">"✓"</span> <span class="kw">if</span> self.available <span class="kw">else</span> <span class="st">"✗"</span>
+        <span class="kw">return</span> <span class="st">f"[{s}] {self.title} by {self.author}"</span>
+
+<span class="kw">class</span> <span class="fn">Library</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, name):
+        self.name, self.books = name, []
+
+    <span class="kw">def</span> <span class="fn">add_book</span>(self, book): self.books.append(book)
+
+    <span class="kw">def</span> <span class="fn">remove_book</span>(self, isbn):
+        self.books = [b <span class="kw">for</span> b <span class="kw">in</span> self.books <span class="kw">if</span> b.isbn != isbn]
+
+    <span class="kw">def</span> <span class="fn">find_by_author</span>(self, author):
+        <span class="kw">return</span> [b <span class="kw">for</span> b <span class="kw">in</span> self.books
+                <span class="kw">if</span> author.lower() <span class="kw">in</span> b.author.lower()]
+
+    <span class="kw">def</span> <span class="fn">available_books</span>(self):
+        <span class="kw">return</span> [b <span class="kw">for</span> b <span class="kw">in</span> self.books <span class="kw">if</span> b.available]
+
+    <span class="kw">def</span> <span class="fn">__len__</span>(self): <span class="kw">return</span> <span class="bi">len</span>(self.books)</pre>
+      </div>
+    </div>
+  </section>
+
+  <hr class="chapter-divider">
+
+  <!-- MODULE 10 -->
+  <section id="mod10" class="module">
+    <div class="module-header">
+      <span class="module-num">MODULE 10</span>
+      <h1 class="module-title">Modules, Packages & Virtual Environments</h1>
+    </div>
+
+    <h2 class="section-title">10.1  Importing Modules</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">import</span> math
+<span class="bi">print</span>(math.sqrt(<span class="nm">16</span>))      <span class="cm"># 4.0</span>
+
+<span class="kw">from</span> math <span class="kw">import</span> sqrt, pi
+<span class="bi">print</span>(sqrt(<span class="nm">25</span>))           <span class="cm"># 5.0</span>
+
+<span class="kw">import</span> numpy <span class="kw">as</span> np          <span class="cm"># alias</span>
+<span class="kw">import</span> pandas <span class="kw">as</span> pd</pre>
+    </div>
+
+    <h2 class="section-title">10.2  Useful Standard Library Modules</h2>
+    <div class="table-wrap">
+      <table><thead><tr><th>Module</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>math</td><td>sqrt, pi, floor, ceil, log, sin, cos</td></tr>
+        <tr><td>random</td><td>random(), randint(), choice(), shuffle()</td></tr>
+        <tr><td>datetime</td><td>date, time, datetime, timedelta</td></tr>
+        <tr><td>os</td><td>getcwd(), listdir(), makedirs(), path.join()</td></tr>
+        <tr><td>re</td><td>Regular expressions: search, match, findall, sub</td></tr>
+        <tr><td>collections</td><td>Counter, defaultdict, deque, namedtuple</td></tr>
+        <tr><td>json</td><td>load, loads, dump, dumps</td></tr>
+        <tr><td>csv</td><td>reader, writer, DictReader, DictWriter</td></tr>
+        <tr><td>pathlib</td><td>Modern file path handling: Path()</td></tr>
+        <tr><td>itertools</td><td>chain, product, combinations, permutations</td></tr>
+      </tbody></table>
+    </div>
+
+    <h2 class="section-title">10.3  Virtual Environments</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>python -m venv myenv           <span class="cm"># create</span>
+source myenv/bin/activate      <span class="cm"># activate (Mac/Linux)</span>
+myenv\Scripts\activate         <span class="cm"># activate (Windows)</span>
+pip install numpy pandas       <span class="cm"># install into env</span>
+pip freeze > requirements.txt  <span class="cm"># save deps</span>
+pip install -r requirements.txt <span class="cm"># recreate on another machine</span>
+deactivate                     <span class="cm"># exit</span></pre>
+    </div>
+
+    <h2 class="section-title">10.4  if __name__ == "__main__"</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">def</span> <span class="fn">main</span>():
+    <span class="bi">print</span>(<span class="st">"Running as main program"</span>)
+
+<span class="kw">if</span> __name__ == <span class="st">"__main__"</span>:
+    main()
+<span class="cm"># Imported: __name__ = "module_name" → main() NOT called</span>
+<span class="cm"># Run directly: __name__ = "__main__" → main() IS called</span></pre>
+    </div>
+  </section>
+
+  <hr class="chapter-divider">
+
+  <!-- MODULE 11 -->
+  <section id="mod11" class="module">
+    <div class="module-header">
+      <span class="module-num">MODULE 11</span>
+      <h1 class="module-title">NumPy: Numerical Computing</h1>
+    </div>
+    <p>NumPy provides fast, memory-efficient N-dimensional arrays that are 10–100× faster than pure Python loops. It is the foundation of Python's data science ecosystem.</p>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">import</span> numpy <span class="kw">as</span> np</pre>
+    </div>
+
+    <h2 class="section-title">11.1  Creating Arrays</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>a = np.array([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>])
+b = np.array([[<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>], [<span class="nm">4</span>,<span class="nm">5</span>,<span class="nm">6</span>]])   <span class="cm"># 2D</span>
+
+np.zeros((<span class="nm">3</span>, <span class="nm">4</span>))              <span class="cm"># 3×4 of zeros</span>
+np.ones((<span class="nm">2</span>, <span class="nm">3</span>))               <span class="cm"># 2×3 of ones</span>
+np.full((<span class="nm">3</span>, <span class="nm">3</span>), <span class="nm">7</span>)            <span class="cm"># 3×3 filled with 7</span>
+np.eye(<span class="nm">4</span>)                     <span class="cm"># 4×4 identity matrix</span>
+np.arange(<span class="nm">0</span>, <span class="nm">10</span>, <span class="nm">2</span>)           <span class="cm"># [0,2,4,6,8]</span>
+np.linspace(<span class="nm">0</span>, <span class="nm">1</span>, <span class="nm">5</span>)          <span class="cm"># [0, 0.25, 0.5, 0.75, 1.0]</span>
+np.random.rand(<span class="nm">3</span>, <span class="nm">3</span>)          <span class="cm"># 3×3 uniform [0,1)</span>
+np.random.randint(<span class="nm">1</span>, <span class="nm">100</span>, (<span class="nm">4</span>,<span class="nm">4</span>)) <span class="cm"># random ints</span></pre>
+    </div>
+
+    <h2 class="section-title">11.2  Array Attributes — Know These!</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>a = np.array([[<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>],[<span class="nm">4</span>,<span class="nm">5</span>,<span class="nm">6</span>]])
+a.shape     <span class="cm"># (2, 3)   — rows, columns</span>
+a.ndim      <span class="cm"># 2        — number of dimensions</span>
+a.size      <span class="cm"># 6        — total elements</span>
+a.dtype     <span class="cm"># int64    — data type</span>
+a.astype(np.float64)   <span class="cm"># change dtype</span></pre>
+    </div>
+
+    <h2 class="section-title">11.3  Indexing & Slicing</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>a = np.array([[<span class="nm">10</span>,<span class="nm">20</span>,<span class="nm">30</span>],[<span class="nm">40</span>,<span class="nm">50</span>,<span class="nm">60</span>],[<span class="nm">70</span>,<span class="nm">80</span>,<span class="nm">90</span>]])
+
+a[<span class="nm">1</span>, <span class="nm">2</span>]       <span class="cm"># 60  — row 1, col 2</span>
+a[<span class="nm">0</span>, :]       <span class="cm"># [10 20 30]  — entire first row</span>
+a[:, <span class="nm">1</span>]       <span class="cm"># [20 50 80]  — entire second column</span>
+a[<span class="nm">1</span>:, <span class="nm">1</span>:]     <span class="cm"># [[50 60][80 90]]</span>
+
+<span class="cm"># Boolean indexing</span>
+a[a > <span class="nm">50</span>]      <span class="cm"># [60 70 80 90]</span>
+a[a < <span class="nm">30</span>] = <span class="nm">0</span>  <span class="cm"># set elements &lt; 30 to 0</span>
+
+np.where(a > <span class="nm">50</span>, a, -<span class="nm">1</span>)  <span class="cm"># conditional fill</span></pre>
+    </div>
+
+    <h2 class="section-title">11.4  Vectorised Operations (No Loops Needed!)</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>a = np.array([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>])
+b = np.array([<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">40</span>])
+
+a + b       <span class="cm"># [11 22 33 44]</span>
+a * b       <span class="cm"># [10 40 90 160]</span>
+a ** <span class="nm">2</span>      <span class="cm"># [1  4  9  16]</span>
+a * <span class="nm">3</span>       <span class="cm"># [3 6 9 12]  — broadcasting (scalar)</span>
+
+np.sqrt(a)  <span class="cm"># [1.  1.41 1.73 2.]</span>
+np.exp(a)   <span class="cm"># e^1, e^2, …</span>
+np.log(b)   <span class="cm"># natural log</span></pre>
+    </div>
+
+    <h2 class="section-title">11.5  Aggregation Functions</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>data = np.array([[<span class="nm">4</span>,<span class="nm">7</span>,<span class="nm">2</span>,<span class="nm">9</span>],[<span class="nm">1</span>,<span class="nm">8</span>,<span class="nm">5</span>,<span class="nm">3</span>],[<span class="nm">6</span>,<span class="nm">0</span>,<span class="nm">4</span>,<span class="nm">8</span>]])
+
+np.sum(data)           <span class="cm"># 57</span>
+np.sum(data, axis=<span class="nm">0</span>)  <span class="cm"># sum each column</span>
+np.sum(data, axis=<span class="nm">1</span>)  <span class="cm"># sum each row</span>
+np.mean(data)
+np.median(data)
+np.std(data)
+np.argmin(data)        <span class="cm"># index of min (flattened)</span>
+np.argmax(data)
+np.cumsum([<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">4</span>])  <span class="cm"># [1 3 6 10]</span></pre>
+    </div>
+
+    <h2 class="section-title">11.6  Reshaping & Stacking</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>a = np.arange(<span class="nm">12</span>)
+b = a.reshape(<span class="nm">3</span>, <span class="nm">4</span>)       <span class="cm"># 3 rows, 4 cols</span>
+c = b.T                    <span class="cm"># transpose → (4, 3)</span>
+d = b.flatten()            <span class="cm"># back to 1D</span>
+
+x = np.array([<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>])
+y = np.array([<span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>])
+np.vstack([x, y])          <span class="cm"># vertical stack → (2,3)</span>
+np.hstack([x, y])          <span class="cm"># horizontal   → (6,)</span>
+np.column_stack([x, y])    <span class="cm"># as columns   → (3,2)</span></pre>
+    </div>
+
+    <h2 class="section-title">11.7  Linear Algebra</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>A = np.array([[<span class="nm">1</span>,<span class="nm">2</span>],[<span class="nm">3</span>,<span class="nm">4</span>]])
+B = np.array([[<span class="nm">5</span>,<span class="nm">6</span>],[<span class="nm">7</span>,<span class="nm">8</span>]])
+
+A @ B                      <span class="cm"># matrix multiplication</span>
+np.linalg.det(A)           <span class="cm"># determinant: -2.0</span>
+np.linalg.inv(A)           <span class="cm"># inverse</span>
+
+b = np.array([<span class="nm">5</span>, <span class="nm">11</span>])
+x = np.linalg.solve(A, b)  <span class="cm"># solve Ax = b</span></pre>
+    </div>
+
+    <div class="callout exercise">
+      <div class="callout-header">✏️ EXERCISE — Climate Temperature Analysis</div>
+      <pre style="background:transparent;padding:0;font-size:0.82rem;color:var(--text2)">np.random.seed(99)
+temps = np.random.normal(loc=15, scale=8, size=365)</pre>
+      <ol style="padding-left:18px;line-height:2;margin-top:8px">
+        <li>Find mean, median, min, max, std</li>
+        <li>Count days above 25°C</li>
+        <li>Find indices of the 5 hottest days</li>
+        <li>Convert to Fahrenheit: <code>F = C * 9/5 + 32</code></li>
+        <li>Split into 4 seasons, find mean temp per season</li>
+        <li>Create 52×7 matrix (weeks×days), find hottest day per week</li>
+        <li>Normalise to 0–1: <code>(x - min) / (max - min)</code></li>
+      </ol>
+    </div>
+    <div class="answer-wrap">
+      <button class="answer-toggle" onclick="toggleAnswer(this)">✅ Show Answer <span class="chevron">▼</span></button>
+      <div class="answer-body">
+        <pre><span class="kw">import</span> numpy <span class="kw">as</span> np
+np.random.seed(<span class="nm">99</span>)
+temps = np.random.normal(loc=<span class="nm">15</span>, scale=<span class="nm">8</span>, size=<span class="nm">365</span>)
+
+<span class="bi">print</span>(<span class="st">f"Mean:   {temps.mean():.2f}°C"</span>)
+<span class="bi">print</span>(<span class="st">f"Median: {np.median(temps):.2f}°C"</span>)
+<span class="bi">print</span>(<span class="st">f"Min:    {temps.min():.2f}°C"</span>)
+<span class="bi">print</span>(<span class="st">f"Max:    {temps.max():.2f}°C"</span>)
+
+hot_days = np.sum(temps > <span class="nm">25</span>)
+top5_idx = np.argsort(temps)[-<span class="nm">5</span>:][::-<span class="nm">1</span>]
+temps_f  = temps * <span class="nm">9</span>/<span class="nm">5</span> + <span class="nm">32</span>
+
+seasons = np.array_split(temps, <span class="nm">4</span>)
+names   = [<span class="st">"Spring"</span>, <span class="st">"Summer"</span>, <span class="st">"Autumn"</span>, <span class="st">"Winter"</span>]
+<span class="kw">for</span> name, s <span class="kw">in</span> <span class="bi">zip</span>(names, seasons):
+    <span class="bi">print</span>(<span class="st">f"{name}: {s.mean():.2f}°C"</span>)
+
+weekly = temps[:<span class="nm">364</span>].reshape(<span class="nm">52</span>, <span class="nm">7</span>)
+hottest = weekly.max(axis=<span class="nm">1</span>)
+
+norm = (temps - temps.min()) / (temps.max() - temps.min())</pre>
+      </div>
+    </div>
+  </section>
+
+  <hr class="chapter-divider">
+
+  <!-- MODULE 12 -->
+  <section id="mod12" class="module">
+    <div class="module-header">
+      <span class="module-num">MODULE 12</span>
+      <h1 class="module-title">Pandas: Data Analysis</h1>
+    </div>
+    <p>Pandas provides two powerful structures — <strong>Series</strong> (1D) and <strong>DataFrame</strong> (2D) — that make tabular data analysis intuitive and fast.</p>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> numpy <span class="kw">as</span> np</pre>
+    </div>
+
+    <h2 class="section-title">12.1  Series</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>prices = pd.Series([<span class="nm">1.99</span>, <span class="nm">3.49</span>, <span class="nm">0.99</span>],
+                   index=[<span class="st">"apple"</span>, <span class="st">"bread"</span>, <span class="st">"banana"</span>])
+<span class="bi">print</span>(prices[<span class="st">"bread"</span>])         <span class="cm"># 3.49</span>
+<span class="bi">print</span>(prices[prices > <span class="nm">1.5</span>])    <span class="cm"># boolean filter</span></pre>
+    </div>
+
+    <h2 class="section-title">12.2  DataFrame Creation</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>df = pd.DataFrame({
+    <span class="st">"name"</span>:   [<span class="st">"Alice"</span>, <span class="st">"Bob"</span>, <span class="st">"Carol"</span>, <span class="st">"David"</span>],
+    <span class="st">"dept"</span>:   [<span class="st">"Eng"</span>,   <span class="st">"HR"</span>,  <span class="st">"Eng"</span>,   <span class="st">"Fin"</span>],
+    <span class="st">"salary"</span>: [<span class="nm">90000</span>, <span class="nm">55000</span>, <span class="nm">95000</span>, <span class="nm">70000</span>],
+    <span class="st">"years"</span>:  [<span class="nm">5</span>, <span class="nm">3</span>, <span class="nm">8</span>, <span class="nm">4</span>],
+})
+df.shape      <span class="cm"># (4, 4)</span>
+df.info()     <span class="cm"># types + nulls</span>
+df.describe() <span class="cm"># statistics</span></pre>
+    </div>
+
+    <h2 class="section-title">12.3  Selecting Data</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>df[<span class="st">"salary"</span>]               <span class="cm"># Series</span>
+df[[<span class="st">"name"</span>, <span class="st">"salary"</span>]]      <span class="cm"># DataFrame</span>
+
+df.loc[<span class="nm">0</span>]                   <span class="cm"># row by label</span>
+df.loc[<span class="nm">1</span>:<span class="nm">3</span>, <span class="st">"name"</span>:<span class="st">"salary"</span>] <span class="cm"># slice</span>
+df.iloc[<span class="nm">0</span>, <span class="nm">2</span>]               <span class="cm"># row 0, col 2 (integer position)</span>
+
+<span class="cm"># Boolean filters</span>
+df[df[<span class="st">"salary"</span>] > <span class="nm">70000</span>]
+df[(df[<span class="st">"dept"</span>] == <span class="st">"Eng"</span>) & (df[<span class="st">"years"</span>] > <span class="nm">4</span>)]
+df[df[<span class="st">"dept"</span>].isin([<span class="st">"Eng"</span>, <span class="st">"Fin"</span>])]</pre>
+    </div>
+
+    <h2 class="section-title">12.4  Modifying DataFrames</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>df[<span class="st">"bonus"</span>] = df[<span class="st">"salary"</span>] * <span class="nm">0.10</span>   <span class="cm"># add column</span>
+df[<span class="st">"salary"</span>] = df[<span class="st">"salary"</span>] * <span class="nm">1.05</span>   <span class="cm"># 5% raise</span>
+
+df[<span class="st">"level"</span>] = df[<span class="st">"years"</span>].apply(
+    <span class="kw">lambda</span> y: <span class="st">"Senior"</span> <span class="kw">if</span> y >= <span class="nm">5</span> <span class="kw">else</span> <span class="st">"Junior"</span>)
+
+df.drop(columns=[<span class="st">"bonus"</span>], inplace=<span class="kw">True</span>)
+df.rename(columns={<span class="st">"years"</span>: <span class="st">"experience"</span>}, inplace=<span class="kw">True</span>)</pre>
+    </div>
+
+    <h2 class="section-title">12.5  Handling Missing Data</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>df.isnull().sum()                   <span class="cm"># count NaN per column</span>
+df.dropna()                         <span class="cm"># remove rows with ANY NaN</span>
+df[<span class="st">"salary"</span>].fillna(df[<span class="st">"salary"</span>].mean(), inplace=<span class="kw">True</span>)
+df.fillna(method=<span class="st">"ffill"</span>)          <span class="cm"># forward fill</span></pre>
+    </div>
+
+    <h2 class="section-title">12.6  GroupBy — Split → Apply → Combine</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>grp = df.groupby(<span class="st">"dept"</span>)
+
+grp[<span class="st">"salary"</span>].mean()             <span class="cm"># mean salary per dept</span>
+grp[<span class="st">"salary"</span>].agg([<span class="st">"mean"</span>,<span class="st">"min"</span>,<span class="st">"max"</span>,<span class="st">"std"</span>])
+grp.size()                          <span class="cm"># headcount</span>
+
+<span class="cm"># Transform — keep original shape</span>
+df[<span class="st">"dept_avg"</span>] = df.groupby(<span class="st">"dept"</span>)[<span class="st">"salary"</span>].transform(<span class="st">"mean"</span>)</pre>
+    </div>
+
+    <h2 class="section-title">12.7  Merging & Joining</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>merged = pd.merge(employees, departments,
+                  on=<span class="st">"dept_id"</span>, how=<span class="st">"inner"</span>)
+<span class="cm"># how: "inner" | "left" | "right" | "outer"</span>
+
+df_all = pd.concat([df1, df2], ignore_index=<span class="kw">True</span>)  <span class="cm"># stack rows</span></pre>
+    </div>
+
+    <h2 class="section-title">12.8  Pivot Tables</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>pivot = sales.pivot_table(
+    values=<span class="st">"revenue"</span>,
+    index=<span class="st">"month"</span>,
+    columns=<span class="st">"product"</span>,
+    aggfunc=<span class="st">"sum"</span>
+)</pre>
+    </div>
+
+    <h2 class="section-title">12.9  Reading & Writing Data</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre>df = pd.read_csv(<span class="st">"data.csv"</span>)
+df.to_csv(<span class="st">"output.csv"</span>, index=<span class="kw">False</span>)
+
+df = pd.read_excel(<span class="st">"data.xlsx"</span>, sheet_name=<span class="st">"Sheet1"</span>)
+df.to_excel(<span class="st">"output.xlsx"</span>, index=<span class="kw">False</span>)
+
+df = pd.read_json(<span class="st">"data.json"</span>)</pre>
+    </div>
+
+    <h2 class="section-title">12.10  String & DateTime Operations</h2>
+    <div class="code-wrap">
+      <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="cm"># .str accessor</span>
+df[<span class="st">"name"</span>].str.upper()
+df[<span class="st">"email"</span>].str.contains(<span class="st">"@gmail"</span>)
+df[<span class="st">"phone"</span>].str.replace(<span class="st">"-"</span>, <span class="st">""</span>)
+
+<span class="cm"># .dt accessor</span>
+df[<span class="st">"date"</span>] = pd.to_datetime(df[<span class="st">"date_str"</span>])
+df[<span class="st">"year"</span>]    = df[<span class="st">"date"</span>].dt.year
+df[<span class="st">"weekday"</span>] = df[<span class="st">"date"</span>].dt.day_name()
+
+<span class="cm"># Resample time series</span>
+monthly = df.set_index(<span class="st">"date"</span>).resample(<span class="st">"ME"</span>).sum()</pre>
+    </div>
+
+    <div class="callout exercise">
+      <div class="callout-header">✏️ EXERCISE — Retail Chain Sales Analysis</div>
+      <pre style="background:transparent;padding:0;font-size:0.8rem;color:var(--text2)">np.random.seed(42); n = 200
+df = pd.DataFrame({
+    "date":    pd.date_range("2024-01-01", periods=n, freq="D"),
+    "store":   np.random.choice(["A","B","C","D"], n),
+    "product": np.random.choice(["Coffee","Tea","Cake","Sandwich"], n),
+    "qty":     np.random.randint(1, 50, n),
+    "price":   np.random.uniform(2, 12, n).round(2),
+})
+df["revenue"] = (df["qty"] * df["price"]).round(2)</pre>
+      <ol style="padding-left:18px;line-height:2;margin-top:8px">
+        <li>Show first 5 and last 5 rows</li>
+        <li>Total revenue per store (groupby)</li>
+        <li>Best-selling product by total quantity</li>
+        <li>Filter: transactions with revenue &gt; $300</li>
+        <li>Add month column, find monthly revenue trends</li>
+        <li>Best day of week by average revenue</li>
+        <li>Pivot table: stores × products × sum of revenue</li>
+        <li>Best store + product combination</li>
+        <li>Find missing values per column</li>
+        <li>Export summary to CSV</li>
+      </ol>
+    </div>
+    <div class="answer-wrap">
+      <button class="answer-toggle" onclick="toggleAnswer(this)">✅ Show Answer <span class="chevron">▼</span></button>
+      <div class="answer-body">
+        <pre><span class="cm"># 1. Head / tail</span>
+df.head(<span class="nm">5</span>); df.tail(<span class="nm">5</span>)
+
+<span class="cm"># 2. Revenue per store</span>
+rev_store = df.groupby(<span class="st">"store"</span>)[<span class="st">"revenue"</span>].sum().sort_values(ascending=<span class="kw">False</span>)
+
+<span class="cm"># 3. Best-selling product</span>
+best = df.groupby(<span class="st">"product"</span>)[<span class="st">"qty"</span>].sum().idxmax()
+
+<span class="cm"># 4. High-value transactions</span>
+big = df[df[<span class="st">"revenue"</span>] > <span class="nm">300</span>]
+
+<span class="cm"># 5. Monthly revenue</span>
+df[<span class="st">"month"</span>] = df[<span class="st">"date"</span>].dt.to_period(<span class="st">"M"</span>)
+monthly = df.groupby(<span class="st">"month"</span>)[<span class="st">"revenue"</span>].sum()
+
+<span class="cm"># 6. Best weekday</span>
+df[<span class="st">"weekday"</span>] = df[<span class="st">"date"</span>].dt.day_name()
+best_day = df.groupby(<span class="st">"weekday"</span>)[<span class="st">"revenue"</span>].mean().idxmax()
+
+<span class="cm"># 7. Pivot table</span>
+pivot = df.pivot_table(values=<span class="st">"revenue"</span>, index=<span class="st">"store"</span>,
+                       columns=<span class="st">"product"</span>, aggfunc=<span class="st">"sum"</span>, fill_value=<span class="nm">0</span>)
+
+<span class="cm"># 8. Best store + product</span>
+sp = df.groupby([<span class="st">"store"</span>,<span class="st">"product"</span>])[<span class="st">"revenue"</span>].sum()
+<span class="bi">print</span>(sp.idxmax(), sp.max())
+
+<span class="cm"># 9. Missing values</span>
+df.isnull().sum()
+
+<span class="cm"># 10. Export</span>
+summary = df.groupby([<span class="st">"store"</span>,<span class="st">"product"</span>])[<span class="st">"revenue"</span>].sum().reset_index()
+summary.to_csv(<span class="st">"store_product_revenue.csv"</span>, index=<span class="kw">False</span>)</pre>
+      </div>
+    </div>
+  </section>
+
+  <hr class="chapter-divider">
+
+  <!-- MODULE 13 -->
+  <section id="mod13" class="module">
+    <div class="module-header">
+      <span class="module-num">MODULE 13</span>
+      <h1 class="module-title">Capstone Projects</h1>
+    </div>
+
+    <div class="callout" style="background:rgba(77,159,220,0.08);border-color:rgba(77,159,220,0.4);margin-bottom:24px">
+      <div class="callout-header" style="color:var(--py-blue)">📁 Project 1 — Personal Finance Tracker</div>
+      <ul>
+        <li>Transaction class: date, description, amount, category, type (income/expense)</li>
+        <li>Functions: add_transaction(), load_transactions(), save_transactions()</li>
+        <li>Analysis: total income, total expenses, net savings, breakdown by category</li>
+        <li>Filter by month/year · Identify top 3 spending categories</li>
+      </ul>
+    </div>
+
+    <div class="callout" style="background:rgba(78,201,176,0.08);border-color:rgba(78,201,176,0.4);margin-bottom:24px">
+      <div class="callout-header" style="color:var(--py-green)">📊 Project 2 — Student Performance Analyser (Pandas)</div>
+      <ul>
+        <li>Generate synthetic data: 50 students × 5 subjects × 4 exams</li>
+        <li>Per-student: overall average, subject strengths/weaknesses</li>
+        <li>Per-subject: class average, pass rate (≥50), top/bottom 10%</li>
+        <li>Identify students at risk (avg &lt; 50) · Export full report to CSV</li>
+        <li>Pivot table: students × subjects × average</li>
+      </ul>
+    </div>
+
+    <div class="callout" style="background:rgba(255,212,59,0.06);border-color:rgba(255,212,59,0.3)">
+      <div class="callout-header" style="color:var(--py-yellow)">🌤️ Project 3 — Weather Data Pipeline (NumPy + Pandas)</div>
+      <ul>
+        <li>Simulate daily temp, humidity, rainfall for 10 cities × 365 days</li>
+        <li>NumPy: vectorised heat index = f(temp, humidity)</li>
+        <li>Pandas: resample to weekly/monthly summaries</li>
+        <li>Hottest week, wettest month, most humid city</li>
+        <li>Detect "heatwave" events: 3+ consecutive days above 35°C</li>
+        <li>Export findings to JSON</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="chapter-divider">
+
+  <!-- APPENDIX -->
+  <section id="appendix" class="module">
+    <div class="module-header">
+      <span class="module-num">APPENDIX</span>
+      <h1 class="module-title">Quick Reference</h1>
+    </div>
+
+    <h2 class="section-title">A.1  Built-in Functions</h2>
+    <div class="table-wrap">
+      <table><thead><tr><th>Function</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>print(*args)</td><td>Output to screen</td></tr>
+        <tr><td>input(prompt)</td><td>Read from keyboard (returns str)</td></tr>
+        <tr><td>len(x)</td><td>Length of sequence</td></tr>
+        <tr><td>range(start,stop,step)</td><td>Integer range iterator</td></tr>
+        <tr><td>type(x)</td><td>Return type of x</td></tr>
+        <tr><td>isinstance(x, T)</td><td>Check if x is instance of T</td></tr>
+        <tr><td>int(), float(), str(), bool()</td><td>Type conversion</td></tr>
+        <tr><td>sorted(it, key, reverse)</td><td>Return sorted list</td></tr>
+        <tr><td>enumerate(it, start)</td><td>Return (index, value) pairs</td></tr>
+        <tr><td>zip(*its)</td><td>Combine iterables element-wise</td></tr>
+        <tr><td>map(fn, it)</td><td>Apply function to iterable</td></tr>
+        <tr><td>filter(fn, it)</td><td>Filter iterable by function</td></tr>
+        <tr><td>sum / min / max</td><td>Aggregate numeric iterables</td></tr>
+        <tr><td>any(it) / all(it)</td><td>True if any/all truthy</td></tr>
+        <tr><td>help(x) / dir(x)</td><td>Show docs / list attributes</td></tr>
+      </tbody></table>
+    </div>
+
+    <h2 class="section-title">A.2  Common Error Types</h2>
+    <div class="table-wrap">
+      <table><thead><tr><th>Error</th><th>Common Cause</th></tr></thead>
+      <tbody>
+        <tr><td>SyntaxError</td><td>Typo, missing colon, unclosed bracket</td></tr>
+        <tr><td>IndentationError</td><td>Inconsistent spaces/tabs</td></tr>
+        <tr><td>NameError</td><td>Variable used before assignment</td></tr>
+        <tr><td>TypeError</td><td>Wrong type for operation (str + int)</td></tr>
+        <tr><td>ValueError</td><td>Right type, wrong value (int("abc"))</td></tr>
+        <tr><td>IndexError</td><td>List index out of range</td></tr>
+        <tr><td>KeyError</td><td>Dict key does not exist</td></tr>
+        <tr><td>AttributeError</td><td>Object has no such attribute</td></tr>
+        <tr><td>ZeroDivisionError</td><td>Dividing by zero</td></tr>
+        <tr><td>FileNotFoundError</td><td>File path incorrect</td></tr>
+        <tr><td>ImportError</td><td>Module not found / not installed</td></tr>
+        <tr><td>RecursionError</td><td>Missing base case in recursion</td></tr>
+      </tbody></table>
+    </div>
+
+    <h2 class="section-title">A.3  NumPy Quick Reference</h2>
+    <div class="table-wrap">
+      <table><thead><tr><th>Function</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>np.array()</td><td>Create array from list</td></tr>
+        <tr><td>np.zeros/ones/full(shape)</td><td>Filled arrays</td></tr>
+        <tr><td>np.arange / np.linspace</td><td>Range arrays</td></tr>
+        <tr><td>np.random.rand/randn/randint</td><td>Random arrays</td></tr>
+        <tr><td>a.shape, a.dtype, a.size</td><td>Array properties</td></tr>
+        <tr><td>a.reshape() / a.flatten()</td><td>Change shape / to 1D</td></tr>
+        <tr><td>a.T</td><td>Transpose</td></tr>
+        <tr><td>np.vstack / np.hstack</td><td>Stack arrays</td></tr>
+        <tr><td>np.sum/mean/std/var(axis=)</td><td>Aggregations</td></tr>
+        <tr><td>np.sort / np.argsort</td><td>Sort / sort indices</td></tr>
+        <tr><td>np.where(cond, a, b)</td><td>Conditional selection</td></tr>
+        <tr><td>a @ b / np.dot(a,b)</td><td>Matrix multiply</td></tr>
+        <tr><td>np.linalg.inv/det/solve</td><td>Linear algebra</td></tr>
+      </tbody></table>
+    </div>
+
+    <h2 class="section-title">A.4  Pandas Quick Reference</h2>
+    <div class="table-wrap">
+      <table><thead><tr><th>Operation</th><th>Syntax</th></tr></thead>
+      <tbody>
+        <tr><td>Read CSV / Excel</td><td>pd.read_csv() / pd.read_excel()</td></tr>
+        <tr><td>First/last N rows</td><td>df.head(n) / df.tail(n)</td></tr>
+        <tr><td>Shape, info, describe</td><td>df.shape / df.info() / df.describe()</td></tr>
+        <tr><td>Select column</td><td>df["col"] or df.col</td></tr>
+        <tr><td>Select by label / position</td><td>df.loc[] / df.iloc[]</td></tr>
+        <tr><td>Boolean filter</td><td>df[df["col"] > val]</td></tr>
+        <tr><td>Add / drop column</td><td>df["new"]=val / df.drop(columns=)</td></tr>
+        <tr><td>Sort</td><td>df.sort_values("col", ascending=False)</td></tr>
+        <tr><td>Group & aggregate</td><td>df.groupby("col")["val"].agg(fn)</td></tr>
+        <tr><td>Pivot table</td><td>df.pivot_table(values,index,columns,aggfunc)</td></tr>
+        <tr><td>Merge</td><td>pd.merge(df1, df2, on=, how=)</td></tr>
+        <tr><td>Missing values</td><td>df.isnull().sum() / df.fillna() / df.dropna()</td></tr>
+        <tr><td>Apply function</td><td>df["col"].apply(fn)</td></tr>
+        <tr><td>String methods</td><td>df["col"].str.upper() etc.</td></tr>
+        <tr><td>DateTime</td><td>df["col"].dt.year etc.</td></tr>
+        <tr><td>Resample time series</td><td>df.resample("ME").sum()</td></tr>
+      </tbody></table>
+    </div>
+
+    <div style="text-align:center;margin-top:60px;padding:40px 20px">
+      <div style="font-size:3rem;margin-bottom:12px">🐍</div>
+      <p style="font-size:1.4rem;font-weight:700;color:var(--py-yellow);margin-bottom:8px">Happy Coding!</p>
+      <p style="color:var(--text2);font-style:italic">Practice daily, read others' code, and build real projects.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- Scroll to top button -->
+<button id="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">▲</button>
+
+<script>
+  // ── Sidebar active link on scroll ──
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks  = document.querySelectorAll('.nav-link');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const link = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  // ── Reading progress bar ──
+  window.addEventListener('scroll', () => {
+    const el  = document.documentElement;
+    const pct = (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = Math.round(pct) + '%';
+    document.getElementById('top-btn').classList.toggle('show', el.scrollTop > 400);
+  });
+
+  // ── Copy code ──
+  function copyCode(btn) {
+    const pre  = btn.closest('.code-wrap').querySelector('pre');
+    const text = pre.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  // ── Toggle answers ──
+  function toggleAnswer(btn) {
+    btn.classList.toggle('open');
+    const body = btn.nextElementSibling;
+    body.classList.toggle('open');
+  }
+
+  // ── Mobile sidebar ──
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('overlay').classList.toggle('show');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+  }
+
+  // ── Nav search filter ──
+  function filterNav(q) {
+    q = q.toLowerCase();
+    document.querySelectorAll('.nav-link').forEach(l => {
+      l.style.display = l.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+  }
+</script>
+</body>
+</html>
