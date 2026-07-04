@@ -114,6 +114,8 @@ a:hover {
 
 <label for="removeDuplicates"><input type="checkbox" id="removeDuplicates">Remove duplicate values</label><br><br>
 
+<label for="noCommas"><input type="checkbox" id="noCommas">No commas between values</label><br><br>
+
 <label for="result">Result:</label><br>
 <textarea id="result" readonly></textarea><br><br>
 
@@ -170,7 +172,11 @@ function convert() {
   if (document.getElementById("removeDuplicates").checked) {
     array = [...new Set(array)];
   }
-  document.getElementById("result").value = formatArrayOutput(array, bracketsType);
+  document.getElementById("result").value = formatArrayOutput(
+  array,
+  bracketsType,
+  document.getElementById("noCommas").checked
+);
 }
 
 function bracketsTypeForOutput(bracketsType) {
@@ -195,8 +201,9 @@ function formatOutput(value, quoteType) {
   return value;
 }
 
-function formatArrayOutput(array, bracketsType) {
-  let formattedArray = array.join(", ");
+function formatArrayOutput(array, bracketsType, noCommas) {
+  let formattedArray = array.join(noCommas ? " " : ", ");
+
   if (bracketsType === "square") {
     return "[" + formattedArray + "]";
   } else if (bracketsType === "curly") {
@@ -214,6 +221,7 @@ function reset() {
   document.getElementById("sortOutput").checked = false;
   document.getElementById("removeDuplicates").checked = false;
   document.getElementById("result").value = "";
+  document.getElementById("noCommas").checked = false;
 }
 
 function toggleDarkMode() {
